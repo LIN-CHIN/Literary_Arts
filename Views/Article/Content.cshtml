@@ -1,0 +1,241 @@
+﻿
+@{
+    ViewBag.Title = "文章內容";
+}
+
+<link href="../../Content/css/article.css" rel="stylesheet" type="text/css" />
+
+<!-- 文章內容 -->
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 content shadow">
+            <div class="info d-flex">
+                <div><a class="floorTag">樓主</a></div>
+                <div style="white-space:nowrap !important">
+                    <a> 樓主帳號 </a>
+                    <a class="next"></a>
+                    <a class="dateTime">於 發布日期 發佈</a>
+                </div>
+                <div class="dropdown ml-auto" style="margin-bottom: -0.5em">
+                    <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-ellipsis-h"></i>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-right dotMenu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" href="/Article/Update">編輯</a>
+                        <a class="dropdown-item" href="#/">刪除</a>
+                    </div>
+                </div>
+            </div>
+            <hr style="margin-top: 0.5em" />
+            <h5> 文章標題 </h5>
+            <hr />
+
+            <p class="content">
+                文章內容
+            </p>
+
+            <!-- Tag -->
+            <div class="tagDiv col-lg-12 ">
+                <button type="button" class="btn tag"> TAG內容 </button>
+            </div>
+
+            <hr class="info">
+
+            <!-- info -->
+            <div class="info">
+                <!-- 愛心按鈕 -->
+                <button type="button" id="LikeUnLogIn" class="btn postInfo" onclick="location.href='/login'">
+                    <i class="fab fa-gratipay"></i>
+                    <a> 3 </a>
+                </button>
+                @*<button type="button" id="addLike" class="btn postInfo"
+                            onclick=<%= "addLike(" + items[0][0].artiNum + ")" %>> <i class="fab fa-gratipay"></i><a
+                                id="addLikeCount"> <%= items[0][0].likeCount %> </a></button>
+                    <button type="button" id="delLike" class="btn postInfo"
+                            onclick=<%= "delLike(" + items[0][0].artiNum + ")" %>><i class="fab fa-gratipay" style="color:#c93737"></i><a
+                                id="delLikeCount"><%= items[0][0].likeCount %> </a></button>*@
+
+                <!-- 留言數量按鈕 -->
+                <button type="button" class="btn postInfo" id="goBottom">
+                    <i class="fas fa-comment-dots"></i>
+                    <a> 3 </a>
+                </button>
+
+                <!-- 收藏按鈕 -->
+                <button type="button" id="unLogIn" class="btn postInfo" onclick="">
+                    <i class="far fa-bookmark"></i>
+                </button>
+
+                @*<button type="button" id="addColle" class="btn postInfo"
+                            onclick=<%= "addColle(" + items[0][0].artiNum + ")" %>>
+                            <i class="far fa-bookmark"></i></button>
+
+                    <button type="button" id="delColle" class="btn postInfo"
+                            onclick=<%= "delColle(" + items[0][0].artiNum + ")" %>>
+                            <i class="fas fa-bookmark"></i></button>*@
+
+                <button type="button" class="btn report postReport" id="postReport" data-toggle="modal" data-target="#artiReportPost">檢舉</button>
+            </div>
+
+            <!-- info結束 -->
+        </div>
+    </div>
+    <!-- 文章內容結束 -->
+
+    <div class="row justify-content-center">
+        <div class="preferLi content shadow col-lg-8 justify-content-center">
+            <h5 style="color: rgb(83, 83, 83);text-align: left !important;">你可能會喜歡的文章</h5>
+            <hr class="smallMagin">
+            <ul class="liContainer" style="text-align: left !important;">
+                <li>
+                    <a href="#"> 你可能喜歡的 </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <center>
+        <h4>文章留言</h4>
+        <hr class="separate">
+    </center>
+
+    <!-- 文章留言 -->
+    <div class="row justify-content-center">
+        <div class="col-lg-8 content shadow">
+            <!-- 文章留言 -->
+            <div class="message">
+                <!-- info -->
+                <div class="info d-flex justify-content-between">
+                    <div><a class="floorTag"> 1樓</a></div>
+                    <div style="white-space:nowrap !important">
+                        <a class="name"> 會員名稱</a>
+                        <a class="next"></a>
+                        <a class="dateTime">於 留言日期 留言</a>
+                    </div>
+                    <!-- 愛心按鈕 -->
+                    <div class="col-sm-1 ml-auto likeContainer">
+                        <button type="button" class="btn like" id="MessLikeUnLogIn" onclick="location.href='#'">
+                            <i class="fab fa-gratipay"> </i>
+                            <a> 3 </a>
+                        </button>
+                        @*<button type="button" id=<%= "MessAddLike"+ items[0][0].artiNum + items[1][i].artiMessNum %>
+                                    class="btn like"
+                                    onclick=<%= "MessAddLike(" + items[0][0].artiNum + "," + items[1][i].artiMessNum + ")" %>>
+                                    <i class="fab fa-gratipay"></i>
+                                    <a id=<%="MessAddLikeCount" + items[0][0].artiNum + items[1][i].artiMessNum %>>
+                                        <%= items[1][i].likeCount %>
+                                    </a>
+                                </button>
+                            <button type="button" id=<%= "MessDelLike" + items[0][0].artiNum + items[1][i].artiMessNum %>
+                                    class="btn like"
+                                    onclick=<%= "MessDelLike(" + items[0][0].artiNum + "," + items[1][i].artiMessNum + ")" %>>
+                                    <i class="fab fa-gratipay" style="color:#c93737"></i>
+                                    <a id=<%= "MessDelLikeCount" + items[0][0].artiNum + items[1][i].artiMessNum %>>
+                                        <%= items[1][i].likeCount %>
+                                    </a>
+                                </button>*@
+                    </div>
+                </div>
+                <hr class="smallMagin">
+
+                <!-- info結束 -->
+                <p class="content">
+                    文章留言內容
+                </p>
+            </div>
+            <hr>
+
+            <!-- 檢舉按鈕 -->
+            <button type="button" class="btn report replyReport" data-toggle="modal" data-target="#artiMessReportPost">檢舉</button>
+
+            <!-- 編輯按鈕 -->
+            <div class="dropdown ml-auto float-right dropup">
+                <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fas fa-ellipsis-h"></i>
+                </button>
+                <div class="dropdown-menu dotMenu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item editReply" href="/Article/UpdateReply">編輯</a>
+                    <a class="dropdown-item" href="#/" onclick="">刪除</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- 文章留言檢舉區塊 -->
+        <div class="modal fade" id="artiMessReportPost" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalCenterTitle">檢舉</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form id="artiMessReport_Form">
+                        <div class="modal-body" style="padding:1em;">
+                            <textarea class="report" name="reportReason" id="messReportReason" placeholder="輸入檢舉原因"></textarea>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" id="artiMessReport" class="btn btn-danger" onclick="">提交</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 文章留言結束 -->
+    <!-- 填寫留言區塊 -->
+    <div class="row replying justify-content-center" id="reply" spellcheck="false">
+        <div class="col-lg-8 content shadow">
+            <div class="replyInput" id="replyInput" contenteditable="true" role="textbox" data-text="請輸入回覆內容"></div>
+
+            <label class="btn btn-dark col-lg-2" style="cursor: pointer">
+                <input id="file-selector" type="file" multiple="multiple" accept=".jpg,.png,.gif,.tif,.bmp" />
+                <i class="fas fa-images" style="padding-right:5px"></i>加圖片
+            </label>
+
+            <button type="submit" class="btn btn-danger float-right submitReplyButton col-lg-2 shadow-none" onclick="">
+                提交
+            </button>
+        </div>
+    </div>
+    <!-- replying end -->
+
+    <a href="#" id="gotop">
+        <i class="fa fa-angle-up"></i>
+    </a>
+
+    <!-- 文章檢舉區塊 -->
+    <div class="modal fade" id="artiReportPost" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalCenterTitle">檢舉</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form>
+                    <div class="modal-body" style="padding:1em;">
+                        <textarea class="report" name="reportReason" id="reportReason" placeholder="輸入檢舉原因"></textarea>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="artiReport" class="btn btn-danger">提交</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class='coverContainer'>
+    <div class='loader'>
+        <div class='loader--dot'></div>
+        <div class='loader--dot'></div>
+        <div class='loader--dot'></div>
+        <div class='loader--dot'></div>
+        <div class='loader--dot'></div>
+        <div class='loader--dot'></div>
+        <div class='loader--text'></div>
+    </div>
+</div>
+

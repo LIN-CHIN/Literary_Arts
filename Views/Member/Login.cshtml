@@ -1,0 +1,53 @@
+﻿
+@{
+    ViewBag.Title = "登入";
+}
+
+<link href="../../Content/css/logIn.css" rel="stylesheet" type="text/css" />
+
+<section id="logIn">
+    <div class="container-fluid row flex justify-content-center logIn no-gutters">
+        <div class="container-fluid">
+            <center>
+                <h3>登入</h3>
+                <hr class="highlight">
+            </center>
+
+        </div>
+        <form class="logIn col-lg-3 shadow" id="login" action="/userLogin" method="post">
+            <div class="input-icon-wrap ">
+                <span class="input-icon "><span class="fa fa-user"></span></span>
+                <input type="text" class="input-with-icon" id="ID" name="memID" placeholder="帳號" maxlength="20">
+            </div>
+            <div class="input-icon-wrap">
+                <span class="input-icon"><span class="fas fa-lock"></span></span>
+                <input type="password" class="input-with-icon" id="password" name="memPass" placeholder="密碼">
+            </div>
+
+            <input type="text" id="input" class="inputValidateCode" name="code" placeholder="輸入驗證碼" />
+            <input type="button" id="checkCode" class="code" onclick="createCode()" />
+            <span class="changeCode " href="#" onclick="createCode()"><i class="fas fa-sync-alt"></i></span><br>
+            <input type="text" id="lineID" name="lineID" style="display:none;">
+            <button type="button" class="btn btn-dark login" onclick="validateCode()" return false;>登入</button>
+            <button type="button" class="btn btn-secondary signUp" onclick="location.href='/Member/Register'">註冊</button>
+
+
+        </form>
+        <div class="w-100">
+            <center>
+                <h4>或是</h4>
+                <br>
+            </center>
+        </div>
+        <div class="container-fluid row flex justify-content-center ">
+            <div class="col-lg-3 third">
+                <button type="button" class="btn third gmail"
+                        onclick="location.href='/user/login'">
+                    Google登入或註冊
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+</section>

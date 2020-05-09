@@ -1,0 +1,73 @@
+﻿
+@{
+    ViewBag.Title = "推薦發文";
+}
+
+<link href="../../Content/css/post.css" rel="stylesheet" type="text/css" />
+
+<center>
+    <h3>新增推薦</h3>
+    <hr class="highlight">
+</center>
+<div class="justify-content-center">
+    <div class="post col-lg-8 content shadow">
+
+        <select id="inputState" class="form-control" onchange="styleselect()">
+            <option value="movie">電影類</option>
+            <option value="music">音樂類</option>
+            <option value="exhibition">展覽類</option>
+            <option value="book">書籍類</option>
+        </select>
+
+
+        <div id="inputData">
+            <form id="infoForm"></form>
+            <br>
+        </div>
+
+
+        <input type="text" class="titleInput input-with-icon title" name="recomHead" id="recomHead"
+               placeholder="請輸入您的標題">
+
+        <div id="postInput" class="postInput" contenteditable="true" role="textbox" data-text="請輸入您的發文內容"></div>
+
+
+        <div class="tag content col-lg-12">
+            <input type="text" data-role="tagsinput" id="tagInput" class="form-control" placeholder=" + tag" />
+        </div>
+
+
+
+        <label class="btn btn-dark col-lg-2" style="cursor: pointer; ">
+            <input id="file-selector" name="userImg" type="file" multiple="multiple"
+                   accept=".jpg,.png,.gif,.tif,.bmp" />
+            <i class="fas fa-images" style="padding-right:5px"></i>加圖片
+        </label>
+
+        <button type="submit" class="btn btn-danger postButton col-lg-2 float-right" style="margin-top:1em;"
+                onclick="submitPost()">
+            提交
+        </button>
+
+    </div>
+</div>
+
+
+<a href="#" id="gotop">
+    <i class="fa fa-angle-up"></i>
+</a>
+
+<!-- <div class="spinner-border" role="status">
+        <span class="sr-only">Loading...</span>
+</div> -->
+<div class='coverContainer'>
+    <div class='loader'>
+        <div class='loader--dot'></div>
+        <div class='loader--dot'></div>
+        <div class='loader--dot'></div>
+        <div class='loader--dot'></div>
+        <div class='loader--dot'></div>
+        <div class='loader--dot'></div>
+        <div class='loader--text'></div>
+    </div>
+</div>

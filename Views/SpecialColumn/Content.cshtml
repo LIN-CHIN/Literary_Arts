@@ -1,0 +1,61 @@
+﻿
+@{
+    ViewBag.Title = "專欄內容";
+}
+
+<link href="../../Content/css/specialColumn.css" rel="stylesheet" type="text/css" />
+
+<!-- 封面區塊 -->
+<div class="banner" style="background-image: url('../../Content/images/19.jpg'); ">
+</div>
+
+<div class="container-fluid d-flex justify-content-center">
+    <div class="row d-flex justify-content-center col-lg-12">
+
+        <!--編輯、刪除-->
+        <div class="col-12">
+            <div class="dropdown float-right">
+                <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fas fa-ellipsis-h"></i>
+                </button>
+                <div class="dropdown-menu dropdown-menu-right dotMenu " aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" href="/SpecialColumn/Update">編輯</a>
+                    <a class="dropdown-item" onclick="">刪除</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- 內文 -->
+        <div class="col-lg-8">
+            <div class="contain">
+                <div>
+                    <h3 class="title">專欄標題</h3>
+                    <p> 2020/03/28 </p>
+                </div>
+                <div class="text">
+                    <p class="content">
+                        專欄內容
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<a href="#" id="gotop">
+    <i class="fa fa-angle-up"></i>
+</a>
+
+<div class='coverContainer'>
+    <div class='loader'>
+        <div class='loader--dot'></div>
+        <div class='loader--dot'></div>
+        <div class='loader--dot'></div>
+        <div class='loader--dot'></div>
+        <div class='loader--dot'></div>
+        <div class='loader--dot'></div>
+        <div class='loader--text'></div>
+    </div>
+</div>  

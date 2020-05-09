@@ -1,0 +1,80 @@
+﻿
+@{
+    ViewBag.Title = "官方推薦列表";
+}
+
+
+<link href="../../Content/css/recommend.css" rel="stylesheet" type="text/css" />
+
+<center>
+    <h3>推薦列表</h3>
+    <hr class="highlight">
+</center>
+
+
+<div class="d-flex justify-content-center" style="margin-bottom:1.5em;">
+    <button type="button" class="btn btn-secondary footer"
+            onclick="location.href='/recommendList/movie/1'">
+        電影類
+    </button>
+    <button type="button" class="btn btn-secondary footer"
+            onclick="location.href='/recommendList/music/1'">
+        音樂類
+    </button>
+    <button type="button" class="btn btn-secondary footer"
+            onclick="location.href='/recommendList/book/1'">
+        書籍類
+    </button>
+    <button type="button" class="btn btn-secondary footer"
+            onclick="location.href='/recommendList/exhibition/1'">
+        展覽類
+    </button>
+    <button type="button" class="btn btn-secondary footer" onclick="location.href='/recommendList/1'">全部</button>
+</div>
+
+<!-- Portfolio Section -->
+<section id="portfolio">
+
+    <div class="row d-flex no-gutters container-fluid justify-content-center align-items-center recommend">
+        <!-- 推薦開始 -->
+        <div class="wrapper col-12  col-lg-2" style="background-image: url('../../Content/images/recommend/1571237146182--cTZDVm5aMllsS09lcUtV.jpg');">
+            <a class="portfolio-box" href="/Recommend/Content">
+                <div class="portfolio-box-caption">
+                    <div class="project-category text-white-50">
+                        <p> 推薦類別(電影) </p>
+                    </div>
+                    <div class="project-name">
+                        <p class="title">推薦標題 </p>
+                        <p class="content wrapText">
+                            推薦內容
+                        </p>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <div class="w-100"></div>
+        <!-- 推薦結束 -->
+    </div>
+
+    <nav aria-label="Page navigation example" style="margin-bottom: 4em;">
+        <ul class="pagination justify-content-center">
+            <li class="page-item previous">
+                <a class="page-link" href="#/" onclick="location.href=`/recommendList/${pagePrevious}`" tabindex="-1" aria-disabled="true"><i class="fas fa-chevron-left"></i></a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="#">1</a>
+            </li>
+            <li class="page-item next">
+                <a class="page-link" href="#/" onclick="location.href=`/recommendList/${pageNext}`">
+                    <i class="fas fa-chevron-right"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</section>
+
+<a href="#" id="gotop">
+    <i class="fa fa-angle-up"></i>
+</a>
+

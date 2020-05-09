@@ -1,0 +1,137 @@
+﻿
+@{
+    ViewBag.Title = "討論區";
+}
+
+<link href="../../Content/css/articleList.css" rel="stylesheet" type="text/css" />
+
+<!-- 文章列表區塊 -->
+<section id="articleList">
+    <div class="container-fluid article">
+        <center>
+            <h3>文章列表</h3>
+            <hr class="highlight">
+        </center>
+
+        <div class="d-flex justify-content-center" style="margin-bottom: 1.5em">
+            <button type="button" class="btn btn-secondary footer"
+                    onclick="location.href='/articleList/articleMovie/1'">
+                電影類
+            </button>
+            <button type="button" class="btn btn-secondary footer"
+                    onclick="location.href='/articleList/articleMusic/1'">
+                音樂類
+            </button>
+            <button type="button" class="btn btn-secondary footer"
+                    onclick="location.href='/articleList/articleBook/1'">
+                書籍類
+            </button>
+            <button type="button" class="btn btn-secondary footer"
+                    onclick="location.href='/articleList/articleExhibition/1'">
+                展覽類
+            </button>
+            <button type="button" class="btn btn-secondary footer"
+                    onclick="location.href='/articleList/1'">
+                全部
+            </button>
+        </div>
+
+        <!-- 文章區塊 -->
+        <div class="row d-flex justify-content-center no-gutters">
+            <div class="col-12 mb-3 col-lg-8 ">
+                <!-- list -->
+                <div class="card shadow list " style="cursor:pointer; ">
+                    <div class="card-body " onclick=" location.href='/Article/Content'">
+                        <div class="poster d-flex justify-content-between">
+                            <div class="name">
+                                <div style="white-space:nowrap !important">
+                                    <a class="floorTag">發表會員帳號</a>
+                                    <a class="next"></a>
+                                    <a class="dateTime">於 發表日期 發佈</a>
+                                </div>
+                            </div>
+                            <div class="ml-auto">
+                                <a class="itemClass"> 文章類別 </a>
+                            </div>
+                        </div>
+                        <hr style="margin-top: 0.5em">
+                        <div class="row seperate">
+                            <div class="col-sm-9 articleContent">
+                                <h3 class="card-title ">
+                                    文章標題
+                                </h3>
+                                <p class="card-text limitLine">
+                                    文章內容
+                                </p>
+
+                                <!-- tag -->
+                                <div class=" tagDiv col-lg-12 ">
+                                    <button type="button" class="btn  tag"> TAG 名稱 </button>
+                                </div>
+                            </div>
+
+                            <!-- imgs  -->
+                            <div class="wrapperCard card-img-top col-lg-3"
+                                 style="background-image: url( '../../Content/images/17.jpg'); ">
+                            </div>
+                        </div>
+                    </div>
+                    <!-- info -->
+                    <div class="info">
+                        <!-- 愛心按鈕 -->
+                        <button type="button" id="LikeUnLogIn" class="btn postInfo style="display:none" onclick="location.href='/login'">
+                            <i class="fab fa-gratipay"></i>
+                            <a> 3 </a>
+                        </button>
+                        @*<button type="button" id="addLike" + items[0][i].artiNum %> class="btn postInfo"
+                                style="display:none" onclick=<%= "addLike(" + items[0][i].artiNum + ")" %>>
+                                <i class="fab fa-gratipay"></i><a id=<%= "addLikeCount" + items[0][i].artiNum %>>
+                                    <%= items[0][i].likeCount %> </a> </button>
+                            <button type="button" id=<%= "delLike" + items[0][i].artiNum %> class="btn postInfo"
+                                style="display:none" onclick=<%= "delLike(" + items[0][i].artiNum + ")" %>>
+                                <i class="fab fa-gratipay" style="color:#c93737;"></i><a id=<%= "delLikeCount" + items[0][i].artiNum %>>
+                                    <%= items[0][i].likeCount %></a></button>*@
+
+                        <!-- 留言數量按鈕 -->
+                        <button type="button" class="btn postInfo" onclick="location.href='#'">
+                            <i class="fas fa-comment-dots"></i>
+                            <a>3</a>
+                        </button>
+
+                        <!-- 收藏按鈕 -->
+                        <button type="button" id="unLogIn" class="btn postInfo" onclick="location.href='#'">
+                            <i class="far fa-bookmark"></i>
+                        </button>
+                        @*<button type="button" id=<%=  "addColle" + items[0][i].artiNum %> class="btn postInfo"
+                                display: inline" onclick=<%= "addColle(" + items[0][i].artiNum + ")" %>>
+                                <i class="far fa-bookmark"></i></button>
+                            <button type="button" id=<%= "delColle" + items[0][i].artiNum %> class="btn postInfo"
+                                style="display: inline" onclick=<%= "delColle(" + items[0][i].artiNum + ")" %>>
+                                <i class="fas fa-bookmark"></i></button>*@
+                        <!--  收藏按鈕控制 -->
+                    </div>
+                    <!-- info結束 -->
+                </div>
+                <div class="w-100"></div>
+                <!-- listEnd -->
+            </div>
+        </div>
+        <nav aria-label="Page navigation example" style="margin-bottom: 4em;">
+            <ul class="pagination justify-content-center">
+                <li class="page-item previous">
+                    <a class="page-link" href="#/" onclick="location.href=`/articleList/${pagePrevious}`" tabindex="-1" aria-disabled="true"><i class="fas fa-chevron-left"></i></a>
+                </li>
+                <li class="page-item"><a class="page-link" href="#"></a></li>
+                <li class="page-item next">
+                    <a class="page-link" href="#/" onclick="location.href=`/articleList/${pageNext}`"><i class="fas fa-chevron-right"></i></a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</section>
+
+<!-- 文章列表區塊結束 -->
+
+<a href="#" id="gotop">
+    <i class="fa fa-angle-up"></i>
+</a>

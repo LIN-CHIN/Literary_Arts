@@ -1,0 +1,72 @@
+﻿
+@{
+    ViewBag.Title = "註冊會員";
+}
+
+<link href="../../Content/css/logIn.css" rel="stylesheet" type="text/css" />
+
+<center>
+    <h3>註冊</h3>
+    <hr class="highlight">
+</center>
+<section id="signUp">
+    <div class="container-fluid row flex justify-content-center signUp no-gutters">
+        <form class="signUp col-lg-4" action="/signUp/add" id="signupform" method="post">
+            <div class="input-icon-wrap">
+                <span class="input-icon"><span class="fa fa-user"></span></span>
+                <input type="text" class="input-with-icon" id="ID" name="memID" placeholder="帳號" required
+                       onchange="idValidateForm()">
+            </div>
+            <p id="idAlarm"></p>
+            <div class="input-icon-wrap">
+                <span class="input-icon"><span class="fas fa-user-circle"></span></span>
+                <input type="text" class="input-with-icon" id="closeId" name="memName" placeholder="暱稱（註冊成功後不得修改）"
+                       required onchange="closeIdValidateForm()">
+            </div>
+            <p id="closeIdAlarm"></p>
+
+            <div class="input-icon-wrap">
+                <span class="input-icon"><span class="fas fa-lock"></span></span>
+                <input type="password" class="input-with-icon" id="password" name="memPass" placeholder="密碼"
+                       required onchange="passcheck()">
+            </div>
+            <p id="passwordAlarm"></p>
+
+            <div class="input-icon-wrap">
+                <span class="input-icon"><span class="fas fa-lock"></span></span>
+                <input type="password" class="input-with-icon" id="checkPassword" name="memCheckPass"
+                       placeholder="確認密碼" required onchange="passcheck()">
+            </div>
+            <p id="checkPasswordAlarm"></p>
+
+            <div class="input-icon-wrap">
+                <span class="input-icon"><span class="fas fa-envelope-open-text"></span></span>
+                <input type="email" class="input-with-icon" id="email" name="memMail" placeholder="email" required>
+            </div>
+
+
+            <div class="input-icon-wrap">
+                <span class="input-icon"><span class="fas fa-birthday-cake"></span></span>
+                <input type="date" class="input-with-icon" id="birthday" name="memBirth" placeholder="生日" required
+                       onchange="birthdayValidateForm()">
+            </div>
+            <p id="birthdayAlarm"></p>
+
+            <div class="input-icon-wrap radio">
+                <span class="input-icon align-middle" style="line-height: 3;"><span class="fas fa-venus-mars"></span></span>
+                <div>
+                    <input id="radio-1" class="radio-custom" name="memGender" value="m" type="radio" required>
+                    <label for="radio-1" class="radio-custom-label">男生</label>
+                </div>
+                <div>
+                    <input id="radio-2" class="radio-custom" name="memGender" value="f" type="radio" required>
+                    <label for="radio-2" class="radio-custom-label">女生</label>
+                </div>
+
+            </div>
+            <button type="button" class="btn btn-danger" onclick="checkValue()" return false;>註冊</button>
+        </form>
+
+    </div>
+</section>
+

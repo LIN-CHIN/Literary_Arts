@@ -1,0 +1,85 @@
+﻿
+@{
+    ViewBag.Title = "編輯活動";
+}
+
+<link href="../../Content/css/post.css" rel="stylesheet" type="text/css" />
+
+<center>
+    <h3>
+        編輯活動
+    </h3>
+    <hr class="highlight">
+</center>
+
+<div class="justify-content-center">
+    <div class="post col-lg-8 content shadow">
+        <select id="inputState" class="form-control" onchange="styleselect()">
+            <option value="movie">電影類</option>
+            <option value="music">音樂類</option>
+            <option value="exhibition">展覽類</option>
+            <option value="book">書籍類</option>
+        </select>
+        <label class="btn btn-secondary col-lg-2" style="cursor: pointer">
+            <input id="bannerInput" style="width: 3em; height: 3em;" type="file"
+                   accept=".jpg,.png,.gif,.tif,.bmp" />
+            <i class="fas fa-images" style="padding-right:5px"></i>Banner
+        </label>
+
+        <!-- banner img-->
+        <div id="bannerImg" style="width: 100%; margin-bottom: 1em;">
+            <img style="width: 100%;" src="../../Content/images/17.jpg" alt="">
+        </div>
+        <input type="text" class="titleInput input-with-icon title" name="artiHead" id="artiHead"
+               placeholder="請輸入您的標題" value="活動標題">
+
+        <div id="postInput" class="postInput" contenteditable="true" role="textbox" data-text="請輸入您的發文內容">
+            活動內容
+        </div>
+
+        <div class="tag content col-lg-12">
+            <span id="tag" class="tag label label-info">
+                tag 名稱
+                <!--TODO: tag UI有問題-->
+                <span class="deleteTag" data-role="remove"></span>
+            </span>
+            <input type="text" data-role="tagsinput" id="tagInput" class="form-control" placeholder=" + tag" />
+        </div>
+        <a>截止日：</a><input id="deadline" type="date" placeholder="截止日"
+                          style="margin: 1em; border-radius: 4px; border: none;">
+        <br>
+
+        <!-- <div class="text-right"> -->
+        <label class="btn btn-dark col-lg-2" style="cursor: pointer">
+            <input id="file-selector" name="userImg" type="file" multiple="multiple"
+                   accept=".jpg,.png,.gif,.tif,.bmp" />
+            <i class="fas fa-images" style="padding-right:5px"></i>加圖片
+        </label>
+        <!-- </div> -->
+        <button type="submit" class="btn btn-danger col-lg-2 float-right postButton"
+                onclick="submitModifyArticle()">
+            提交
+        </button>
+
+        <!-- <div class="spinner-border" role="status">
+                <span class="sr-only">Loading...</span>
+        </div> -->
+    </div>
+</div>
+
+
+
+<a href="#" id="gotop">
+    <i class="fa fa-angle-up"></i>
+</a>
+<div class='coverContainer'>
+    <div class='loader'>
+        <div class='loader--dot'></div>
+        <div class='loader--dot'></div>
+        <div class='loader--dot'></div>
+        <div class='loader--dot'></div>
+        <div class='loader--dot'></div>
+        <div class='loader--dot'></div>
+        <div class='loader--text'></div>
+    </div>
+</div>
