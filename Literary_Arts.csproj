@@ -47,10 +47,27 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Dapper, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\Dapper.2.0.35\lib\net461\Dapper.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions, Version=2.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.Extensions.DependencyInjection.Abstractions.2.0.0\lib\netstandard2.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="MiniProfiler, Version=3.2.0.157, Culture=neutral, PublicKeyToken=b44f9351044011a3, processorArchitecture=MSIL">
+      <HintPath>packages\MiniProfiler.3.2.0.157\lib\net40\MiniProfiler.dll</HintPath>
+    </Reference>
+    <Reference Include="MiniProfiler.Integrations, Version=1.0.0.0, Culture=neutral, PublicKeyToken=0e789b781a1e1dbb, processorArchitecture=MSIL">
+      <HintPath>packages\MiniProfiler.Integrations.2.2.0\lib\MiniProfiler.Integrations.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Diagnostics.DiagnosticSource, Version=4.0.2.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>packages\System.Diagnostics.DiagnosticSource.4.4.1\lib\net46\System.Diagnostics.DiagnosticSource.dll</HintPath>
+    </Reference>
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Caching" />
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -128,9 +145,31 @@
     <Compile Include="Controllers\MemberController.cs" />
     <Compile Include="Controllers\RecommendController.cs" />
     <Compile Include="Controllers\SpecialColumnController.cs" />
+    <Compile Include="Dao\ArticleDao.cs" />
+    <Compile Include="Dao\IndexDao.cs" />
+    <Compile Include="Dao\_Dao.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\ArticleLikeModel.cs" />
+    <Compile Include="Models\ArticleModel.cs" />
+    <Compile Include="Models\ArticleReplyLikeModel.cs" />
+    <Compile Include="Models\ArticleReplyModel.cs" />
+    <Compile Include="Models\ArtMemberModel.cs" />
+    <Compile Include="Models\ArtRightModel.cs" />
+    <Compile Include="Models\ArtRoleModel.cs" />
+    <Compile Include="Models\ImageModel.cs" />
+    <Compile Include="Models\IndexModel.cs" />
+    <Compile Include="Models\MemberCollectionModel.cs" />
+    <Compile Include="Models\MemberMessageModel.cs" />
+    <Compile Include="Models\RecommendLikModel.cs" />
+    <Compile Include="Models\RecommendModel.cs" />
+    <Compile Include="Models\RecommendReplyLikeModel.cs" />
+    <Compile Include="Models\RecommendReplyModel.cs" />
+    <Compile Include="Models\ReportModel.cs" />
+    <Compile Include="Models\SetFunctionModel.cs" />
+    <Compile Include="Models\TagLinkModel.cs" />
+    <Compile Include="Models\TagModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -461,7 +500,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\" />
+    <Folder Include="Interface\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

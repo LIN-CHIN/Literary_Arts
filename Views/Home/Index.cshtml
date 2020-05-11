@@ -1,4 +1,5 @@
-﻿@{
+﻿@model Literary_Arts.Models.IndexModel
+@{
     ViewBag.Title = "首頁";
 }
 
@@ -7,7 +8,6 @@
     <a id="goDown">
         <i class="fas fa-chevron-circle-down"></i>
     </a>
-
     <div id="block" class="block">
     </div>
 </div>
@@ -20,81 +20,35 @@
     </center>
 
     <div class="row d-flex no-gutters container-fluid justify-content-center align-items-center recommend">
-        <!-- 電影類推薦 -->
-
-        <div class="wrapper col-12  col-lg-4" style="background-image: url('../../Content/images/testImgs/1.jpg'" data-aos="fade-right">
-            <a class="portfolio-box" href="recommend.html">
-                <div class="portfolio-box-caption">
-                    <div class="project-category text-white-50">
-                        <p>電影類</p>
-                    </div>
-                    <div class="project-name">
-                        <p class="title">幸福綠皮書</p>
-                        <p class="content wrapText">
-                            改編自真人實事，描述60年代知名黑人鋼琴家唐薛利和他僱用的義裔司機兼保鑣大嘴東尼， 到美國深南部（Deep South）巡迴演出的公路故事。
-                        </p>
-                    </div>
+        @{
+            int i = 1;
+            foreach (var item in ViewBag.RecomData)
+            {
+                <!-- 電影類推薦 -->
+                <div class="wrapper col-12  col-lg-4" style="background-image: url('../../Content/images/18.jpg'" data-aos="fade-right">
+                    <a class="portfolio-box" href="recommend.html">
+                        <div class="portfolio-box-caption">
+                            <div class="project-category text-white-50">
+                                <p>@item.RECOM_CLASS</p>
+                            </div>
+                            <div class="project-name">
+                                <p class="title">@item.RECOM_HEAD</p>
+                                <p class="content wrapText">
+                                    @item.RECOM_CONT
+                                </p>
+                            </div>
+                        </div>
+                    </a>
                 </div>
-            </a>
-        </div>
-        <!-- 電影類推薦結束 -->
-        <!-- 音樂類推薦 -->
+                if (i == 2)
+                {
+                    <div class="w-100"></div>
+                    i = 0;
+                }
+                i += 1;
 
-        <div class="wrapper  col-12  col-lg-4" style="background-image: url('../../Content/images/testImgs/19.jpeg');" data-aos="fade-right">
-            <a class="portfolio-box" href="recommend.html">
-                <div class="portfolio-box-caption">
-                    <div class="project-category text-white-50">
-                        <p>音樂類</p>
-                    </div>
-                    <div class="project-name">
-                        <p class="title">宋冬野 - 知道</p>
-                        <p class="content wrapText">
-                            作詞：宋冬野 作曲：宋冬野 <br>我要當一個科學家 僕人和藉口伴我生長 夏天藏在西伯利亞 冬天住在蘇門答臘的島上 不在乎螞蟻也不在乎國家 不在乎佛祖也不在乎手槍 把哲學家的拐杖插進這無能的土壤
-                        </p>
-                    </div>
-                </div>
-            </a>
-        </div>
-
-        <!-- 音樂類推薦結束 -->
-        <div class="w-100"></div>
-        <!-- 書籍類推薦 -->
-
-        <div class="wrapper col-12  col-lg-4" style="background-image: url('../../Content/images/testImgs/19.jpeg');" data-aos="fade-right">
-            <a class="portfolio-box" href="#">
-                <div class="portfolio-box-caption">
-                    <div class="project-category text-white-50">
-                        <p>書籍類</p>
-                    </div>
-                    <div class="project-name">
-                        <p class="title">別在走遠後才想起說再見</p>
-                        <p class="content wrapText">
-                            「人生由故事串起，故事在人生裡發生。」透過20則穿梭於不同關係之間的故事，那些對你我都有點熟悉的過往，宛若真實世界的搬演，富含了滿載遺憾、無奈、領悟、溫暖的情緒。有些我們選擇遺忘，有些則是故意放手。
-                        </p>
-                    </div>
-                </div>
-            </a>
-        </div>
-        <!-- 書籍類推薦結束 -->
-        <!-- 展覽類推薦 -->
-        <div class="wrapper col-12  col-lg-4" data-aos="fade-right" style="background-image: url('../../Content/images/testImgs/19.jpeg');">
-            <a class="portfolio-box" href="recommend.html">
-                <div class="portfolio-box-caption">
-                    <div class="project-category text-white-50">
-                        <p>展覽類</p>
-                    </div>
-                    <div class="project-name">
-                        <p class="title">
-                            『隨風而行』_黃瑞銘 水彩個展
-                        </p>
-                        <p class="content wrapText">
-                            美來自於感動，台灣具足令歐美和亞洲人士感動的元素，台灣很美。在3萬多平方公里的土地上，有超過1千公里的海岸線，也有268座超過3000公尺的高山，多變的地貌形成豐富的景觀。
-                        </p>
-                    </div>
-                </div>
-            </a>
-        </div>
-        <!-- 展覽類推薦結束 -->
+            }
+        }
 
     </div>
 </section>
@@ -169,14 +123,14 @@
 
                     <div class="card-body">
                         <h3 class="card-title">
-                            《黎明的承諾》動人無比的母子情深｜影評．心得
+                            @ViewBag.HotArtiData[0].ARTI_HEAD
                         </h3>
                         <p class="card-text wrapBigHotSectionText">
-                            大時代的背景，來自媽媽的壓迫以及片末揮之不去的那份落寞惆悵讓《黎明的承諾》在感人之餘，卻也始終難掩電影的壓抑沉鬱。所幸這對母子在充滿壓力的危險平衡中，卻也依然在生活中有著諸如「為女人，為榮耀，為法國」、「300人中的一個」這些屬於法國人的幽默和無厘頭，夏綠蒂甘絲柏格在電影中演員背景的浮誇演技，再加上中段導演香豔床戲的趣味拍法，輕鬆地去緩和電影中的那份抑鬱。而對於片尾羅曼和媽媽理想中的妻子離婚的決定，我想即使指引他努力贏得這一切的母親已經不在，即使他已決定不再單單依循著媽媽的路，他的心中也永遠存在著，那個至死都還在為他著想，焚膏繼晷的寫了250封信，同時也是那個讓他能夠出人頭地，能選擇自己想過的生活的媽媽吧。
+                            @ViewBag.HotArtiData[0].ARTI_CONT
                         </p>
 
                         <p class="poster">
-                            小美 於 2019-04-30 14:23發佈
+                            小美 於 @ViewBag.HotArtiData[0].CRT_DATE 發佈
                         </p>
 
                         <div class="tagDiv">
@@ -199,13 +153,13 @@
 
                     <div class="card-body">
                         <h3 class="card-title">
-                            推薦有溫度的聲音，海浪——汪冠宇
+                            @ViewBag.HotArtiData[1].ARTI_HEAD
                         </h3>
                         <p class="card-text wrapText">
-                            真誠的歌聲、錐心的歌詞又憂傷和惆悵、美麗的曲調，「我終於失去了遠方，雨落下來像有些憂傷， 南風帶走妳的味道，妳的味道..」 這個詞寫得好好..
+                            @ViewBag.HotArtiData[0].ARTI_CONT
                         </p>
                         <p class="poster">
-                            阿明 於 2019-04-30 14:23發佈
+                            阿明 於 @ViewBag.HotArtiData[0].CRT_DATE 發佈
                         </p>
                         <div class="tagDiv">
                             <button type="button" class="btn  tag">汪冠宇</button>
@@ -223,13 +177,13 @@
 
                     <div class="card-body">
                         <h3 class="card-title">
-                            華山的自然森活展有人要一起去嗎？
+                            @ViewBag.HotArtiData[2].ARTI_HEAD
                         </h3>
                         <p class="card-text wrapText">
-                            森林是台灣最美麗的再生資源。為了讓民眾認識森林的多樣性及生態環境對人的多元服務價值，林務局從2017年3月、2018年5月至2019年6月21-23日，有人要一起去認識森林並且環保愛地球一下嗎？
+                            @ViewBag.HotArtiData[2].ARTI_CONT
                         </p>
                         <p class="poster">
-                            阿華 於 2019-04-30 14:23發佈
+                            阿華 於 @ViewBag.HotArtiData[2].CRT_DATE 發佈
                         </p>
                         <div class="tagDiv">
                             <button type="button" class="btn  tag">華山</button>
@@ -246,9 +200,6 @@
 
             </div>
             <!-- 精選右邊下面的格子結束 -->
-
-
-
 
         </div>
 

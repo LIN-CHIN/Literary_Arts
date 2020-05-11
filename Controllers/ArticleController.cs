@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Literary_Arts.Dao;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -14,7 +15,11 @@ namespace Literary_Arts.Controllers
         /// <returns></returns>
         public ActionResult Index()
         {
-            return View();
+            using (ArticleDao dao = new ArticleDao())
+            {
+                ViewBag.test = dao.Query();
+            }
+                return View();
         }
 
         /// <summary>
