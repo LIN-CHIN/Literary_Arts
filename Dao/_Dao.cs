@@ -8,6 +8,8 @@ using System.Web;
 using MiniProfiler.Integrations;
 using System.Runtime.InteropServices;
 using Microsoft.Win32.SafeHandles;
+using Literary_Arts.Models;
+using System.Collections;
 
 namespace Literary_Arts.Dao
 {
@@ -98,12 +100,53 @@ namespace Literary_Arts.Dao
 
         }
 
+
+        /// <summary>
+        /// 在取得所有類別文章的Tag之前 必須經過此Router
+        /// 來整理取得tag 所需要的 ARTI_NUM or  RECOM_NUM ... 等資訊後
+        /// 再傳送到 GetTag<T> 方法中
+        /// </summary>
+        /// <param name="model">用來取得 文章的編號 或是 推薦的編號，或是其他種類的編號</param>
+        /// <param name="type"> 01 = 文章 , 02 = 推薦 </param>
+        public IList<T> TagRouter<T>(IList<T> model, string type) where T : new() 
+        {
+            //用來存放 需要查找tag的所有num 且設為參數 例如我有 編號41,42,43 要查找 
+            //則會以 @ARTI_NUM0 , @ARTI_NUM1 ,@ARTI_NUM2 的方式存放
+            List<string> num = new List<string>();
+
+            //存放所有num參數的值
+            List<string> value = new List<string>();
+
+            //文章 ARTICLE
+            if (type == "01") {
+                for (var i = 0; i < model.ToArray().Length; i++)
+                {
+                    //取得泛型model 的屬性值
+                    string val = model.ToArray()[i].GetType().GetProperty("ARTI_NUM").GetValue(model.ToArray()[i], null).ToString();
+                    //以參數的形式存放
+                    num.Add("@ARTI_NUM" + i.ToString());
+
+                    //存放參數值
+                    value.Add(val);
+
+                }
+            }
+            //推薦  RECOMMEND
+            else if (type == "02")
+            {
+                //num.Add("@" + item.RECOM_NUM);
+            }
+
+            IList<T> list = GetTag<T>(num.ToArray(), type, value.ToArray());
+            return list;
+        }
+
         /// <summary>
         /// 取得tag標籤
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="num">
-        ///     任何編號 
+        ///     參數陣列 
         ///     ex: arti_num  or recom_num 
         /// </param>
         /// <param name="type"> 
@@ -111,10 +154,12 @@ namespace Literary_Arts.Dao
         ///     02: 推薦 recommend
         /// </param>
         /// <returns>回傳List型態的所有tag</returns>
-        public IList<T> GetTag<T>(string num, string type) {
+        public IList<T> GetTag<T>(string[] num, string type, string[] value) { 
             try
             {
-  
+                IDictionary objParam = new Dictionary<string, object>();
+                
+                //文章 ARTICLE
                 if (type == "01")
                 {
                     strSql = @"SELECT  V.ARTI_NUM                      --文章編號
@@ -125,9 +170,19 @@ namespace Literary_Arts.Dao
 		                               ON V.ARTI_NUM = TGL.ARTI_NUM		    
 	                               INNER JOIN TAG AS TG				
 		                               ON TGL.TAG_NUM = TG.TAG_NUM
-                               WHERE V.ARTI_NUM = @num  
-                               ORDER BY TGL.ARTI_NUM  ";
+                                WHERE 1=1 AND ( ";
+                    //將參數num 串接字串內
+                    for (var i = 0; i < value.Length; i++)
+                    {
+                        strSql += @" V.ARTI_NUM = " + num[i] + " OR ";
+                        objParam.Add(num[i], value[i]);
+                    }
+
+                    //將最後的 OR 刪掉
+                    strSql = strSql.Substring(0, strSql.Length - 4);
+                    strSql += @" ) ORDER BY TGL.ARTI_NUM  ";
                 }
+                //推薦 RECOMMEND
                 else if (type == "02")
                 {
                     strSql = @"SELECT  V.RECOM_NUM                     --推薦編號
@@ -142,12 +197,6 @@ namespace Literary_Arts.Dao
                                ORDER BY TGL.RECOM_NUM  ";
                 }
 
-
-                objParam = new
-                {
-                    num = num
-                };
-
                 return ExecuteQuery<T>(strSql, objParam);
 
             } catch (Exception ex)
@@ -155,6 +204,36 @@ namespace Literary_Arts.Dao
                 throw ex;
             }
         }
+
+        /// <summary>
+        /// 取得物件屬性名稱(Properties Name)
+        /// </summary>
+        /// <param name="pObject">任意物件</param>
+        /// <returns></returns>
+        public static List<string> GetPropertiesNameOfClass(object pObject)
+        {
+            List<string> propertyList = new List<string>();
+            if (pObject != null)
+            {
+                foreach (var prop in pObject.GetType().GetProperties())
+                {
+                    propertyList.Add(prop.Name);
+                }
+            }
+            return propertyList;
+        }
+
+        /// <summary>
+        /// 取得物件屬性值(Property Value)
+        /// </summary>
+        /// <param name="src">已宣告的物件</param>
+        /// <param name="propName">屬性名稱</param>
+        /// <returns></returns>
+        public static object GetPropValue(object src, string propName)
+        {
+            return src.GetType().GetProperty(propName).GetValue(src, null);
+        }
+
 
 
     }

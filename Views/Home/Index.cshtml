@@ -133,13 +133,14 @@
                             小美 於 @ViewBag.HotArtiData[0].CRT_DATE 發佈
                         </p>
 
+                        <!-- Tag 部分-->
                         <div class="tagDiv">
-                            <button type="button" class="btn  tag">黎明的承諾</button>
-                            <button type="button" class="btn  tag">壓抑沉鬱</button>
-                            <button type="button" class="btn  tag">法國</button>
-                            <button type="button" class="btn  tag">大時代</button>
-                            <button type="button" class="btn  tag">大時代</button>
-
+                            @foreach (var item in ViewBag.TagData)
+                            {
+                                if (item.ARTI_NUM == ViewBag.HotArtiData[0].ARTI_NUM) {
+                                    <button type="button" class="btn  tag">@item.TAG_NAME </button>
+                                }
+                            }
                         </div>
                     </div>
 
@@ -161,10 +162,16 @@
                         <p class="poster">
                             阿明 於 @ViewBag.HotArtiData[0].CRT_DATE 發佈
                         </p>
+
+                        <!-- Tag 部分-->
                         <div class="tagDiv">
-                            <button type="button" class="btn  tag">汪冠宇</button>
-                            <button type="button" class="btn  tag">海浪</button>
-                            <button type="button" class="btn  tag">溫暖歌聲</button>
+                            @foreach (var item in ViewBag.TagData)
+                            {
+                                if (item.ARTI_NUM == ViewBag.HotArtiData[1].ARTI_NUM)
+                                {
+                                    <button type="button" class="btn  tag">@item.TAG_NAME </button>
+                                }
+                            }
                         </div>
                     </div>
 
@@ -185,11 +192,16 @@
                         <p class="poster">
                             阿華 於 @ViewBag.HotArtiData[2].CRT_DATE 發佈
                         </p>
-                        <div class="tagDiv">
-                            <button type="button" class="btn  tag">華山</button>
-                            <button type="button" class="btn  tag">自然森活</button>
-                            <button type="button" class="btn  tag">再生資源</button>
 
+                        <!-- Tag 部分-->
+                        <div class="tagDiv">
+                            @foreach (var item in ViewBag.TagData)
+                            {
+                                if (item.ARTI_NUM == ViewBag.HotArtiData[2].ARTI_NUM)
+                                {
+                                    <button type="button" class="btn  tag">@item.TAG_NAME </button>
+                                }
+                            }
                         </div>
                     </div>
 

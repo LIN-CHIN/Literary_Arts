@@ -13,9 +13,10 @@ namespace Literary_Arts.Controllers
         public ActionResult Index()
         {
             using (IndexDao dao = new IndexDao()) {
+                IList<IndexModel> hotArticle = dao.GetHotArticle();
                 ViewBag.RecomData = dao.GetRecomData();
-                ViewBag.HotArtiData = dao.GetHotArticle();
-                ViewBag.test = dao.GetTag<IndexModel>("41","01");
+                ViewBag.HotArtiData = hotArticle;
+                ViewBag.TagData = dao.TagRouter(hotArticle, "01");
                 return View();
             }
             

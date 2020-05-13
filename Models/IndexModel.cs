@@ -30,6 +30,7 @@ namespace Literary_Arts.Models
         public string NEGATIVE_WORDS { get; set; }
         public string ANALYZE_SCORE { get; set; }
         public string SCORE2 { get; set; }
+        public string TAG_NAME { get;}
 
         public DateTime? CRT_DATE { get; set; }
         #endregion

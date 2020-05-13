@@ -54,10 +54,7 @@ namespace Literary_Arts.Dao
             return ExecuteQuery<IndexModel>(strSql);
         }
 
-        //public void GetTagName(string num , string type) {
-        //    IList<IndexModel> list = GetTag<IndexModel>("41", "01");
-            
-        //}
+        
 
     }
 }
