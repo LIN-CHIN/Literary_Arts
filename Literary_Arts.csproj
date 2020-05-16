@@ -145,8 +145,11 @@
     <Compile Include="Controllers\MemberController.cs" />
     <Compile Include="Controllers\RecommendController.cs" />
     <Compile Include="Controllers\SpecialColumnController.cs" />
+    <Compile Include="Controllers\Sysop\SetFunctionController.cs" />
     <Compile Include="Dao\ArticleDao.cs" />
     <Compile Include="Dao\IndexDao.cs" />
+    <Compile Include="Dao\Sysop\SetFunctionDao.cs" />
+    <Compile Include="Dao\Sysop\SetParamDao.cs" />
     <Compile Include="Dao\_Dao.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -168,6 +171,7 @@
     <Compile Include="Models\RecommendReplyModel.cs" />
     <Compile Include="Models\ReportModel.cs" />
     <Compile Include="Models\SetFunctionModel.cs" />
+    <Compile Include="Models\Sysop\SetParamModel.cs" />
     <Compile Include="Models\TagLinkModel.cs" />
     <Compile Include="Models\TagModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
