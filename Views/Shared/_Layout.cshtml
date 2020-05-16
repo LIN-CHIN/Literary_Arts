@@ -51,13 +51,18 @@
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
+
+            <!-- 選單 -->
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ml-auto" id="art_nav">
+                    <!-- 搜尋區塊 -->
                     <div class="searchSection">
                         <input type="text" class="navSearch" id="input_search" placeholder="搜尋" />
                         <button class="btn navSearch" onclick="byParamSearch()"><i class="fas fa-search"></i></button>
                     </div>
-                   
+
+                    <!-- 動態 append -->
+                    
                 </ul>
             </div>
         </nav>
@@ -175,8 +180,15 @@
                 //[會員通知]
                 if (data[i].FUNCTION_ID == 'Notify') {
                     $("#parent_" + data[i].PARENT_ID).append(`<a class="dropdown-item" id="fn_item_` + data[i].FUNCTION_ID + `"href="` + data[i].FUNCTION_URL +
-                                                                `"> <i class= "fas fa-bell" style = "color:white;" ></i ></a >`);   
+                        `"> <i class= "fas fa-bell" style = "color:white;" ></i ></a >`);
                 }
+                //[申報]
+                else if (data[i].FUNCTION_ID == 'Report') {
+                    $("#parent_" + data[i].PARENT_ID).append(`<a class="dropdown-item" id="navReport" style="cursor:pointer;" data-toggle="modal" data-target="#report">`
+                                                                     + data[i].FUNCTION_NAME + `</a >`);
+
+                }
+                
             } else
             {
                 //有 click() function  的連結
