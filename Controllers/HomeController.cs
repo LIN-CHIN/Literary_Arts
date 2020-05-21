@@ -8,7 +8,7 @@ using System.Web.Mvc;
 
 namespace Literary_Arts.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : _Controller
     {
         public ActionResult Index()
         {

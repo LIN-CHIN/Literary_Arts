@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace Literary_Arts.Controllers
 {
-    public class MemberController : Controller
+    public class MemberController : _Controller
     {
         /// <summary>
         /// 登入頁面

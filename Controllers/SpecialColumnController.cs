@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace Literary_Arts.Controllers
 {
-    public class SpecialColumnController : Controller
+    public class SpecialColumnController : _Controller
     {
         /// <summary>
         /// 專欄列表 頁面

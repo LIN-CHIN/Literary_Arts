@@ -102,6 +102,7 @@ namespace Literary_Arts.Dao
 
 
         /// <summary>
+        /// 主要使用時機 : 取得List的文章、推薦或其他type的tag
         /// 在取得所有類別文章的Tag之前 必須經過此Router
         /// 來整理取得tag 所需要的 ARTI_NUM or  RECOM_NUM ... 等資訊後
         /// 再傳送到 GetTag<T> 方法中
@@ -142,7 +143,7 @@ namespace Literary_Arts.Dao
         }
 
         /// <summary>
-        /// 取得tag標籤
+        /// 取得tag標籤 (List型態)
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="num">
@@ -203,6 +204,45 @@ namespace Literary_Arts.Dao
             {
                 throw ex;
             }
+        }
+
+        /// <summary>
+        /// 根據編號 取得tag 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="type"> 01 = 文章 , 02 = 推薦 </param>
+        /// <param name="num"> 根據不同type傳來的編號</param>
+        /// <returns></returns>
+        public IList<T> ByNumGetTag<T>(string type, string num) where T :new() {
+            try
+            {
+                strSql = @"SELECT TAG_NAME
+                           FROM TAG_LINK AS tl
+	                           INNER JOIN TAG AS t
+		                           ON tl.TAG_NUM = t.TAG_NUM
+                            WHERE 1=1 ";
+                //根據文章編號取得tag
+                if (type == "01")
+                {
+                    strSql += @" AND tl.ARTI_NUM = @num ";
+                }
+                //根據推薦編號取得tag
+                else if (type == "02")
+                {
+                    strSql += @" AND t1.RECOM_NUM = @num ";
+                }
+
+                objParam = new
+                {
+                    num = num
+                };
+
+                return ExecuteQuery<T>(strSql, objParam);
+            }
+            catch (Exception ex) {
+                throw ex;
+            }
+            
         }
 
         /// <summary>

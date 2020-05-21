@@ -3,6 +3,8 @@
     ViewBag.Title = "首頁";
 }
 
+<link href="../../Content/css/headerIndex.css" rel="stylesheet" type="text/css" />
+
 <!-- 封面區塊 -->
 <div class="banner">
     <a id="goDown">
@@ -137,7 +139,8 @@
                         <div class="tagDiv">
                             @foreach (var item in ViewBag.TagData)
                             {
-                                if (item.ARTI_NUM == ViewBag.HotArtiData[0].ARTI_NUM) {
+                                if (item.ARTI_NUM == ViewBag.HotArtiData[0].ARTI_NUM)
+                                {
                                     <button type="button" class="btn  tag">@item.TAG_NAME </button>
                                 }
                             }
@@ -216,7 +219,7 @@
         </div>
 
         <div class="col-12 goArticleList">
-            <button type="button" class="btn goArticle" onclick="location.href='articleList.html'">
+            <button type="button" class="btn goArticle" onclick="location.href='/Article/Index'">
                 <h5>前往文章列表 <i class="fas fa-arrow-alt-circle-right"></i></h5>
             </button>
 

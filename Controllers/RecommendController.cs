@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace Literary_Arts.Controllers
 {
-    public class RecommendController : Controller
+    public class RecommendController : _Controller
     {
         /// <summary>
         /// 推薦列表頁面

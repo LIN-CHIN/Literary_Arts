@@ -39,9 +39,3 @@ $(document).ready(function () {
     });
 });
 
-
-
-// AOS animate
-AOS.init({
-    duration: 2500
-});

@@ -1,10 +1,11 @@
-﻿
+﻿@model Literary_Arts.Models.ArticleModel
+
 @{
     ViewBag.Title = "討論區";
 }
 
 <link href="../../Content/css/articleList.css" rel="stylesheet" type="text/css" />
-
+@Html.AntiForgeryToken()
 <!-- 文章列表區塊 -->
 <section id="articleList">
     <div class="container-fluid article">
@@ -15,23 +16,23 @@
 
         <div class="d-flex justify-content-center" style="margin-bottom: 1.5em">
             <button type="button" class="btn btn-secondary footer"
-                    onclick="location.href='/articleList/articleMovie/1'">
+                    onclick="location.href='@Url.Action("ContentClass", "Article")?arti_class=電影' ">
                 電影類
             </button>
             <button type="button" class="btn btn-secondary footer"
-                    onclick="location.href='/articleList/articleMusic/1'">
+                    onclick="location.href='@Url.Action("ContentClass", "Article")?arti_class=音樂' ">
                 音樂類
             </button>
             <button type="button" class="btn btn-secondary footer"
-                    onclick="location.href='/articleList/articleBook/1'">
+                    onclick="location.href='@Url.Action("ContentClass" ,"Article")?arti_class=書籍' ">
                 書籍類
             </button>
             <button type="button" class="btn btn-secondary footer"
-                    onclick="location.href='/articleList/articleExhibition/1'">
+                    onclick="location.href='@Url.Action("ContentClass" ,"Article")?arti_class=展覽' ">
                 展覽類
             </button>
             <button type="button" class="btn btn-secondary footer"
-                    onclick="location.href='/articleList/1'">
+                    onclick="location.href='@Url.Action("Index", "Article")' ">
                 全部
             </button>
         </div>
@@ -40,79 +41,88 @@
         <div class="row d-flex justify-content-center no-gutters">
             <div class="col-12 mb-3 col-lg-8 ">
                 <!-- list -->
-                <div class="card shadow list " style="cursor:pointer; ">
-                    <div class="card-body " onclick=" location.href='/Article/Content'">
-                        <div class="poster d-flex justify-content-between">
-                            <div class="name">
-                                <div style="white-space:nowrap !important">
-                                    <a class="floorTag">發表會員帳號</a>
-                                    <a class="next"></a>
-                                    <a class="dateTime">於 發表日期 發佈</a>
+                @foreach (var item in ViewBag.ArticleList)
+                {
+                    <div class="card shadow list " style="cursor:pointer; ">
+                        <div class="card-body" onclick="location.href='@Url.Action("Content", "Article")?arti_num=' + @item.ARTI_NUM" >
+                            <div class="poster d-flex justify-content-between">
+                                <div class="name">
+                                    <div style="white-space:nowrap !important">
+                                        <a class="floorTag"> @item.MEM_DISPLAY</a>
+                                        <a class="next"></a>
+                                        <a class="dateTime">於 @item.CRT_DATE 發佈</a>
+                                    </div>
+                                </div>
+                                <div class="ml-auto">
+                                    <a class="itemClass"> @item.ARTI_CLASS </a>
                                 </div>
                             </div>
-                            <div class="ml-auto">
-                                <a class="itemClass"> 文章類別 </a>
-                            </div>
-                        </div>
-                        <hr style="margin-top: 0.5em">
-                        <div class="row seperate">
-                            <div class="col-sm-9 articleContent">
-                                <h3 class="card-title ">
-                                    文章標題
-                                </h3>
-                                <p class="card-text limitLine">
-                                    文章內容
-                                </p>
+                            <hr style="margin-top: 0.5em">
+                            <div class="row seperate">
+                                <div class="col-sm-9 articleContent">
+                                    <h3 class="card-title ">
+                                        @item.ARTI_HEAD
+                                    </h3>
+                                    <p class="card-text limitLine">
+                                        @item.ARTI_CONT
+                                    </p>
 
-                                <!-- tag -->
-                                <div class=" tagDiv col-lg-12 ">
-                                    <button type="button" class="btn  tag"> TAG 名稱 </button>
+                                    <!-- tag -->
+                                    <div class=" tagDiv col-lg-12 ">
+                                        @foreach (var tag in ViewBag.TagData)
+                                        {
+                                            if (tag.ARTI_NUM == item.ARTI_NUM)
+                                            {
+                                                <button type="button" class="btn  tag"> @tag.TAG_NAME </button>
+                                            }
+                                        }
+                                    </div>
+                                </div>
+
+                                <!-- imgs  -->
+                                <div class="wrapperCard card-img-top col-lg-3"
+                                        style="background-image: url( '../../Content/images/17.jpg'); ">
                                 </div>
                             </div>
-
-                            <!-- imgs  -->
-                            <div class="wrapperCard card-img-top col-lg-3"
-                                 style="background-image: url( '../../Content/images/17.jpg'); ">
-                            </div>
                         </div>
-                    </div>
-                    <!-- info -->
-                    <div class="info">
-                        <!-- 愛心按鈕 -->
-                        <button type="button" id="LikeUnLogIn" class="btn postInfo style="display:none" onclick="location.href='/login'">
-                            <i class="fab fa-gratipay"></i>
-                            <a> 3 </a>
-                        </button>
-                        @*<button type="button" id="addLike" + items[0][i].artiNum %> class="btn postInfo"
-                                style="display:none" onclick=<%= "addLike(" + items[0][i].artiNum + ")" %>>
-                                <i class="fab fa-gratipay"></i><a id=<%= "addLikeCount" + items[0][i].artiNum %>>
-                                    <%= items[0][i].likeCount %> </a> </button>
-                            <button type="button" id=<%= "delLike" + items[0][i].artiNum %> class="btn postInfo"
-                                style="display:none" onclick=<%= "delLike(" + items[0][i].artiNum + ")" %>>
-                                <i class="fab fa-gratipay" style="color:#c93737;"></i><a id=<%= "delLikeCount" + items[0][i].artiNum %>>
-                                    <%= items[0][i].likeCount %></a></button>*@
+                        <!-- info -->
+                        <div class="info">
+                            <!-- 愛心按鈕 -->
+                            <button type="button" id="LikeUnLogIn" class="btn postInfo style="display:none" onclick="location.href='/login'">
+                                <i class="fab fa-gratipay"></i>
+                                <a> @item.LIKE_COUNT </a>
+                            </button>
+                            @*<button type="button" id="addLike" + items[0][i].artiNum %> class="btn postInfo"
+                                    style="display:none" onclick=<%= "addLike(" + items[0][i].artiNum + ")" %>>
+                                    <i class="fab fa-gratipay"></i><a id=<%= "addLikeCount" + items[0][i].artiNum %>>
+                                        <%= items[0][i].likeCount %> </a> </button>
+                                <button type="button" id=<%= "delLike" + items[0][i].artiNum %> class="btn postInfo"
+                                    style="display:none" onclick=<%= "delLike(" + items[0][i].artiNum + ")" %>>
+                                    <i class="fab fa-gratipay" style="color:#c93737;"></i><a id=<%= "delLikeCount" + items[0][i].artiNum %>>
+                                        <%= items[0][i].likeCount %></a></button>*@
 
-                        <!-- 留言數量按鈕 -->
-                        <button type="button" class="btn postInfo" onclick="location.href='#'">
-                            <i class="fas fa-comment-dots"></i>
-                            <a>3</a>
-                        </button>
+                            <!-- 留言數量按鈕 -->
+                            <button type="button" class="btn postInfo" onclick="location.href='#'">
+                                <i class="fas fa-comment-dots"></i>
+                                <a> @item.REPLY_COUNT </a>
+                            </button>
 
-                        <!-- 收藏按鈕 -->
-                        <button type="button" id="unLogIn" class="btn postInfo" onclick="location.href='#'">
-                            <i class="far fa-bookmark"></i>
-                        </button>
-                        @*<button type="button" id=<%=  "addColle" + items[0][i].artiNum %> class="btn postInfo"
-                                display: inline" onclick=<%= "addColle(" + items[0][i].artiNum + ")" %>>
-                                <i class="far fa-bookmark"></i></button>
-                            <button type="button" id=<%= "delColle" + items[0][i].artiNum %> class="btn postInfo"
-                                style="display: inline" onclick=<%= "delColle(" + items[0][i].artiNum + ")" %>>
-                                <i class="fas fa-bookmark"></i></button>*@
-                        <!--  收藏按鈕控制 -->
+                            <!-- 收藏按鈕 -->
+                            <button type="button" id="unLogIn" class="btn postInfo" onclick="location.href='#'">
+                                <i class="far fa-bookmark"></i>
+                            </button>
+                            @*<button type="button" id=<%=  "addColle" + items[0][i].artiNum %> class="btn postInfo"
+                                    display: inline" onclick=<%= "addColle(" + items[0][i].artiNum + ")" %>>
+                                    <i class="far fa-bookmark"></i></button>
+                                <button type="button" id=<%= "delColle" + items[0][i].artiNum %> class="btn postInfo"
+                                    style="display: inline" onclick=<%= "delColle(" + items[0][i].artiNum + ")" %>>
+                                    <i class="fas fa-bookmark"></i></button>*@
+                            <!--  收藏按鈕控制 -->
+                        </div>
+                        <!-- info結束 -->
                     </div>
-                    <!-- info結束 -->
-                </div>
-                <div class="w-100"></div>
+                    <div class="w-100"></div>
+                }
                 <!-- listEnd -->
             </div>
         </div>

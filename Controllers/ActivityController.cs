@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace Literary_Arts.Controllers
 {
-    public class ActivityController : Controller
+    public class ActivityController : _Controller
     {
         /// <summary>
         /// 限時活動頁面

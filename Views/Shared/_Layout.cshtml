@@ -112,6 +112,12 @@
 
     @RenderSection("scripts", required: false)
 <script>
+    
+    // AOS animate
+    AOS.init({
+        duration: 2500
+    });
+
     $(function () {
         $.ajax({
             url: '@Url.Action("GetFunctionDate", "SetFunction")',
@@ -206,6 +212,8 @@
         }
     }
 </script>
+
+
 </body>
 
 </html>

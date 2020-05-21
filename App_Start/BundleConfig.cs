@@ -23,19 +23,18 @@ namespace Literary_Arts
                       "~/Scripts/bootstrap.js"));
 
             //樣式表
-            bundles.Add(new StyleBundle("~/Content/css").Include(       
-                      "~/Content/css/headerIndex.css",
-                      "~/Content/css/index.css"
-
-                       //"~/Content/css/aos.css"
-                       ));
+            bundles.Add(new StyleBundle("~/Content/css").Include(
+                "~/Content/css/aos.css",
+                "~/Content/css/header.css",
+                  "~/Content/css/index.css"));
 
             //js
             bundles.Add(new ScriptBundle("~/Content/js").Include(
-                     "~/Scripts/bootstrap.js",
-                     //"~/Content/js/aos.js",
-                     "~/Content/js/active.js",
-                       "~/Content/js/index.js"));
+                    "~/Content/js/aos.js",
+                     "~/Content/js/index.js",
+                    "~/Scripts/bootstrap.js",
+                     "~/Content/js/active.js"
+                      ));
 
             
 

@@ -1,4 +1,5 @@
-﻿
+﻿@model Literary_Arts.Models.ArticleModel
+
 @{
     ViewBag.Title = "文章內容";
 }
@@ -12,9 +13,9 @@
             <div class="info d-flex">
                 <div><a class="floorTag">樓主</a></div>
                 <div style="white-space:nowrap !important">
-                    <a> 樓主帳號 </a>
+                    <a> @Model.MEM_DISPLAY </a>
                     <a class="next"></a>
-                    <a class="dateTime">於 發布日期 發佈</a>
+                    <a class="dateTime">於 @Model.CRT_DATE 發佈</a>
                 </div>
                 <div class="dropdown ml-auto" style="margin-bottom: -0.5em">
                     <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -27,16 +28,18 @@
                 </div>
             </div>
             <hr style="margin-top: 0.5em" />
-            <h5> 文章標題 </h5>
+            <h5> @Model.ARTI_HEAD </h5>
             <hr />
 
             <p class="content">
-                文章內容
+                @Model.ARTI_CONT
             </p>
 
             <!-- Tag -->
             <div class="tagDiv col-lg-12 ">
-                <button type="button" class="btn tag"> TAG內容 </button>
+                @foreach (var item in ViewBag.TagData) {
+                    <button type="button" class="btn tag"> @item.TAG_NAME</button>
+                }
             </div>
 
             <hr class="info">
@@ -46,7 +49,7 @@
                 <!-- 愛心按鈕 -->
                 <button type="button" id="LikeUnLogIn" class="btn postInfo" onclick="location.href='/login'">
                     <i class="fab fa-gratipay"></i>
-                    <a> 3 </a>
+                    <a> @Model.LIKE_COUNT </a>
                 </button>
                 @*<button type="button" id="addLike" class="btn postInfo"
                             onclick=<%= "addLike(" + items[0][0].artiNum + ")" %>> <i class="fab fa-gratipay"></i><a
@@ -58,7 +61,7 @@
                 <!-- 留言數量按鈕 -->
                 <button type="button" class="btn postInfo" id="goBottom">
                     <i class="fas fa-comment-dots"></i>
-                    <a> 3 </a>
+                    <a> @Model.REPLY_COUNT </a>
                 </button>
 
                 <!-- 收藏按鈕 -->

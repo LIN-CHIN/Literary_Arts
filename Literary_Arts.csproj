@@ -146,6 +146,7 @@
     <Compile Include="Controllers\RecommendController.cs" />
     <Compile Include="Controllers\SpecialColumnController.cs" />
     <Compile Include="Controllers\Sysop\SetFunctionController.cs" />
+    <Compile Include="Controllers\_Controller.cs" />
     <Compile Include="Dao\ArticleDao.cs" />
     <Compile Include="Dao\IndexDao.cs" />
     <Compile Include="Dao\Sysop\SetFunctionDao.cs" />
@@ -158,7 +159,7 @@
     <Compile Include="Models\ArticleModel.cs" />
     <Compile Include="Models\ArticleReplyLikeModel.cs" />
     <Compile Include="Models\ArticleReplyModel.cs" />
-    <Compile Include="Models\ArtMemberModel.cs" />
+    <Compile Include="Models\System\ArtMemberModel.cs" />
     <Compile Include="Models\ArtRightModel.cs" />
     <Compile Include="Models\ArtRoleModel.cs" />
     <Compile Include="Models\ImageModel.cs" />
@@ -170,7 +171,7 @@
     <Compile Include="Models\RecommendReplyLikeModel.cs" />
     <Compile Include="Models\RecommendReplyModel.cs" />
     <Compile Include="Models\ReportModel.cs" />
-    <Compile Include="Models\SetFunctionModel.cs" />
+    <Compile Include="Models\Sysop\SetFunctionModel.cs" />
     <Compile Include="Models\Sysop\SetParamModel.cs" />
     <Compile Include="Models\TagLinkModel.cs" />
     <Compile Include="Models\TagModel.cs" />
@@ -505,6 +506,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Interface\" />
+    <Folder Include="Views\_\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
