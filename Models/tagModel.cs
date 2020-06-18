@@ -8,6 +8,5 @@ namespace Literary_Arts.Models
     public class TagModel : _Model
     {
         public string TAG_NUM { get; set; }
-        public string TAG_NAME { get; set; }
     }
 }

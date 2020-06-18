@@ -52,7 +52,23 @@ namespace Literary_Arts.Models
         /// </summary>
         public int? REPLY_COUNT { get; set; }
 
-        
+        /// <summary>
+        /// 留言內容
+        /// </summary>
+        public string ARTI_REPLY_CONT { get; set; }
+
+        /// <summary>
+        /// 留言編號
+        /// </summary>
+        public string ARTI_REPLY_NUM { get; set; }
+
+        /// <summary>
+        /// 留言愛心數量
+        /// </summary>
+        public int? REPLY_LIKE_COUNT { get; set; }
+
+
+
         public string POSITIVE_WORDS { get; set; }
         public string NEGATIVE_WORDS { get; set; }
         public string SWEAR_WORDS { get; set; }

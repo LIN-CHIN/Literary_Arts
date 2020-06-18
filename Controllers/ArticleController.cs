@@ -37,6 +37,7 @@ namespace Literary_Arts.Controllers
             {
                 ArticleModel model = dao.ByArtiNumGetArticle(HttpUtility.HtmlEncode(arti_num));
                 ViewBag.TagData = dao.ByNumGetTag<ArticleModel>("01", HttpUtility.HtmlEncode(arti_num));
+                ViewBag.ReplyData = dao.GetReplyData(HttpUtility.HtmlEncode(arti_num));
                 return View("Content", model);
             }
         }
@@ -73,9 +74,14 @@ namespace Literary_Arts.Controllers
         /// 編輯文章 頁面
         /// </summary>
         /// <returns></returns>
-        public ActionResult Update()
+        public ActionResult Update(string arti_num)
         {
-            return View();
+            using (ArticleDao dao = new ArticleDao())
+            {
+                ArticleModel model = dao.ByArtiNumGetArticle(HttpUtility.HtmlEncode(arti_num));
+                ViewBag.TagData = dao.ByNumGetTag<ArticleModel>("01", HttpUtility.HtmlEncode(arti_num));
+                return View(model);
+            }
         }
 
         /// <summary>

@@ -1,9 +1,10 @@
-﻿
+﻿@model Literary_Arts.Models.ArticleModel
 @{
     ViewBag.Title = "編輯貼文";
 }
 
 <link href="../../Content/css/post.css" rel="stylesheet" type="text/css" />
+
 
 <center>
     <h3>編輯貼文</h3>
@@ -20,17 +21,17 @@
         </select>
 
         <input type="text" class="titleInput input-with-icon title" name="artiHead" id="artiHead"
-               placeholder="請輸入您的標題" value="文章標題">
+               placeholder="請輸入您的標題" value="@Model.ARTI_HEAD">
 
         <div id="postInput" class="postInput" contenteditable="true" role="textbox" data-text="請輸入您的發文內容">
-            文章內容
+            @Model.ARTI_CONT
         </div>
 
         <div class="tag content col-lg-12">
-            <span id="tag" class="tag label label-info">
-                tag名稱<span class="deleteTag"
-                           data-role="remove"></span>
-            </span>
+            @foreach (var i in ViewBag.TagData)
+            {
+                <span id="tag" class="tag label label-info">@i.TAG_NAME<span class="deleteTag" data-role="remove"></span></span>
+            }
             <input type="text" data-role="tagsinput" id="tagInput" class="form-control" placeholder=" + tag" />
         </div>
 
@@ -69,3 +70,23 @@
     </div>
 </div>
 
+
+<script src="~/Content/js/post.js"></script>
+<script src="~/Content/js/tag.js"></script>
+<script src="~/Content/js/active.js"></script>
+<script src="~/Content/js/imageCompression.js"></script>
+
+<script>
+
+    //將中文class 轉為代號 在將代號 找對應的英文class
+    @{ string origin_class = SysSet.GetParamItemType("LITERARY_CLASS_CHI", Model.ARTI_CLASS);
+        origin_class = SysSet.GetParamItemValue("LITERARY_CLASS_ENG", origin_class);
+    }
+
+    $("#inputState").val("@origin_class");
+
+    $('.deleteTag').click(function () {
+        $(this).parent('#tag').remove();
+    })
+
+</script>

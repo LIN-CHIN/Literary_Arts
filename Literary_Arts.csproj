@@ -137,6 +137,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Dao\RecommendDao.cs" />
+    <Compile Include="Models\_Model.cs" />
     <Compile Include="Web_Common\SysSet.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
