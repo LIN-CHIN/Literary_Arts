@@ -5,7 +5,7 @@ using System.Web;
 
 namespace Literary_Arts.Models
 {
-    public class TagLinkModel
+    public class TagLinkModel : _Model
     {
         public string TAG_LINK_NUM { get; set; }
         public string ARTI_NUM { get; set; }

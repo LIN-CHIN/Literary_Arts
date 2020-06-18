@@ -36,24 +36,33 @@
 <section id="portfolio">
 
     <div class="row d-flex no-gutters container-fluid justify-content-center align-items-center recommend">
-        <!-- 推薦開始 -->
-        <div class="wrapper col-12  col-lg-2" style="background-image: url('../../Content/images/recommend/1571237146182--cTZDVm5aMllsS09lcUtV.jpg');">
-            <a class="portfolio-box" href="/Recommend/Content">
-                <div class="portfolio-box-caption">
-                    <div class="project-category text-white-50">
-                        <p> 推薦類別(電影) </p>
-                    </div>
-                    <div class="project-name">
-                        <p class="title">推薦標題 </p>
-                        <p class="content wrapText">
-                            推薦內容
-                        </p>
-                    </div>
+        <!-- 推薦內容 -->
+        @{
+            int temp = 0;
+            foreach (var item in ViewBag.RecommendList)
+            {
+                temp += 1;
+                <div class="wrapper col-12  col-lg-2" style="background-image: url('../../Content/images/recommend/1571237146182--cTZDVm5aMllsS09lcUtV.jpg');">
+                    <a class="portfolio-box" href='@Url.Action("Content", "Recommend")?recom_num=@item.RECOM_NUM'>
+                        <div class="portfolio-box-caption">
+                            <div class="project-category text-white-50">
+                                <p> @item.RECOM_CLASS </p>
+                            </div>
+                            <div class="project-name">
+                                <p class="title">@item.RECOM_HEAD </p>
+                                <p class="content wrapText">
+                                    @item.RECOM_CONT
+                                </p>
+                            </div>
+                        </div>
+                    </a>
                 </div>
-            </a>
-        </div>
 
-        <div class="w-100"></div>
+                if (temp % 4 == 0) {
+                    <div class="w-100"></div>
+                }
+            }
+        }   
         <!-- 推薦結束 -->
     </div>
 

@@ -5,11 +5,10 @@ using System.Web;
 
 namespace Literary_Arts.Models
 {
-    public class ArticleLikeModel
+    public class ArticleLikeModel : _Model
     {
         public string ARTI_LIKE_NUM { get; set; }
         public string MEM_ID { get; set; }
         public string ARTI_NUM { get; set; }
-        public DateTime? ARTI_LIKE_DATETIME { get; set; }
     }
 }

@@ -5,20 +5,46 @@ using System.Web;
 
 namespace Literary_Arts.Models.Sysop
 {
-    public class SetParamModel
+    /// <summary>
+    /// 參數檔(細項)
+    /// </summary>
+    public class SetParamItemModel
     {
-        public string FUNCTION_ID { get; set; }
-        public string FUNCTION_NAME { get; set; }
-        public string FUNCTION_URL { get; set; }
-        public string PARENT_ID { get; set; }
-        public string SORT_ID { get; set; }
-        public string CLICK_FN { get; set; }
-        public string IS_STOP { get; set; }
-        public DateTime? CRT_DATE { get; set; }
-        public string CRT_MEMID { get; set; }
-        public string CRT_MEMNAME { get; set; }
-        public DateTime? MDF_DATE { get; set; }
-        public string MDF_MEMID { get; set; }
-        public string MDF_MEMNAME { get; set; }
+        /// <summary>
+        /// SET_PARAM(大項) 的代號
+        /// </summary>
+        public string SET_ITEM { get; set; }
+
+        /// <summary>
+        /// 項目種類、編號
+        /// </summary>
+        public string SET_TYPE { get; }
+
+        /// <summary>
+        /// 項目的值
+        /// </summary>
+        public string SET_VALUE { get; }
+
+        /// <summary>
+        /// 說明註解
+        /// </summary>
+        public string MEMO { get; }
+
+        /// <summary>
+        /// 排序
+        /// </summary>
+        public string SORT { get; }
+
+        /// <summary>
+        /// 是否停用 0 = 不停用 
+        ///          1 = 停用
+        /// </summary>
+        public string IS_STOP { get; }
+        public string CRT_DATE { get; }
+        public string CRT_MEMID { get; }
+        public string CRT_MEMNAME { get; }
+        public string MDF_DATE { get; }
+        public string MDF_MEMID { get; }
+        public string MDF_MEMNAME { get; }
     }
 }

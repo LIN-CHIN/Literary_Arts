@@ -5,7 +5,7 @@ using System.Web;
 
 namespace Literary_Arts.Models
 {
-    public class ReportModel
+    public class ReportModel : _Model
     {
         public string REPORT_NUM { get; set; }
         public string MEM_ID { get; set; }
@@ -13,7 +13,6 @@ namespace Literary_Arts.Models
         public string ARTI_MESS_NUM { get; set; }
         public string RECOM_MESS_NUM { get; set; }
         public string REPORT_REAS { get; set; }
-        public DateTime? REPORT_DATETIME { get; set; }
 
     }
 }

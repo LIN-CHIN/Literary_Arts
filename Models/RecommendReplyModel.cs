@@ -5,12 +5,11 @@ using System.Web;
 
 namespace Literary_Arts.Models
 {
-    public class RecommendReplyModel
+    public class RecommendReplyModel : _Model
     {
         public string RECOM_REPLY_NUM { get; set; }
         public string RECOM_NUM { get; set; }
         public string MEM_ID { get; set; }
-        public DateTime? RECOM_REPLY_DATETIME { get; set; }
         public string RECOM_REPLY_CONT { get; set; }
         public string POSITIVE_WORDS { get; set; }
         public string NEGATIVE_WORDS { get; set; }

@@ -5,7 +5,7 @@
 }
 
 <link href="../../Content/css/articleList.css" rel="stylesheet" type="text/css" />
-@Html.AntiForgeryToken()
+
 <!-- 文章列表區塊 -->
 <section id="articleList">
     <div class="container-fluid article">
@@ -13,22 +13,21 @@
             <h3>文章列表</h3>
             <hr class="highlight">
         </center>
-
         <div class="d-flex justify-content-center" style="margin-bottom: 1.5em">
             <button type="button" class="btn btn-secondary footer"
-                    onclick="location.href='@Url.Action("ContentClass", "Article")?arti_class=電影' ">
+                    onclick="location.href='@Url.Action("ContentClass", "Article")?arti_class=' + '@SysSet.GetParamItemValue("LITERARY_CLASS_ENG", "01")' ">
                 電影類
             </button>
             <button type="button" class="btn btn-secondary footer"
-                    onclick="location.href='@Url.Action("ContentClass", "Article")?arti_class=音樂' ">
+                    onclick="location.href='@Url.Action("ContentClass", "Article")?arti_class=' + '@SysSet.GetParamItemValue("LITERARY_CLASS_ENG", "02")' ">
                 音樂類
             </button>
-            <button type="button" class="btn btn-secondary footer"
-                    onclick="location.href='@Url.Action("ContentClass" ,"Article")?arti_class=書籍' ">
+            <button type="button" class="btn btn-secondary footer"                                
+                    onclick="location.href='@Url.Action("ContentClass" ,"Article")?arti_class=' + '@SysSet.GetParamItemValue("LITERARY_CLASS_ENG", "03")' ">
                 書籍類
             </button>
             <button type="button" class="btn btn-secondary footer"
-                    onclick="location.href='@Url.Action("ContentClass" ,"Article")?arti_class=展覽' ">
+                    onclick="location.href='@Url.Action("ContentClass" ,"Article")?arti_class=' + '@SysSet.GetParamItemValue("LITERARY_CLASS_ENG", "04")' ">
                 展覽類
             </button>
             <button type="button" class="btn btn-secondary footer"

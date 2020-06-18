@@ -46,8 +46,9 @@ namespace Literary_Arts.Dao
 
         protected virtual void Dispose(bool disposing)
         {
-            if (disposed)
+            if (disposed) {
                 return;
+            }
 
             if (disposing)
             {
@@ -76,9 +77,6 @@ namespace Literary_Arts.Dao
         /// <returns></returns>
         protected IList<T> ExecuteQuery<T>(string sql, object param = null)
         {
-            //using (SqlConnection conn = new SqlConnection(strConnMain)) {
-            //    return conn.Query<T>(sql).ToList();
-            //}
             using (var conn = DbConnectionFactoryHelper.New(new SqlServerDbConnectionFactory(strConnMain), CustomDbProfiler.Current))
             {
                 return conn.Query<T>(sql, param).ToList();
@@ -229,7 +227,7 @@ namespace Literary_Arts.Dao
                 //根據推薦編號取得tag
                 else if (type == "02")
                 {
-                    strSql += @" AND t1.RECOM_NUM = @num ";
+                    strSql += @" AND tl.RECOM_NUM = @num ";
                 }
 
                 objParam = new

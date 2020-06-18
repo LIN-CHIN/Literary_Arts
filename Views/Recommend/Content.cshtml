@@ -1,4 +1,5 @@
-﻿
+﻿@model Literary_Arts.Models.RecommendModel
+
 @{
     ViewBag.Title = "Content";
 }
@@ -14,7 +15,7 @@
                 <div style="white-space:nowrap !important">
                     <a>文藝青年</a>
                     <a class="next"></a>
-                    <a class="dateTime">於 推薦時間 發佈</a>
+                    <a class="dateTime">於 @Model.CRT_DATE 發佈</a>
                 </div>
                 <div class="dropdown ml-auto" style="margin-bottom: -0.5em">
                     <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton"
@@ -29,16 +30,19 @@
                 </div>
             </div>
             <hr style="margin-top: 0.5em" />
-            <h5>官方推薦標題</h5>
+            <h5>@Model.RECOM_HEAD</h5>
             <hr />
 
             <p class="content">
-                官方推薦內容
+               @Model.RECOM_CONT
             </p>
 
             <!-- tag -->
             <div class="tagDiv col-lg-12 ">
-                <button type="button" class="btn  tag">TAG名稱</button>
+                @foreach (var item in ViewBag.TagData)
+                {
+                    <button type="button" class="btn tag"> @item.TAG_NAME</button>
+                }
             </div>
 
             <hr class="info">
@@ -47,7 +51,7 @@
                 <!-- 愛心按鈕 -->
                 <button type="button" id="LikeUnLogIn" class="btn postInfo" onclick="">
                     <i class="fab fa-gratipay"></i>
-                    <a> 3</a>
+                    <a> @Model.LIKE_COUNT </a>
                 </button>
                 @*<button type="button" id="addLike" class="btn postInfo" style="display:none"
                             onclick=<%= "addLike(" + items[0][0].recomNum + ")" %>> <i class="fab fa-gratipay"></i><a
@@ -59,7 +63,7 @@
                 <!-- 留言數量按鈕 -->
                 <button type="button" class="btn postInfo" id="goBottom">
                     <i class="fas fa-comment-dots"></i>
-                    <a> 5 </a>
+                    <a> @Model.REPLY_COUNT </a>
                 </button>
 
                 <!-- 收藏按鈕 -->

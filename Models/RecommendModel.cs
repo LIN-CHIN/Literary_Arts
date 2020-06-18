@@ -5,10 +5,9 @@ using System.Web;
 
 namespace Literary_Arts.Models
 {
-    public class RecommendModel
+    public class RecommendModel : _Model
     {
         public string RECOM_NUM { get; set; }
-        public DateTime? RECOM_DATETIME { get; set; }
         public string RECOM_HEAD { get; set; }
         public string RECOM_CONT { get; set; }
         public string RECOM_CLASS { get; set; }
@@ -16,5 +15,9 @@ namespace Literary_Arts.Models
         public string NEGATIVE_WORDS { get; set; }
         public string ANALYZE_SCORE { get; set; }
         public string SCORE2 { get; set; }
+
+        public string LIKE_COUNT { get; set; }
+        public string REPLY_COUNT { get; set; }
+
     }
 }

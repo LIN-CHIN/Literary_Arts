@@ -5,12 +5,11 @@ using System.Web;
 
 namespace Literary_Arts.Models
 {
-    public class RecommendReplyLikeModel
+    public class RecommendReplyLikeModel : _Model
     {
         public string recomReplyLikeNum { get; set; }
         public string memID { get; set; }
         public string recomMessNum { get; set; }
-        public DateTime? recomReplyLikeDateTime { get; set; }
 
     }
 }

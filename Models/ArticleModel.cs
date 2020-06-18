@@ -5,7 +5,7 @@ using System.Web;
 
 namespace Literary_Arts.Models
 {
-    public class ArticleModel
+    public class ArticleModel : _Model
     {
         /// <summary>
         /// 文章編號
@@ -26,11 +26,6 @@ namespace Literary_Arts.Models
         /// 會員顯示方式 = MEM_ID-MEM_NAME
         /// </summary>
         public string MEM_DISPLAY { get; set; }
-
-        /// <summary>
-        /// 發文時間
-        /// </summary>
-        public DateTime? CRT_DATE { get; set; }
 
         /// <summary>
         /// 文章標題
@@ -57,10 +52,7 @@ namespace Literary_Arts.Models
         /// </summary>
         public int? REPLY_COUNT { get; set; }
 
-        /// <summary>
-        /// TAG中文
-        /// </summary>
-        public string TAG_NAME { get; }
+        
         public string POSITIVE_WORDS { get; set; }
         public string NEGATIVE_WORDS { get; set; }
         public string SWEAR_WORDS { get; set; }

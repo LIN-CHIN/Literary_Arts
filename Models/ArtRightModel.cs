@@ -5,7 +5,7 @@ using System.Web;
 
 namespace Literary_Arts.Models
 {
-    public class ArtRightModel
+    public class ArtRightModel : _Model
     {
         public string RIGHT_ID { get; set; }
         public string RIGHT_NAME { get; set; }

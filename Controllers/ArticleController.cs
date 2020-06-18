@@ -1,5 +1,6 @@
 ﻿using Literary_Arts.Dao;
 using Literary_Arts.Models;
+using Literary_Arts.Models.Sysop;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,15 +44,13 @@ namespace Literary_Arts.Controllers
         /// <summary>
         /// 文章內容分類的頁面
         /// </summary>
-        /// <param name="arti_class">
-        ///     01 = '電影'
-        ///     02 = '音樂'
-        ///     03 = '書籍'
-        ///     04 = '展覽'
-        /// </param>
+        /// <param name="arti_class"> 文章分類(英文) ex : 'movie'</param>
         /// <returns></returns>
         public ActionResult ContentClass(string arti_class)
         {
+            //中英轉換
+            arti_class = ReverseParamLanguage("LITERARY_CLASS_ENG", "LITERARY_CLASS_CHI", arti_class);
+
             using (ArticleDao dao = new ArticleDao())
             {
                 IList<ArticleModel> model = dao.ByClassTypeGetList(HttpUtility.HtmlEncode(arti_class));
