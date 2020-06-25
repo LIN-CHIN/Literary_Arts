@@ -5,6 +5,7 @@
 }
 
 <link href="../../Content/css/article.css" rel="stylesheet" type="text/css" />
+@Html.AntiForgeryToken()
 
 <!-- 文章內容 -->
 <div class="container-fluid">
@@ -23,7 +24,7 @@
                     </button>
                     <div class="dropdown-menu dropdown-menu-right dotMenu" aria-labelledby="dropdownMenuButton">
                         <a class="dropdown-item" href="@Url.Action("Update", "Article")?arti_num=@Model.ARTI_NUM">編輯</a>
-                        <a class="dropdown-item" href="#/">刪除</a>
+                        <a class="dropdown-item" onclick="fn_delete('arti')">刪除</a>
                     </div>
                 </div>
             </div>
@@ -168,7 +169,7 @@
                         </button>
                         <div class="dropdown-menu dotMenu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
                             <a class="dropdown-item editReply" href="/Article/UpdateReply">編輯</a>
-                            <a class="dropdown-item" href="#/" onclick="">刪除</a>
+                            <a class="dropdown-item" onclick="fn_delete('reply','@i.ARTI_REPLY_NUM')">刪除</a>
                         </div>
                     </div>
                 </div>
@@ -253,4 +254,53 @@
         <div class='loader--text'></div>
     </div>
 </div>
+
+<script>
+    //刪除功能
+    //type = "arti"   > 文章
+    //type = "reply"  > 文章留言
+    function fn_delete(type, reply_num = null) {
+        var url;
+        var data;
+        var reload_url; //操作完後的動作
+
+        //ajax所需的資料設定
+        if (type == "arti") {
+            url = "@Url.Action("DeleteArticle", "Article")";
+            reload_url =  "@Url.Action("Index","Article")";
+            data = {
+                "arti_num": '@Model.ARTI_NUM'
+            }
+        } else if (type == "reply") {
+            url = '@Url.Action("DeleteReply", "Article")';
+            reload_url =  "@Url.Action("Content","Article")?arti_num=" + "@Model.ARTI_NUM";
+            data = {
+                "arti_reply_num": reply_num
+            }
+        }
+
+        data["__RequestVerificationToken"] = $('input[name=__RequestVerificationToken]').val();
+
+        //詢問是否刪除
+        if (confirm("@SysSet.GetParamItemValue("SYS_MESSAGE","is_del")")) {
+            $.ajax({
+                url: url,
+                type: "post",
+                dataType: "json",
+                data: data,
+                success: function (res) {
+                    alert(res);
+                    location.href = reload_url;
+                },
+                error: function (res) {
+                    alert("@SysSet.GetParamItemValue("SYS_MESSAGE","sys_error")");
+                }
+            })
+        } else {
+            alert("@SysSet.GetParamItemValue("SYS_MESSAGE","cancel_del")")
+        }
+        
+    }
+
+</script>
 

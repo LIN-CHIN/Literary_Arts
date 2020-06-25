@@ -1,4 +1,5 @@
 ﻿using Literary_Arts.Models;
+using Literary_Arts.Models.System;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -157,5 +158,56 @@ namespace Literary_Arts.Dao
                 throw ex;
             }
         }
+
+        #region 刪除
+        /// <summary>
+        /// 刪除文章
+        /// </summary>
+        /// <param name="arti_num"></param>
+        /// <returns></returns>
+        public RtnResultModel DeleteArticle(string arti_num) {
+            try
+            {                               
+                strSql = @"DELETE FROM ARTICLE WHERE arti_num = @arti_num";
+                objParam = new
+                {
+                    arti_num = arti_num
+                };
+
+                ExecuteCommand(strSql, objParam);
+
+                return new RtnResultModel(true, SysSet.GetParamItemValue("SYS_MESSAGE", "del_true"));
+            }
+            catch(Exception ex)
+            {
+                return new RtnResultModel(false, SysSet.GetParamItemValue("SYS_MESSAGE", "del_false"));
+            }
+        }
+
+        /// <summary>
+        /// 刪除留言
+        /// </summary>
+        /// <param name="arti_num"></param>
+        /// <returns></returns>
+        public RtnResultModel DeleteReply(string arti_reply_num)
+        {
+            try
+            {
+                strSql = @"DELETE FROM ARTICLE_REPLY WHERE arti_reply_num = @arti_reply_num";
+                objParam = new
+                {
+                    arti_reply_num = arti_reply_num
+                };
+
+                ExecuteCommand(strSql, objParam);
+
+                return new RtnResultModel(true, SysSet.GetParamItemValue("SYS_MESSAGE", "del_true"));
+            }
+            catch (Exception ex)
+            {
+                return new RtnResultModel(false, SysSet.GetParamItemValue("SYS_MESSAGE", "del_false"));
+            }
+        }
+        #endregion
     }
 }

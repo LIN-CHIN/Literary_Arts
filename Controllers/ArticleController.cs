@@ -1,9 +1,11 @@
 ﻿using Literary_Arts.Dao;
 using Literary_Arts.Models;
 using Literary_Arts.Models.Sysop;
+using Literary_Arts.Models.System;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Transactions;
 using System.Web;
 using System.Web.Mvc;
 
@@ -19,11 +21,11 @@ namespace Literary_Arts.Controllers
         {
             using (ArticleDao dao = new ArticleDao())
             {
-                IList <ArticleModel> model = dao.GetArticleList();
-                ViewBag.ArticleList = model; 
+                IList<ArticleModel> model = dao.GetArticleList();
+                ViewBag.ArticleList = model;
                 ViewBag.TagData = dao.TagRouter(model, "01");
                 return View();
-            }  
+            }
         }
 
         /// <summary>
@@ -91,6 +93,56 @@ namespace Literary_Arts.Controllers
         public ActionResult UpdateReply()
         {
             return View();
+        }
+
+        /// <summary>
+        /// 刪除文章
+        /// </summary>
+        /// <param name="arti_num"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public JsonResult DeleteArticle(string arti_num)
+        {
+            using (ArticleDao dao = new ArticleDao())
+            {
+                using (TransactionScope scope = new TransactionScope())
+                {
+                    RtnResultModel del_article = dao.DeleteArticle(HttpUtility.HtmlEncode(arti_num));
+                    RtnResultModel del_reply = dao.DeleteReply(HttpUtility.HtmlEncode(arti_num));
+                    scope.Complete();
+                    if (del_article.success && del_reply.success)
+                    {
+                        return Json(del_article.message);
+                    }
+                    else {
+                        return Json(SysSet.GetParamItemValue("SYS_MESSAGE", "sys_error"));
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// 刪除留言
+        /// </summary>
+        /// <param name="arti_num"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public JsonResult DeleteReply(string arti_reply_num)
+        {
+            using (ArticleDao dao = new ArticleDao())
+            {
+                RtnResultModel del_reply = dao.DeleteReply(HttpUtility.HtmlEncode(arti_reply_num));
+                if (del_reply.success)
+                {
+                    return Json(del_reply.message);
+                }
+                else
+                {
+                    return Json(SysSet.GetParamItemValue("SYS_MESSAGE", "sys_error"));
+                }
+            }
         }
     }
 }
