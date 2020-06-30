@@ -13,6 +13,7 @@ namespace Literary_Arts.Controllers
 {
     public class ArticleController : _Controller
     {
+        #region 頁面
         /// <summary>
         /// 文章討論區頁面
         /// </summary>
@@ -72,6 +73,9 @@ namespace Literary_Arts.Controllers
             return View();
         }
 
+        #endregion
+
+        #region 編輯
         /// <summary>
         /// 編輯文章 頁面
         /// </summary>
@@ -87,6 +91,23 @@ namespace Literary_Arts.Controllers
         }
 
         /// <summary>
+        /// 編輯文章 功能
+        /// </summary>
+        /// <param name="arti_num"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public JsonResult UpdateArticle(ArticleModel model)
+        {
+            using (ArticleDao dao = new ArticleDao())
+            {
+                //ArticleModel model = dao.ByArtiNumGetArticle(HttpUtility.HtmlEncode(arti_num));
+                //ViewBag.TagData = dao.ByNumGetTag<ArticleModel>("01", HttpUtility.HtmlEncode(arti_num));
+                return Json("");
+            }
+        } 
+
+        /// <summary>
         /// 編輯文章 留言
         /// </summary>
         /// <returns></returns>
@@ -94,7 +115,9 @@ namespace Literary_Arts.Controllers
         {
             return View();
         }
+        #endregion
 
+        #region 刪除
         /// <summary>
         /// 刪除文章
         /// </summary>
@@ -144,5 +167,6 @@ namespace Literary_Arts.Controllers
                 }
             }
         }
+        #endregion
     }
 }

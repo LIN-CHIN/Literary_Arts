@@ -159,6 +159,39 @@ namespace Literary_Arts.Dao
             }
         }
 
+        /// <summary>
+        /// 編輯文章功能
+        /// </summary>
+        /// <param name="arti_num"></param>
+        /// <returns></returns>
+        public RtnResultModel UpdateArticle(ArticleModel model) {
+            try
+            {
+                strSql = @"UPDATE ARTICLE 
+                           SET ARTI_HEAD = @arti_head
+                               , ARTI_CONT = @arti_cont 
+                               , ARTI_CLASS = @arti_class
+                               , MDF_DATE = GETDATE() 
+                               , MDF_MEMID = @mdf_memid
+                               , MDF_MEMNAME = @mdf_memname 
+                           WHERE ARTI_NUM = @arti_num";
+                objParam = new
+                {
+                    arti_head = model.ARTI_HEAD,
+                    arti_cont = model.ARTI_CONT,
+                    arti_class = model.ARTI_CLASS,
+                    mdf_memid = model.MEM_ID,
+                    mdf_memname = model.MEM_NAME,
+                    arti_num = model.ARTI_NUM
+                };
+                return new RtnResultModel(true, SysSet.GetParamItemValue("SYS_MESSAGE", "update_true"));
+            }
+            catch(Exception ex)
+            {
+                return new RtnResultModel(true, SysSet.GetParamItemValue("SYS_MESSAGE", "update_false"));
+            }
+        }
+
         #region 刪除
         /// <summary>
         /// 刪除文章

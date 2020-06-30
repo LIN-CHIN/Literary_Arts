@@ -11,9 +11,11 @@
     <hr class="highlight">
 </center>
 
+@Html.AntiForgeryToken()
+
 <div class="justify-content-center">
     <div class="post col-lg-8 content shadow">
-        <select id="inputState" class="form-control" onchange="styleselect()">
+        <select id="inputState" name="ARTI_CLASS" class="form-control" onchange="styleselect()">
             <option value="movie">電影類</option>
             <option value="music">音樂類</option>
             <option value="exhibition">展覽類</option>
@@ -42,8 +44,8 @@
             <i class="fas fa-images" style="padding-right:5px"></i>加圖片
         </label>
         <!-- </div> -->
-        <button type="submit" class="btn btn-danger col-lg-2 float-right postButton"
-                onclick="submitModifyArticle()">
+        <button type="button" class="btn btn-danger col-lg-2 float-right postButton"
+                onclick="fn_update()">
             提交
         </button>
 
@@ -89,4 +91,38 @@
         $(this).parent('#tag').remove();
     })
 
+
+    //編輯功能
+    //type = "arti"   > 文章
+    //type = "reply"  > 文章留言
+    function fn_update() {
+        //詢問是否編輯
+        if (confirm("@SysSet.GetParamItemValue("SYS_MESSAGE","is_update")")) {
+            $.ajax({
+                url: "@Url.Action("UpdateArticle","Article")",
+                type: "post",
+                dataType: "json",
+                data: {
+                    ARTI_NUM : "@Model.ARTI_NUM",
+                    ARTI_CLASS: $("#inputState").val(),
+                    ARTI_HEAD: $("#artiHead").val(),
+                    ARTI_CONT: $("#postInput").html(),
+                    TAG_NAME: $(".deleteTag").val(),
+                    MEM_ID: "@Model.MEM_ID",
+                    MEM_NAME : "@Model.MEM_NAME",
+                    __RequestVerificationToken : $('input[name=__RequestVerificationToken]').val() 
+                },
+                success: function (res) {
+                    alert(res);
+                    location.href = "@Url.Action("Content", "Article")?arti_num=" + "@Model.ARTI_NUM";
+                },
+                error: function (res) {
+                    alert("@SysSet.GetParamItemValue("SYS_MESSAGE","sys_error")");
+                }
+            })
+        } else {
+            alert("@SysSet.GetParamItemValue("SYS_MESSAGE","cancel_update")")
+        }
+        
+    }
 </script>
