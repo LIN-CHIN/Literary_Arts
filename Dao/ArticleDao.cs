@@ -1,5 +1,6 @@
 ﻿using Literary_Arts.Models;
 using Literary_Arts.Models.System;
+using Literary_Arts.Web_Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,7 +36,8 @@ namespace Literary_Arts.Dao
             }
             catch (Exception ex)
             {
-                throw ex ;
+                LogSet.LogError(ex.ToString());
+                return new List<ArticleModel>();
             }
         }
 
@@ -70,7 +72,8 @@ namespace Literary_Arts.Dao
             }
             catch (Exception ex)
             {
-                throw ex;
+                LogSet.LogError(ex.ToString());
+                return new ArticleModel();
             }
         }
 
@@ -110,7 +113,8 @@ namespace Literary_Arts.Dao
             }
             catch(Exception ex)
             {
-                throw ex;
+                LogSet.LogError(ex.ToString());
+                return new List<ArticleModel>();
             }
         }
 
@@ -155,7 +159,8 @@ namespace Literary_Arts.Dao
             }
             catch (Exception ex)
             {
-                throw ex;
+                LogSet.LogError(ex.ToString());
+                return new List<ArticleModel>();
             }
         }
 
@@ -188,6 +193,7 @@ namespace Literary_Arts.Dao
             }
             catch(Exception ex)
             {
+                LogSet.LogError(ex.ToString());
                 return new RtnResultModel(true, SysSet.GetParamItemValue("SYS_MESSAGE", "update_false"));
             }
         }
@@ -213,6 +219,7 @@ namespace Literary_Arts.Dao
             }
             catch(Exception ex)
             {
+                LogSet.LogError(ex.ToString());
                 return new RtnResultModel(false, SysSet.GetParamItemValue("SYS_MESSAGE", "del_false"));
             }
         }
@@ -238,6 +245,7 @@ namespace Literary_Arts.Dao
             }
             catch (Exception ex)
             {
+                LogSet.LogError(ex.ToString());
                 return new RtnResultModel(false, SysSet.GetParamItemValue("SYS_MESSAGE", "del_false"));
             }
         }

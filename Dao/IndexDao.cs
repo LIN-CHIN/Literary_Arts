@@ -1,4 +1,5 @@
 ﻿using Literary_Arts.Models;
+using Literary_Arts.Web_Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,7 +38,8 @@ namespace Literary_Arts.Dao
             }
             catch (Exception ex)
             {
-                throw ex;
+                LogSet.LogError(ex.ToString());
+                return new List<IndexModel>();
             }
         }
 
@@ -46,7 +48,9 @@ namespace Literary_Arts.Dao
         /// </summary>
         /// <returns></returns>
         public IList<IndexModel> GetHotArticle() {
-            strSql = @"SELECT  ARTI_NUM					--文章編號
+            try
+            {
+                strSql = @"SELECT  ARTI_NUM					--文章編號
 	                          ,ARTI_HEAD				--文章標題
 	                          ,ARTI_CONT				--文章內容
 	                          ,ARTI_CLASS				--文章分類
@@ -56,10 +60,13 @@ namespace Literary_Arts.Dao
                         FROM VW_HOT_ARTICLE
                         ORDER BY LIKE_COUNT DESC ";
 
-            return ExecuteQuery<IndexModel>(strSql);
+                return ExecuteQuery<IndexModel>(strSql);
+            }
+            catch (Exception ex) 
+            {
+                LogSet.LogError(ex.ToString());
+                return new List<IndexModel>();
+            }    
         }
-
-        
-
     }
 }

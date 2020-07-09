@@ -10,6 +10,7 @@ using System.Runtime.InteropServices;
 using Microsoft.Win32.SafeHandles;
 using Literary_Arts.Models;
 using System.Collections;
+using Literary_Arts.Web_Common;
 
 namespace Literary_Arts.Dao
 {
@@ -27,6 +28,9 @@ namespace Literary_Arts.Dao
         private bool disposed = false;
         SafeHandle handle = new SafeFileHandle(IntPtr.Zero, true);
 
+        /// <summary>
+        /// 建構
+        /// </summary>
         public _Dao(){
             strConnMain = ConfigurationManager.ConnectionStrings["MainDBConnection"].ConnectionString;
             strSql = "";
@@ -34,6 +38,7 @@ namespace Literary_Arts.Dao
 
         }
 
+        #region Dispose
         public void Dispose()
         {
             Dispose(true);
@@ -57,9 +62,10 @@ namespace Literary_Arts.Dao
 
             disposed = true;
         }
+        #endregion
 
 
-
+        #region 執行SQL function
         protected IList<IDictionary<string, object>> ExecuteQuery(string sql, object param = null)
         {
             using (var conn = DbConnectionFactoryHelper.New(new SqlServerDbConnectionFactory(strConnMain), CustomDbProfiler.Current))
@@ -98,7 +104,9 @@ namespace Literary_Arts.Dao
 
         }
 
+        #endregion
 
+        #region Tag function
         /// <summary>
         /// 主要使用時機 : 取得List的文章、推薦或其他type的tag
         /// 在取得所有類別文章的Tag之前 必須經過此Router
@@ -200,7 +208,8 @@ namespace Literary_Arts.Dao
 
             } catch (Exception ex)
             {
-                throw ex;
+                LogSet.LogError(ex.ToString());
+                return new List<T>();
             }
         }
 
@@ -238,10 +247,12 @@ namespace Literary_Arts.Dao
                 return ExecuteQuery<T>(strSql, objParam);
             }
             catch (Exception ex) {
-                throw ex;
+                LogSet.LogError(ex.ToString());
+                return new List<T>();
             }
             
         }
+        #endregion
 
         /// <summary>
         /// 取得物件屬性名稱(Properties Name)

@@ -1,4 +1,5 @@
 ﻿using Literary_Arts.Models;
+using Literary_Arts.Web_Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,7 +38,8 @@ namespace Literary_Arts.Dao.Sysop
 
             catch (Exception ex)
             {
-                throw ex ;
+                LogSet.LogError(ex.ToString());
+                return new List<SetFunctionModel>();
             }
         }
 
