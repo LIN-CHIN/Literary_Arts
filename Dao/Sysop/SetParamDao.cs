@@ -1,4 +1,5 @@
-﻿using Literary_Arts.Models.Sysop;
+﻿using Literary_Arts.Models;
+using Literary_Arts.Models.Sysop;
 using Literary_Arts.Web_Common;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,7 @@ namespace Literary_Arts.Dao.Sysop
     /// </summary>
     public class SetParamDao : _Dao
     {
+        public SetParamDao(MemberUserModel loginUser = null) : base(loginUser) { }
 
         /// <summary>
         /// 取得參數檔 (細項) 值

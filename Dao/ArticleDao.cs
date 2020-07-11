@@ -10,6 +10,7 @@ namespace Literary_Arts.Dao
 {
     public class ArticleDao : _Dao
     {
+        public ArticleDao(MemberUserModel loginUser) : base(loginUser) { }
 
         /// <summary>
         /// 取得所有文章清單 

@@ -1,10 +1,10 @@
-﻿
+﻿@model Literary_Arts.Models.MemberUserModel 
 @{
     ViewBag.Title = "登入";
 }
 
 <link href="../../Content/css/logIn.css" rel="stylesheet" type="text/css" />
-
+<script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
 <section id="logIn">
     <div class="container-fluid row flex justify-content-center logIn no-gutters">
         <div class="container-fluid">
@@ -14,14 +14,21 @@
             </center>
 
         </div>
-        <form class="logIn col-lg-3 shadow" id="login" action="/userLogin" method="post">
+        @using (Ajax.BeginForm("Login", "Member", null, new AjaxOptions
+        {
+            OnSuccess = "alertSuccess",
+            OnFailure = "alertMessage"
+        }, new { id = "login", @class = "logIn col-lg-3 shadow" }))
+        {
+            @Html.AntiForgeryToken()
+
             <div class="input-icon-wrap ">
                 <span class="input-icon "><span class="fa fa-user"></span></span>
-                <input type="text" class="input-with-icon" id="ID" name="memID" placeholder="帳號" maxlength="20">
+                @Html.TextBoxFor(m => m.MEM_ID, new { @class = "input-with-icon", @placeholder="帳號", @maxlength ="20", @id = "ID" })
             </div>
             <div class="input-icon-wrap">
                 <span class="input-icon"><span class="fas fa-lock"></span></span>
-                <input type="password" class="input-with-icon" id="password" name="memPass" placeholder="密碼">
+                @Html.TextBoxFor(m => m.MEM_PASS, new { @class = "input-with-icon", @placeholder = "密碼", @id = "password" })
             </div>
 
             <input type="text" id="input" class="inputValidateCode" name="code" placeholder="輸入驗證碼" />
@@ -30,9 +37,8 @@
             <input type="text" id="lineID" name="lineID" style="display:none;">
             <button type="button" class="btn btn-dark login" onclick="validateCode()" return false;>登入</button>
             <button type="button" class="btn btn-secondary signUp" onclick="location.href='/Member/Register'">註冊</button>
-
-
-        </form>
+        }
+  
         <div class="w-100">
             <center>
                 <h4>或是</h4>
@@ -51,3 +57,52 @@
     </div>
 
 </section>
+
+<script type="text/javascript">
+    $(function () {
+        init();
+
+    })
+
+    //初始化
+    function init() {
+        createCode();
+    }
+
+    //創造驗證碼
+    function createCode() {
+        var code = ""       //要產生的驗證碼
+        var codeLen = 6     //要產生的驗證碼長度
+        var selectChar = new Array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
+        var charIndex = 0;
+        for (var i = 0; i < codeLen; i++) {
+            charIndex = Math.floor(Math.random() * 10);   //隨機產生
+            code += selectChar[charIndex].toString();     //串連產生出來的驗證碼
+        }
+
+        $("#checkCode").val(code);    //將驗證碼顯示到畫面上
+    }
+
+    //驗證 user 輸入的驗證碼
+    function validateCode() {
+        var checkCode = $("#checkCode").val();      //系統產生的驗證碼
+        var user_code = $("#input").val();          //使用者輸入的驗證碼
+
+        if (checkCode != user_code) {
+            alert("驗證碼輸入錯誤");
+        } else {
+            $("#login").submit();
+        }
+    }
+
+    //表單送出成功
+    function alertSuccess(data) {
+        if (data.success) {
+            location.href = '@Url.Action("Index", "Home")';
+        } else
+        {
+            alert(data.message);
+        }
+    }
+
+</script>

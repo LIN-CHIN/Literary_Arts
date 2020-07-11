@@ -9,6 +9,8 @@ namespace Literary_Arts.Dao
 {
     public class RecommendDao : _Dao
     {
+        public RecommendDao(MemberUserModel loginUser) : base(loginUser) { }
+
         public IList<RecommendModel> GetRecommendList() 
         {
             try

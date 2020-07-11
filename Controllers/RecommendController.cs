@@ -16,7 +16,7 @@ namespace Literary_Arts.Controllers
         /// <returns></returns>
         public ActionResult Index()
         {
-            using (RecommendDao dao = new RecommendDao())
+            using (RecommendDao dao = new RecommendDao(GetLoginUser()))
             {
                 IList<RecommendModel> model = dao.GetRecommendList();
                 ViewBag.RecommendList = model;
@@ -31,7 +31,7 @@ namespace Literary_Arts.Controllers
         /// <returns></returns>
         public ActionResult Content(string recom_num)
         {
-            using (RecommendDao dao = new RecommendDao())
+            using (RecommendDao dao = new RecommendDao(GetLoginUser()))
             {
                 RecommendModel model = dao.ByRecomNumGetRecommend(HttpUtility.HtmlEncode(recom_num));
                 ViewBag.TagData = dao.ByNumGetTag<RecommendModel>("02", HttpUtility.HtmlEncode(recom_num));

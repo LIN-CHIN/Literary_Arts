@@ -7,7 +7,7 @@ using System.Web.Mvc;
 
 namespace Literary_Arts.Controllers.Sysop
 {
-    public class SetFunctionController : Controller
+    public class SetFunctionController : _Controller
     {
         public JsonResult GetFunctionDate()
         {

@@ -20,7 +20,7 @@ namespace Literary_Arts.Controllers
         /// <returns></returns>
         public ActionResult Index()
         {
-            using (ArticleDao dao = new ArticleDao())
+            using (ArticleDao dao = new ArticleDao(GetLoginUser()))
             {
                 IList<ArticleModel> model = dao.GetArticleList();
                 ViewBag.ArticleList = model;
@@ -36,7 +36,7 @@ namespace Literary_Arts.Controllers
         /// <returns></returns>
         public ActionResult Content(string arti_num)
         {
-            using (ArticleDao dao = new ArticleDao())
+            using (ArticleDao dao = new ArticleDao(GetLoginUser()))
             {
                 ArticleModel model = dao.ByArtiNumGetArticle(HttpUtility.HtmlEncode(arti_num));
                 ViewBag.TagData = dao.ByNumGetTag<ArticleModel>("01", HttpUtility.HtmlEncode(arti_num));
@@ -55,7 +55,7 @@ namespace Literary_Arts.Controllers
             //中英轉換
             arti_class = ReverseParamLanguage("LITERARY_CLASS_ENG", "LITERARY_CLASS_CHI", arti_class);
 
-            using (ArticleDao dao = new ArticleDao())
+            using (ArticleDao dao = new ArticleDao(GetLoginUser()))
             {
                 IList<ArticleModel> model = dao.ByClassTypeGetList(HttpUtility.HtmlEncode(arti_class));
                 ViewBag.ArticleList = model;
@@ -82,7 +82,7 @@ namespace Literary_Arts.Controllers
         /// <returns></returns>
         public ActionResult Update(string arti_num)
         {
-            using (ArticleDao dao = new ArticleDao())
+            using (ArticleDao dao = new ArticleDao(GetLoginUser()))
             {
                 ArticleModel model = dao.ByArtiNumGetArticle(HttpUtility.HtmlEncode(arti_num));
                 ViewBag.TagData = dao.ByNumGetTag<ArticleModel>("01", HttpUtility.HtmlEncode(arti_num));
@@ -99,7 +99,7 @@ namespace Literary_Arts.Controllers
         [ValidateAntiForgeryToken]
         public JsonResult UpdateArticle(ArticleModel model)
         {
-            using (ArticleDao dao = new ArticleDao())
+            using (ArticleDao dao = new ArticleDao(GetLoginUser()))
             {
                 //ArticleModel model = dao.ByArtiNumGetArticle(HttpUtility.HtmlEncode(arti_num));
                 //ViewBag.TagData = dao.ByNumGetTag<ArticleModel>("01", HttpUtility.HtmlEncode(arti_num));
@@ -127,7 +127,7 @@ namespace Literary_Arts.Controllers
         [ValidateAntiForgeryToken]
         public JsonResult DeleteArticle(string arti_num)
         {
-            using (ArticleDao dao = new ArticleDao())
+            using (ArticleDao dao = new ArticleDao(GetLoginUser()))
             {
                 using (TransactionScope scope = new TransactionScope())
                 {
@@ -154,7 +154,7 @@ namespace Literary_Arts.Controllers
         [ValidateAntiForgeryToken]
         public JsonResult DeleteReply(string arti_reply_num)
         {
-            using (ArticleDao dao = new ArticleDao())
+            using (ArticleDao dao = new ArticleDao(GetLoginUser()))
             {
                 RtnResultModel del_reply = dao.DeleteReply(HttpUtility.HtmlEncode(arti_reply_num));
                 if (del_reply.success)

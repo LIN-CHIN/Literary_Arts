@@ -12,7 +12,7 @@ namespace Literary_Arts.Controllers
     {
         public ActionResult Index()
         {
-            using (IndexDao dao = new IndexDao()) {
+            using (IndexDao dao = new IndexDao(GetLoginUser())) {
                 IList<IndexModel> hotArticle = dao.GetHotArticle();
                 ViewBag.RecomData = dao.GetRecomData();
                 ViewBag.HotArtiData = hotArticle;

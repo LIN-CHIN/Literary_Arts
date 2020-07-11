@@ -27,7 +27,7 @@ namespace Literary_Arts.Models.System
 
         public RtnResultModel(bool success, string message) {
             this.success = success;
-            this._message = message;
+            this.message = message;
         } 
     }
 }

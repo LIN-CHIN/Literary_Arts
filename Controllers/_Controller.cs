@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Literary_Arts.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,6 +9,13 @@ namespace Literary_Arts.Controllers
 {
     public class _Controller : Controller
     {
+        protected MemberUserModel GetLoginUser()
+        {
+            return Session == null || Session["loginUser"] == null ? new MemberUserModel() : (MemberUserModel)((MemberUserModel)Session["loginUser"]).Clone();
+        }
+
+
+
         /// <summary>
         /// 參數檔 set_type互相對照的中英文 轉換
         /// </summary>
@@ -27,5 +35,7 @@ namespace Literary_Arts.Controllers
 
             return set_value;
         }    
+
+
     }
 }

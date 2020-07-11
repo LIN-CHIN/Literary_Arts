@@ -9,6 +9,8 @@ namespace Literary_Arts.Dao
 {
     public class IndexDao : _Dao
     {
+        public IndexDao(MemberUserModel loginUser) : base(loginUser) { }
+
         /// <summary>
         /// 取得首頁四大推薦的資料
         /// 待修改 : 還沒加上 取四篇的邏輯

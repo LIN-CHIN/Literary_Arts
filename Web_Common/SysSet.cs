@@ -1,4 +1,5 @@
-﻿using Literary_Arts.Dao.Sysop;
+﻿using Literary_Arts.Controllers;
+using Literary_Arts.Dao.Sysop;
 using Literary_Arts.Models.Sysop;
 using System;
 using System.Collections.Generic;
@@ -7,7 +8,7 @@ using System.Web;
 
 namespace Literary_Arts
 {
-    public class SysSet
+    public class SysSet 
     {
         /// <summary>
         /// 取得參數檔(set_param_item) 的 value 

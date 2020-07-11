@@ -11,39 +11,43 @@ using Microsoft.Win32.SafeHandles;
 using Literary_Arts.Models;
 using System.Collections;
 using Literary_Arts.Web_Common;
+using System.Text;
+using Microsoft.Ajax.Utilities;
 
 namespace Literary_Arts.Dao
 {
     public class _Dao : IDisposable
     {
-        //存放連線字串
-        protected string strConnMain;
-
-        //存放SQL 指令
-        protected string strSql;
-
-        //存放SQL 參數
-        protected object objParam;    
-
+        
+        protected string strConnMain;           //存放連線字串 
+        protected string strSql;                //存放SQL 指令  
+        protected object objParam;              //存放SQL 參數
+        protected MemberUserModel loggedUser;   
         private bool disposed = false;
-        SafeHandle handle = new SafeFileHandle(IntPtr.Zero, true);
 
         /// <summary>
         /// 建構
         /// </summary>
-        public _Dao(){
+        public _Dao(MemberUserModel loginUser){
             strConnMain = ConfigurationManager.ConnectionStrings["MainDBConnection"].ConnectionString;
             strSql = "";
             objParam = null;
+            loggedUser = loginUser ?? new MemberUserModel(); // 若loginUser == null 則new 一個 MemberUserModel 
 
         }
 
         #region Dispose
         public void Dispose()
-        {
+        {   
+            //釋放資源 
             Dispose(true);
+
+            // 這是告訴CLR，在進行垃圾回收的時候，不用再繼續調用析構方法了 因已經手動釋放資源了
             GC.SuppressFinalize(this);
         }
+
+        // ~ 為 析構函數  目的 : 用於釋放被占用的系統資源。
+        // 垃圾回收器決定了析構函數的調用，無法控制何時調用析構函數。
         ~_Dao()
         {
             Dispose(false);
@@ -51,18 +55,37 @@ namespace Literary_Arts.Dao
 
         protected virtual void Dispose(bool disposing)
         {
-            if (disposed) {
-                return;
+            if (!this.disposed) {
+                if (disposing) 
+                {
+                    SetProfilerLog();                
+                }
+                disposed = true;
             }
-
-            if (disposing)
-            {
-                handle.Dispose();
-            }
-
-            disposed = true;
         }
         #endregion
+
+        private void SetProfilerLog() {
+            lock (CustomDbProfiler.Current.ProfilerContext.ExecutedCommands)
+            {
+                object objParam = new ArrayList();
+                foreach (DbCommandInfo command in CustomDbProfiler.Current.ProfilerContext.ExecutedCommands.ToArray())
+                {
+                    ((ArrayList)objParam).Add(new
+                    {
+                        user_id =  "",
+                        user_ip =  "",
+                        commandtext = command.CommandText,
+                        parameters = command.Parameters.Aggregate(new StringBuilder(),
+                                 (sb, p) => sb.AppendLine(string.Format("@{0}='{1}'", p.Key, p.Value)),
+                                 (sb) => sb.ToString()),
+                        request_url = HttpContext.Current.Request.Url.AbsoluteUri
+                    });
+                }
+                LogSet.LogSqlTrace(((ArrayList)objParam).ToArray());
+                CustomDbProfiler.Current.ProfilerContext.Reset();
+            }
+        }
 
 
         #region 執行SQL function

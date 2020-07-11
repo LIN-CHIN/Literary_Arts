@@ -9,6 +9,8 @@ namespace Literary_Arts.Dao.Sysop
 {
     public class SetFunctionDao : _Dao
     {
+        public SetFunctionDao(MemberUserModel loginUser = null) : base(loginUser) { }
+
         /// <summary>
         /// 取得 SET_FUNCTION 資料
         /// </summary>
