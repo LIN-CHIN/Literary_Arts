@@ -4,11 +4,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
 
 namespace Literary_Arts.Controllers
 {
     public class _Controller : Controller
     {
+
+        protected override void Initialize(RequestContext requestContext)
+        {
+            base.Initialize(requestContext);
+            ViewBag.GetLoginUser = new Func<MemberUserModel>(GetLoginUser);
+        }
         protected MemberUserModel GetLoginUser()
         {
             return Session == null || Session["loginUser"] == null ? new MemberUserModel() : (MemberUserModel)((MemberUserModel)Session["loginUser"]).Clone();

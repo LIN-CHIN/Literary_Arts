@@ -24,18 +24,18 @@
 
             <div class="input-icon-wrap ">
                 <span class="input-icon "><span class="fa fa-user"></span></span>
-                @Html.TextBoxFor(m => m.MEM_ID, new { @class = "input-with-icon", @placeholder="帳號", @maxlength ="20", @id = "ID" })
+                @Html.TextBoxFor(m => m.MEM_ID, new { @class = "input-with-icon", @placeholder="帳號", @maxlength ="20"})
             </div>
             <div class="input-icon-wrap">
                 <span class="input-icon"><span class="fas fa-lock"></span></span>
-                @Html.TextBoxFor(m => m.MEM_PASS, new { @class = "input-with-icon", @placeholder = "密碼", @id = "password" })
+                @Html.TextBoxFor(m => m.MEM_PASS, new { @class = "input-with-icon", @placeholder = "密碼"})
             </div>
 
             <input type="text" id="input" class="inputValidateCode" name="code" placeholder="輸入驗證碼" />
             <input type="button" id="checkCode" class="code" onclick="createCode()" />
             <span class="changeCode " href="#" onclick="createCode()"><i class="fas fa-sync-alt"></i></span><br>
             <input type="text" id="lineID" name="lineID" style="display:none;">
-            <button type="button" class="btn btn-dark login" onclick="validateCode()" return false;>登入</button>
+            <button type="button" class="btn btn-dark login" onclick="fn_login()" return false;>登入</button>
             <button type="button" class="btn btn-secondary signUp" onclick="location.href='/Member/Register'">註冊</button>
         }
   
@@ -69,6 +69,20 @@
         createCode();
     }
 
+
+    function fn_login() {
+        if ($("#MEM_ID").val().trim() == "") {
+            alert("請輸入帳號");
+            return;
+        }
+
+        if ($("#MEM_PASS").val().trim() == "") {
+            alert("請輸入密碼");
+            return; 
+        }
+
+        validateCode();
+    }
     //創造驗證碼
     function createCode() {
         var code = ""       //要產生的驗證碼

@@ -135,7 +135,8 @@
 
     //設定 navbar
     function SetFunctionUrlGroup(data) {
-
+        var loginUser = '@(((Literary_Arts.Models.MemberUserModel)ViewBag.GetLoginUser()).MEM_ID)' ;
+        console.log(loginUser);
         //先創造 大項目 
         for (var i = 0; i < data.length; i++) {
             if (data[i].SORT_ID != null) {

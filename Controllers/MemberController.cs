@@ -1,15 +1,18 @@
 ﻿using Literary_Arts.Dao;
 using Literary_Arts.Models;
 using Literary_Arts.Models.System;
+using NLog.LayoutRenderers.Wrappers;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.PerformanceData;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 
 namespace Literary_Arts.Controllers
 {
+    [AllowAnonymous]
     public class MemberController : _Controller
     {
         /// <summary>
@@ -19,7 +22,7 @@ namespace Literary_Arts.Controllers
         public ActionResult Login()
         {
             if (User.Identity.IsAuthenticated) {
-                return Redirect("/");
+                return Redirect(FormsAuthentication.DefaultUrl);
             }
             return View();
         }
@@ -30,6 +33,9 @@ namespace Literary_Arts.Controllers
         /// <param name="MEM_ID"></param>
         /// <param name="MEM_PASS"></param>
         /// <returns></returns>
+        /// TODO: 1. 可以將 帳號檢查 做成function  
+        ///       2. 可以將 設定session 也做成function
+        ///  目的 :  讓controller 乾淨好讀
         [HttpPost,ValidateAntiForgeryToken]
         public JsonResult Login(string MEM_ID, string MEM_PASS) 
         {
@@ -54,9 +60,32 @@ namespace Literary_Arts.Controllers
                     return Json(new RtnResultModel(false, SysSet.GetParamItemValue("SYS_MESSAGE", "login_pass_error")));
                 }
 
+                model.USER_IP = Request.UserHostAddress;
+                Session["loginUser"] = model;
+                FormsAuthentication.SetAuthCookie(GetLoginUser().MEM_ID, false);
+                Response.AppendCookie(new HttpCookie(FormsAuthentication.FormsCookieName)
+                {
+                    Value = FormsAuthentication.Encrypt(new FormsAuthenticationTicket(1, GetLoginUser().MEM_ID, DateTime.Now, DateTime.Now.AddMinutes(30), false, GetLoginUser().MEM_ID, FormsAuthentication.FormsCookiePath))
+                });
+
+
+
                 //驗證成功
                 return Json(new RtnResultModel(true, ""));
             }
+        }
+
+        public ActionResult Logout() {
+            Session.Clear();
+            
+            //將Cookies設為到期
+            foreach(string cookieName in Response.Cookies) {
+                Response.Cookies[cookieName].Expires = DateTime.Now.AddDays(-1);
+            }
+
+            //清除表單驗證票證
+            FormsAuthentication.SignOut();
+            return View("Login");
         }
 
         /// <summary>
