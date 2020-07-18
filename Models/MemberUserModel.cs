@@ -70,7 +70,7 @@ namespace Literary_Arts.Models
         /// <summary>
         /// 創建日期
         /// </summary>
-        public string CRT_DATE { get; set; }
+        public DateTime CRT_DATE { get; set; }
 
         /// <summary>
         /// 創建帳號
@@ -80,7 +80,7 @@ namespace Literary_Arts.Models
         /// <summary>
         /// 修改日期
         /// </summary>
-        public string MDF_DATE { get; set; }
+        public DateTime? MDF_DATE { get; set; }
 
         /// <summary>
         /// 修改帳號

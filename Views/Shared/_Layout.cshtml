@@ -112,41 +112,44 @@
 
     @RenderSection("scripts", required: false)
 <script>
-    
+
     // AOS animate
     AOS.init({
         duration: 2500
     });
 
     $(function () {
+        var loginUser = '@(((Literary_Arts.Models.MemberUserModel)ViewBag.GetLoginUser()).MEM_ID)';
         $.ajax({
-            url: '@Url.Action("GetFunctionDate", "SetFunction")',
+            url: '@Url.Action("GetFunctionData", "SetFunction")',
             type: 'POST',
             dataType: "Json",
+            data: { MEM_ID: loginUser },
             success: function (res) {
-                //functionData = res;
                 SetFunctionUrlGroup(res);
             },
             error: function () {
-                console.log('navBar 產生失敗');
+                alert("navbar產生失敗");
             }
         })
     })
 
     //設定 navbar
     function SetFunctionUrlGroup(data) {
-        var loginUser = '@(((Literary_Arts.Models.MemberUserModel)ViewBag.GetLoginUser()).MEM_ID)' ;
-        console.log(loginUser);
-        //先創造 大項目 
+        //先創造 大項目
         for (var i = 0; i < data.length; i++) {
+            //若已登入則不顯示登入
+            if ('@User.Identity.IsAuthenticated' == "True" && data[i].FUNCTION_ID == "Login") {
+                continue;
+            }
+
+            //若屬於[大項目]，則SORT_ID != null
             if (data[i].SORT_ID != null) {
-                //下拉式選單
+                //若url = null 則此[大項目]為 下拉式選單
                 if (data[i].FUNCTION_URL == null) {
-                    console.log(data[i].IS_SPECIAL_FN);
-                    //特殊處理 
+                    //按鈕需特殊處理
                     if (data[i].IS_SPECIAL_FN == '1') {
-                        
-                        //[小幫手]
+                        //[小幫手]按鈕為 圖片的方式顯示 所以另外處理
                         if (data[i].FUNCTION_ID == 'Help') {
                             $("#art_nav").append(`<li class="nav-item">
                                                     <a class="helper" id="aboutUsButton" data-toggle="modal" data-target="#aboutUsDiv" style="cursor: pointer;">` +
@@ -155,34 +158,36 @@
                                                  </li>  `);
                         }
                     }
+                    //下拉式選單
                     else
                     {
                         $("#art_nav").append(`<li class="nav-item dropdown" id="fn_` + data[i].FUNCTION_ID + `">
                                                     <a class="nav-link dropdown-toggle" href="" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">`
                                                         + data[i].FUNCTION_NAME +
-                                                    `</a> 
-                                                    <div class="dropdown-menu member dropdown-menu-right" id="parent_` + data[i].FUNCTION_ID + `" aria-labelledby="navbarDropdownMenuLink" > </div> 
+                                                    `</a>
+                                                    <div class="dropdown-menu member dropdown-menu-right" id="parent_` + data[i].FUNCTION_ID + `" aria-labelledby="navbarDropdownMenuLink" > </div>
                                             </li>` );
                     }
-                    
-                //單純連結按鈕
+
+                //若有url 代表 [大項目] 是一個單純連結的按鈕
                 } else {
-                    
+
                     //一般正常navbar按鈕
                     $("#art_nav").append(` <li class="nav-item" id="fn_` + data[i].FUNCTION_ID +  `"> <a class="nav-link" href="` + data[i].FUNCTION_URL + `">` + data[i].FUNCTION_NAME + ` </a> </li > `);
                 }
-            }           
+            }
         }
 
         //再創造 小項目(下拉選單的細項目)
         for (var i = 0; i < data.length; i++) {
-            //發文的圖示
+            //圖示
             var icon = '';
 
+            //發文
             if (data[i].FUNCTION_ID == 'ArticlePost') {
                 icon = '<i class="fas fa-pen" style="color:white;"></i>&nbsp';
             }
-            //特殊處理 
+            //特殊處理
             if (data[i].IS_SPECIAL_FN == '1') {
                 //[會員通知]
                 if (data[i].FUNCTION_ID == 'Notify') {
@@ -195,7 +200,7 @@
                                                                      + data[i].FUNCTION_NAME + `</a >`);
 
                 }
-                
+
             } else
             {
                 //有 click() function  的連結
@@ -207,7 +212,7 @@
                 {
                     $("#parent_" + data[i].PARENT_ID).append(`<a class="dropdown-item" id="fn_item_` + data[i].FUNCTION_ID + `" href = "` + data[i].FUNCTION_URL + `" >` +
                                                                 icon + data[i].FUNCTION_NAME + `</a>`);
-                } 
+                }
             }
 
         }

@@ -9,11 +9,11 @@ namespace Literary_Arts.Controllers.Sysop
 {
     public class SetFunctionController : _Controller
     {
-        public JsonResult GetFunctionDate()
+        public JsonResult GetFunctionData(string MEM_ID)
         {
             using (SetFunctionDao dao = new SetFunctionDao()) 
             {
-                return Json(dao.GetFunctionData());
+                return Json(dao.GetFunctionDataByID(HttpUtility.HtmlEncode(MEM_ID)));
             }
         }
     }

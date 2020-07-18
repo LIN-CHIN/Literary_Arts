@@ -68,6 +68,7 @@ namespace Literary_Arts.Controllers
         /// 文章發文 頁面
         /// </summary>
         /// <returns></returns>
+        [ArtAuthorizeModel("ArticlePost")]
         public ActionResult Post()
         {
             return View();

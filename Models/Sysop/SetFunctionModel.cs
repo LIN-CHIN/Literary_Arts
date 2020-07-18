@@ -26,7 +26,7 @@ namespace Literary_Arts.Models
         /// 父功能 代號
         /// </summary>
         public string PARENT_ID { get; set; }
-        
+
         /// <summary>
         /// 排序 (大項目) 例如: 討論區 、 會員下拉清單 
         /// </summary>
@@ -46,10 +46,15 @@ namespace Literary_Arts.Models
         /// 是否為特殊的function 例如 小幫手、通知 有自己的css要另外處理
         /// </summary>
         public string IS_SPECIAL_FN { get; set; }
-        
+
         /// <summary>
         /// 是否停用  0 = 不停用  1 = 停用
         /// </summary>
         public string IS_STOP { get; set; }
+
+        /// <summary>
+        /// 會員帳號
+        /// </summary>
+        public string MEM_ID {get; set; }
     }
 }

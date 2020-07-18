@@ -146,9 +146,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\Sysop\ArtRoleController.cs" />
+    <Compile Include="Dao\Sysop\ArtRoleDao.cs" />
+    <Compile Include="Models\Sysop\ArtRightModel.cs" />
     <Compile Include="Dao\MemberDao.cs" />
     <Compile Include="Dao\RecommendDao.cs" />
     <Compile Include="Models\MemberUserModel.cs" />
+    <Compile Include="Models\Sysop\ArtRoleModel.cs" />
+    <Compile Include="Models\System\ArtAuthorizeModel.cs" />
     <Compile Include="Models\System\RtnResultModel.cs" />
     <Compile Include="Models\_Model.cs" />
     <Compile Include="Web_Common\LogSet.cs" />
@@ -178,7 +183,6 @@
     <Compile Include="Models\ArticleReplyLikeModel.cs" />
     <Compile Include="Models\ArticleReplyModel.cs" />
     <Compile Include="Models\Sysop\SetParamModel.cs" />
-    <Compile Include="Models\System\ArtMemberModel.cs" />
     <Compile Include="Models\ArtRightModel.cs" />
     <Compile Include="Models\ArtRoleModel.cs" />
     <Compile Include="Models\ImageModel.cs" />

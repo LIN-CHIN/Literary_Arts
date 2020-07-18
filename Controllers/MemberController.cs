@@ -12,7 +12,6 @@ using System.Web.Security;
 
 namespace Literary_Arts.Controllers
 {
-    [AllowAnonymous]
     public class MemberController : _Controller
     {
         /// <summary>

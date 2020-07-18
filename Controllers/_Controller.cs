@@ -1,10 +1,12 @@
-﻿using Literary_Arts.Models;
+﻿using Literary_Arts.Dao.Sysop;
+using Literary_Arts.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+using System.Web.Security;
 
 namespace Literary_Arts.Controllers
 {
@@ -16,6 +18,11 @@ namespace Literary_Arts.Controllers
             base.Initialize(requestContext);
             ViewBag.GetLoginUser = new Func<MemberUserModel>(GetLoginUser);
         }
+
+        /// <summary>
+        /// 取得登入使用者
+        /// </summary>
+        /// <returns></returns>
         protected MemberUserModel GetLoginUser()
         {
             return Session == null || Session["loginUser"] == null ? new MemberUserModel() : (MemberUserModel)((MemberUserModel)Session["loginUser"]).Clone();
@@ -41,8 +48,7 @@ namespace Literary_Arts.Controllers
             set_value = SysSet.GetParamItemValue(target_item, class_type);
 
             return set_value;
-        }    
-
+        }
 
     }
 }
