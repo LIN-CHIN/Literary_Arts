@@ -8,6 +8,7 @@ using System.Linq;
 using System.Transactions;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 
 namespace Literary_Arts.Controllers
 {
@@ -86,9 +87,18 @@ namespace Literary_Arts.Controllers
         {
             using (ArticleDao dao = new ArticleDao(GetLoginUser()))
             {
-                ArticleModel model = dao.ByArtiNumGetArticle(HttpUtility.HtmlEncode(arti_num));
-                ViewBag.TagData = dao.ByNumGetTag<ArticleModel>("01", HttpUtility.HtmlEncode(arti_num));
-                return View(model);
+                //是否有權利操作此功能
+                bool IsHaveAuth = dao.IsHaveAuthorityOperateFn("01", false, arti_num, GetLoginUser());
+                if (IsHaveAuth)
+                {
+                    ArticleModel model = dao.ByArtiNumGetArticle(HttpUtility.HtmlEncode(arti_num));
+                    ViewBag.TagData = dao.ByNumGetTag<ArticleModel>("01", HttpUtility.HtmlEncode(arti_num));
+                    return View(model);
+                }
+                else
+                {
+                    return Redirect("/Home/Index");
+                }
             }
         }
 
@@ -104,9 +114,18 @@ namespace Literary_Arts.Controllers
         {
             using (ArticleDao dao = new ArticleDao(GetLoginUser()))
             {
-                //ArticleModel model = dao.ByArtiNumGetArticle(HttpUtility.HtmlEncode(arti_num));
-                //ViewBag.TagData = dao.ByNumGetTag<ArticleModel>("01", HttpUtility.HtmlEncode(arti_num));
-                return Json("");
+                //是否有權利操作此功能
+                bool IsHaveAuth = dao.IsHaveAuthorityOperateFn("01", false, model.ARTI_NUM, GetLoginUser());
+                if (IsHaveAuth)
+                {
+                    return Json("");
+                }
+                else {
+                    return Json("");
+                }
+                    //ArticleModel model = dao.ByArtiNumGetArticle(HttpUtility.HtmlEncode(arti_num));
+                    //ViewBag.TagData = dao.ByNumGetTag<ArticleModel>("01", HttpUtility.HtmlEncode(arti_num));
+                    
             }
         } 
 

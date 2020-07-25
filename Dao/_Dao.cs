@@ -13,6 +13,8 @@ using System.Collections;
 using Literary_Arts.Web_Common;
 using System.Text;
 using Microsoft.Ajax.Utilities;
+using Literary_Arts.Dao.Sysop;
+using Microsoft.SqlServer.Server;
 
 namespace Literary_Arts.Dao
 {
@@ -276,6 +278,97 @@ namespace Literary_Arts.Dao
             
         }
         #endregion
+
+        /// <summary>
+        /// 是否有權利取得function
+        /// </summary>
+        /// <param name="type">
+        ///     01 = 文章 
+        ///     02 = 推薦
+        ///     03 = 活動
+        ///     04 = 專欄
+        /// </param>
+        /// <param name="is_message">
+        ///     true = 留言功能
+        ///     false = 文章功能
+        /// </param>
+        /// <returns></returns>
+        public bool IsHaveAuthorityOperateFn(string type, bool is_message,string num, MemberUserModel model)
+        {
+            string table_name = "";
+            string num_name = "";
+            bool is_sysop = false;
+            using (ArtRoleDao dao = new ArtRoleDao(model)) {
+                //如果帳號有找到關於系統管理員的角色  is_sysop = true
+                is_sysop = dao.GetRoleByMemID(model.MEM_ID).Where(d => d.ROLE_ID == "SystemManagerRole").Count() > 0 ;
+            }
+
+            #region 取得table name 和 num名稱
+            //依照參數 找對應的table name 和 num名稱
+            if (type == "01")  
+            {
+                //文章留言
+                if (is_message) 
+                {
+                    table_name = "ARTICLE_REPLY";
+                    num_name = "ARTI_REPLY_NUM";
+                }
+                //文章
+                else
+                {
+                    table_name = "VW_ARTICLE_LIST";
+                    num_name = "ARTI_NUM";
+                }
+            }
+            else if (type == "02" || type == "03" || type == "04")
+            {
+                //如果是 推薦、活動、專欄 留言
+                if (is_message)
+                {
+                    //推薦留言
+                    if (type == "02") {
+                        table_name = "RECOMMEND_REPLY";
+                        num_name = "RECOM_REPLY_NUM";
+                    }
+                }
+                //推薦、活動、專欄 只有管理員可以使用
+                else
+                {
+                    //如果為系統管理員
+                    if (is_sysop) 
+                    {
+                        return true;
+                    }
+                    else 
+                    {
+                        return false;
+                    }
+                }
+            }
+            #endregion
+            try
+            {
+                strSql = @"SELECT COUNT(1) AS total
+                           FROM {0}
+                           WHERE MEM_ID = @mem_id AND {1} = @num ";
+                //替換table and num
+                strSql = string.Format(strSql, table_name, num_name);
+
+                objParam = new
+                {
+                    mem_id = model.MEM_ID,
+                    num = num
+                };
+
+                return ExecuteQuery<int>(strSql, objParam).FirstOrDefault() > 0 ? true :false ;
+            }
+            catch(Exception ex) 
+            {
+                LogSet.LogError(ex.ToString());
+                return false;
+            }
+           
+        }
 
         /// <summary>
         /// 取得物件屬性名稱(Properties Name)
