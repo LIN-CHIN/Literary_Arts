@@ -81,6 +81,7 @@ namespace Literary_Arts.Controllers
         /// 編輯文章 頁面
         /// </summary>
         /// <returns></returns>
+        [Authorize]
         public ActionResult Update(string arti_num)
         {
             using (ArticleDao dao = new ArticleDao(GetLoginUser()))
@@ -98,6 +99,7 @@ namespace Literary_Arts.Controllers
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public JsonResult UpdateArticle(ArticleModel model)
         {
             using (ArticleDao dao = new ArticleDao(GetLoginUser()))
@@ -112,6 +114,7 @@ namespace Literary_Arts.Controllers
         /// 編輯文章 留言
         /// </summary>
         /// <returns></returns>
+        [Authorize]
         public ActionResult UpdateReply()
         {
             return View();
@@ -126,6 +129,7 @@ namespace Literary_Arts.Controllers
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public JsonResult DeleteArticle(string arti_num)
         {
             using (ArticleDao dao = new ArticleDao(GetLoginUser()))
@@ -153,6 +157,7 @@ namespace Literary_Arts.Controllers
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public JsonResult DeleteReply(string arti_reply_num)
         {
             using (ArticleDao dao = new ArticleDao(GetLoginUser()))

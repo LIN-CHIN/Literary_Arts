@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.PerformanceData;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
@@ -20,7 +21,7 @@ namespace Literary_Arts.Controllers
         /// <returns></returns>
         public ActionResult Login()
         {
-            if (User.Identity.IsAuthenticated) {
+            if (User.Identity.IsAuthenticated && GetLoginUser().MEM_ID != null) {
                 return Redirect(FormsAuthentication.DefaultUrl);
             }
             return View();
@@ -74,6 +75,7 @@ namespace Literary_Arts.Controllers
             }
         }
 
+        [Authorize]
         public ActionResult Logout() {
             Session.Clear();
             
@@ -83,8 +85,11 @@ namespace Literary_Arts.Controllers
             }
 
             //清除表單驗證票證
+            Session.Abandon();
             FormsAuthentication.SignOut();
-            return View("Login");
+            Response.Cookies.Clear();
+
+            return RedirectToAction("Login");
         }
 
         /// <summary>
@@ -100,6 +105,7 @@ namespace Literary_Arts.Controllers
         /// 會員通知
         /// </summary>
         /// <returns></returns>
+        [Authorize]
         public ActionResult Notify()
         {
             return View();

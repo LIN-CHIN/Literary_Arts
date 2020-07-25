@@ -13,8 +13,9 @@ using System.Web.Mvc;
 namespace Literary_Arts.Models.System
 {
     /// <summary>
-    /// 自訂驗證 : 根據
-    /// 使用方法 : 在要Controller前 +[ArtAuthorizeModel("CreateRecommend")]
+    /// 自訂驗證 : 根據角色權限來判斷當前的Action是否能夠讓使用者進入
+    /// 使用方法 : 在要Controller前 +[ArtAuthorizeModel("CreateRecommend")]  
+    ///            "CreateRecommend" = DB set_function的 function_id
     /// </summary>
     public class ArtAuthorizeModel : AuthorizeAttribute
     {
@@ -24,7 +25,7 @@ namespace Literary_Arts.Models.System
         public string fn_name { get; set; }
 
         public ArtAuthorizeModel(string fn_name ) {
-            this.fn_name = fn_name;
+            this.fn_name = HttpUtility.HtmlEncode(fn_name);
         }
 
         protected override bool AuthorizeCore(HttpContextBase httpContext)

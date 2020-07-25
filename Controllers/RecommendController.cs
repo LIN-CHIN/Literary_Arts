@@ -54,11 +54,17 @@ namespace Literary_Arts.Controllers
         /// 編輯官方推薦頁面
         /// </summary>
         /// <returns></returns>
+        [Authorize]
         public ActionResult Update()
         {
             return View();
         }
 
+        /// <summary>
+        /// 編輯官方推薦留言
+        /// </summary>
+        /// <returns></returns>
+        [Authorize]
         public ActionResult UpdateReply()
         {
             return View();
