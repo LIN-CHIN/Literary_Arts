@@ -1,5 +1,6 @@
 ﻿using Literary_Arts.Dao.Sysop;
 using Literary_Arts.Models;
+using Literary_Arts.Models.System;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,12 @@ namespace Literary_Arts.Controllers
 {
     public class _Controller : Controller
     {
+        //設定初始結果，有權限對各種文章做操作時，才能改變result
+        //目的:減少每一段controller的 update / delete 區塊的重複代碼
+        public RtnResultModel upd_result = new RtnResultModel(false, SysSet.GetParamItemValue("SYS_MESSAGE", "not_auth_upd"));  //無編輯權限
+        public RtnResultModel upd_reply_result = new RtnResultModel(false, SysSet.GetParamItemValue("SYS_MESSAGE", "not_auth_upd_reply")); //無編輯留言權限
+        public RtnResultModel del_result = new RtnResultModel(false, SysSet.GetParamItemValue("SYS_MESSAGE", "not_auth_del"));  //無刪除權限
+        public RtnResultModel del_reply_result = new RtnResultModel(false, SysSet.GetParamItemValue("SYS_MESSAGE", "not_auth_del_reply")); //無刪除留言權限
 
         protected override void Initialize(RequestContext requestContext)
         {

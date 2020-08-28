@@ -280,7 +280,8 @@ namespace Literary_Arts.Dao
         #endregion
 
         /// <summary>
-        /// 是否有權利取得function
+        /// 是否有權限操作編輯/刪除的function
+        /// (自己發的文才可以操作)
         /// </summary>
         /// <param name="type">
         ///     01 = 文章 
@@ -305,6 +306,7 @@ namespace Literary_Arts.Dao
 
             #region 取得table name 和 num名稱
             //依照參數 找對應的table name 和 num名稱
+            //文章
             if (type == "01")  
             {
                 //文章留言
@@ -320,16 +322,28 @@ namespace Literary_Arts.Dao
                     num_name = "ARTI_NUM";
                 }
             }
+            //推薦、活動、專欄
             else if (type == "02" || type == "03" || type == "04")
             {
                 //如果是 推薦、活動、專欄 留言
                 if (is_message)
                 {
                     //推薦留言
-                    if (type == "02") {
+                    if (type == "02")
+                    {
                         table_name = "RECOMMEND_REPLY";
                         num_name = "RECOM_REPLY_NUM";
                     }
+                    //活動
+                    else if (type == "03")
+                    {
+                        //TODO 還沒有活動留言的表
+                    }
+                    else if (type == "04")
+                    {
+                        //TODO 還沒有專欄留言的表
+                    }
+
                 }
                 //推薦、活動、專欄 只有管理員可以使用
                 else

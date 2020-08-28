@@ -199,6 +199,32 @@ namespace Literary_Arts.Dao
             }
         }
 
+        /// <summary>
+        /// 編輯文章留言功能
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public RtnResultModel UpdateArticleReply(ArticleModel model)
+        {
+            try
+            {
+                strSql = @"UPDATE ARTICLE_REPLY 
+                                SET ARTI_REPLY_CONT= ''         --留言內容
+                                  , MDF_DATE= GETDATE()         --修改日期
+                           WHERE ARTI_REPLY_NUM = @arti_reply_num";
+                objParam = new
+                {
+                    arti_reply_num = model.ARTI_REPLY_NUM
+                };
+                return new RtnResultModel(true, SysSet.GetParamItemValue("SYS_MESSAGE", "update_true"));
+            }
+            catch (Exception ex)
+            {
+                LogSet.LogError(ex.ToString());
+                return new RtnResultModel(true, SysSet.GetParamItemValue("SYS_MESSAGE", "update_false"));
+            }
+        }
+
         #region 刪除
         /// <summary>
         /// 刪除文章

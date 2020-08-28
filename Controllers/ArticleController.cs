@@ -14,6 +14,9 @@ namespace Literary_Arts.Controllers
 {
     public class ArticleController : _Controller
     {
+        //是否有權限對各種文章操作 update 或 insert
+        bool IsHaveAuth = false;
+
         #region 頁面
         /// <summary>
         /// 文章討論區頁面
@@ -87,8 +90,8 @@ namespace Literary_Arts.Controllers
         {
             using (ArticleDao dao = new ArticleDao(GetLoginUser()))
             {
-                //是否有權利操作此功能
-                bool IsHaveAuth = dao.IsHaveAuthorityOperateFn("01", false, arti_num, GetLoginUser());
+                //是否有權利操作此編輯功能
+                IsHaveAuth = dao.IsHaveAuthorityOperateFn("01", false, arti_num, GetLoginUser());
                 if (IsHaveAuth)
                 {
                     ArticleModel model = dao.ByArtiNumGetArticle(HttpUtility.HtmlEncode(arti_num));
@@ -115,28 +118,38 @@ namespace Literary_Arts.Controllers
             using (ArticleDao dao = new ArticleDao(GetLoginUser()))
             {
                 //是否有權利操作此功能
-                bool IsHaveAuth = dao.IsHaveAuthorityOperateFn("01", false, model.ARTI_NUM, GetLoginUser());
+                IsHaveAuth = dao.IsHaveAuthorityOperateFn("01", false, model.ARTI_NUM, GetLoginUser());
                 if (IsHaveAuth)
                 {
-                    return Json("");
+                    upd_result = dao.UpdateArticle(model);
                 }
-                else {
-                    return Json("");
-                }
-                    //ArticleModel model = dao.ByArtiNumGetArticle(HttpUtility.HtmlEncode(arti_num));
-                    //ViewBag.TagData = dao.ByNumGetTag<ArticleModel>("01", HttpUtility.HtmlEncode(arti_num));
-                    
+
+                return Json(upd_result); 
             }
         } 
 
         /// <summary>
-        /// 編輯文章 留言
+        /// 編輯文章留言功能
         /// </summary>
         /// <returns></returns>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         [Authorize]
-        public ActionResult UpdateReply()
+        public JsonResult UpdateReply(ArticleModel model)
         {
-            return View();
+            using (ArticleDao dao = new ArticleDao(GetLoginUser())) 
+            {
+                //是否有權利操作此功能
+                IsHaveAuth = dao.IsHaveAuthorityOperateFn("01", true, model.ARTI_NUM, GetLoginUser());
+                if (IsHaveAuth)
+                {
+                    upd_reply_result = dao.UpdateArticleReply(model);
+                }
+
+                return Json(upd_reply_result);
+            }
+               
+           
         }
         #endregion
 
@@ -153,19 +166,24 @@ namespace Literary_Arts.Controllers
         {
             using (ArticleDao dao = new ArticleDao(GetLoginUser()))
             {
-                using (TransactionScope scope = new TransactionScope())
+                //判斷是否有權限刪除
+                IsHaveAuth = dao.IsHaveAuthorityOperateFn("01", false, HttpUtility.HtmlEncode(arti_num), GetLoginUser());
+                if (IsHaveAuth) 
                 {
-                    RtnResultModel del_article = dao.DeleteArticle(HttpUtility.HtmlEncode(arti_num));
-                    RtnResultModel del_reply = dao.DeleteReply(HttpUtility.HtmlEncode(arti_num));
-                    scope.Complete();
-                    if (del_article.success && del_reply.success)
+                    using (TransactionScope scope = new TransactionScope())
                     {
-                        return Json(del_article.message);
-                    }
-                    else {
-                        return Json(SysSet.GetParamItemValue("SYS_MESSAGE", "sys_error"));
+                        //刪除文章 和 文章留言
+                        RtnResultModel del_article = dao.DeleteArticle(HttpUtility.HtmlEncode(arti_num));
+                        RtnResultModel del_reply = dao.DeleteReply(HttpUtility.HtmlEncode(arti_num));
+                        scope.Complete();
+                        if (del_article.success && del_reply.success)
+                        {
+                            //如果刪除成功，將結果給del_result
+                            del_result = del_article;
+                        }
                     }
                 }
+                return Json(del_result);
             }
         }
 
@@ -181,15 +199,16 @@ namespace Literary_Arts.Controllers
         {
             using (ArticleDao dao = new ArticleDao(GetLoginUser()))
             {
-                RtnResultModel del_reply = dao.DeleteReply(HttpUtility.HtmlEncode(arti_reply_num));
-                if (del_reply.success)
+                //是否有權限刪除留言
+                IsHaveAuth = dao.IsHaveAuthorityOperateFn("01", false, arti_reply_num, GetLoginUser());
+
+                if (IsHaveAuth) 
                 {
-                    return Json(del_reply.message);
+                    //取得刪除結果
+                    del_reply_result = dao.DeleteReply(HttpUtility.HtmlEncode(arti_reply_num));
                 }
-                else
-                {
-                    return Json(SysSet.GetParamItemValue("SYS_MESSAGE", "sys_error"));
-                }
+
+                return Json(del_reply_result);
             }
         }
         #endregion

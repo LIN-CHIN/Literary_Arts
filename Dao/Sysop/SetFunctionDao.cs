@@ -12,7 +12,7 @@ namespace Literary_Arts.Dao.Sysop
         public SetFunctionDao(MemberUserModel loginUser = null) : base(loginUser) { }
 
         /// <summary>
-        /// 取得 SET_FUNCTION 資料
+        /// 根據mem_id取得 SET_FUNCTION 資料
         /// </summary>
         /// <returns></returns>
         public IList<SetFunctionModel> GetFunctionDataByID(string MEM_ID) {
