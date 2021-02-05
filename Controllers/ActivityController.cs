@@ -1,4 +1,4 @@
-﻿using Literary_Arts.Models.System;
+﻿using Literary_Arts.Web_Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,7 +31,7 @@ namespace Literary_Arts.Controllers
         /// 限時活動發文頁面
         /// </summary>
         /// <returns></returns>
-        [ArtAuthorizeModel("CreateActivity")]
+        [CustomAuthorize("CreateActivity")]
         public ActionResult Post()
         {
             return View();

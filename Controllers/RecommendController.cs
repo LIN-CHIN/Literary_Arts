@@ -1,6 +1,7 @@
 ﻿using Literary_Arts.Dao;
 using Literary_Arts.Models;
 using Literary_Arts.Models.System;
+using Literary_Arts.Web_Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -44,7 +45,7 @@ namespace Literary_Arts.Controllers
         /// 官方推薦發文頁面
         /// </summary>
         /// <returns></returns>
-        [ArtAuthorizeModel("CreateRecommend")]
+        [CustomAuthorize("CreateRecommend")]
         public ActionResult Post()
         {
             return View();

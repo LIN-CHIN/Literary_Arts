@@ -153,9 +153,9 @@
     <Compile Include="Dao\RecommendDao.cs" />
     <Compile Include="Models\MemberUserModel.cs" />
     <Compile Include="Models\Sysop\ArtRoleModel.cs" />
-    <Compile Include="Models\System\ArtAuthorizeModel.cs" />
     <Compile Include="Models\System\RtnResultModel.cs" />
     <Compile Include="Models\_Model.cs" />
+    <Compile Include="Web_Common\CustomAuthorize.cs" />
     <Compile Include="Web_Common\LogSet.cs" />
     <Compile Include="Web_Common\SysSet.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />

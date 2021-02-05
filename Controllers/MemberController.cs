@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Diagnostics.PerformanceData;
 using System.Linq;
 using System.Net;
+using System.Security.Principal;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
@@ -21,7 +22,8 @@ namespace Literary_Arts.Controllers
         /// <returns></returns>
         public ActionResult Login()
         {
-            if (User.Identity.IsAuthenticated && GetLoginUser().MEM_ID != null) {
+            //如果驗證通過導致預設首頁
+            if (User.Identity.IsAuthenticated) {
                 return Redirect(FormsAuthentication.DefaultUrl);
             }
             return View();
@@ -36,7 +38,7 @@ namespace Literary_Arts.Controllers
         /// TODO: 1. 可以將 帳號檢查 做成function  
         ///       2. 可以將 設定session 也做成function
         ///  目的 :  讓controller 乾淨好讀
-        [HttpPost,ValidateAntiForgeryToken]
+        [HttpPost]
         public JsonResult Login(string MEM_ID, string MEM_PASS) 
         {
             using (MemberDao dao = new MemberDao(GetLoginUser())) 
@@ -68,26 +70,27 @@ namespace Literary_Arts.Controllers
                     Value = FormsAuthentication.Encrypt(new FormsAuthenticationTicket(1, GetLoginUser().MEM_ID, DateTime.Now, DateTime.Now.AddMinutes(30), false, GetLoginUser().MEM_ID, FormsAuthentication.FormsCookiePath))
                 });
 
-
-
                 //驗證成功
                 return Json(new RtnResultModel(true, ""));
             }
         }
 
         [Authorize]
-        public ActionResult Logout() {
-            Session.Clear();
-            
-            //將Cookies設為到期
-            foreach(string cookieName in Response.Cookies) {
-                Response.Cookies[cookieName].Expires = DateTime.Now.AddDays(-1);
-            }
+        public ActionResult Logout()
+        {
+            // 建立一個同名的 Cookie 來覆蓋原本的 Cookie
+            HttpCookie cookie1 = new HttpCookie(FormsAuthentication.FormsCookieName, "");
+            cookie1.Expires = DateTime.Now.AddYears(-1);
+            Response.Cookies.Add(cookie1);
+
+            // 建立 ASP.NET 的 Session Cookie 同樣是為了覆蓋
+            HttpCookie cookie2 = new HttpCookie("ASP.NET_SessionId", "");
+            cookie2.Expires = DateTime.Now.AddYears(-1);
+            Response.Cookies.Add(cookie2);
 
             //清除表單驗證票證
             Session.Abandon();
             FormsAuthentication.SignOut();
-            Response.Cookies.Clear();
 
             return RedirectToAction("Login");
         }

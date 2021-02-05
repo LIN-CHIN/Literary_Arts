@@ -1,4 +1,5 @@
 ﻿using Literary_Arts.Models.System;
+using Literary_Arts.Web_Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,7 +32,7 @@ namespace Literary_Arts.Controllers
         /// 專欄發文 頁面
         /// </summary>
         /// <returns></returns>
-        [ArtAuthorizeModel("CreateSpecialColumn")]
+        [CustomAuthorize("CreateSpecialColumn")]
         public ActionResult Post()
         {
             return View();
