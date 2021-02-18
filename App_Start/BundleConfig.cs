@@ -34,12 +34,9 @@ namespace Literary_Arts
                     "~/Content/js/aos.js",
                      "~/Content/js/index.js",
                     "~/Scripts/bootstrap.js",
-                     "~/Content/js/active.js"
+                     "~/Content/js/active.js",
+                     "~/Scripts/Literary_Arts/common.js"
                       ));
-
-            
-
-
 
 
         }

@@ -43,6 +43,33 @@ namespace Literary_Arts.Dao
         }
 
         /// <summary>
+        /// 取得使用者有按過讚的文章
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public IList<ArticleModel> ByIdGetLikeList(string id)
+        {
+            try
+            {
+                strSql = @" SELECT ARTI_NUM
+                            FROM ARTICLE_LIKE
+                            WHERE MEM_ID = @mem_id ";
+
+                objParam = new
+                {
+                    mem_id = HttpUtility.HtmlEncode(id)
+                };
+
+                return ExecuteQuery<ArticleModel>(strSql,objParam);
+            }
+            catch (Exception ex)
+            {
+                LogSet.LogError(ex.ToString());
+                return new List<ArticleModel>();
+            }
+        }
+
+        /// <summary>
         /// 根據文章編號 取得文章資訊
         /// </summary>
         /// <param name="artiNum"></param>
@@ -66,7 +93,7 @@ namespace Literary_Arts.Dao
 
                 objParam = new
                 {
-                    arti_Num = arti_Num
+                    arti_Num = HttpUtility.HtmlEncode(arti_Num)
                 };
 
                 return ExecuteQuery<ArticleModel>(strSql, objParam).FirstOrDefault();
@@ -107,7 +134,7 @@ namespace Literary_Arts.Dao
 
                 objParam = new
                 {
-                    arti_class = arti_class
+                    arti_class = HttpUtility.HtmlEncode(arti_class)
                 };
 
                 return ExecuteQuery<ArticleModel>(strSql, objParam);
@@ -153,7 +180,7 @@ namespace Literary_Arts.Dao
 
                 objParam = new
                 {
-                    num = num
+                    num = HttpUtility.HtmlEncode(num)
                 };
 
                 return ExecuteQuery<ArticleModel>(strSql, objParam);
@@ -237,7 +264,7 @@ namespace Literary_Arts.Dao
                 strSql = @"DELETE FROM ARTICLE WHERE arti_num = @arti_num";
                 objParam = new
                 {
-                    arti_num = arti_num
+                    arti_num = HttpUtility.HtmlEncode(arti_num)
                 };
 
                 ExecuteCommand(strSql, objParam);
@@ -263,7 +290,7 @@ namespace Literary_Arts.Dao
                 strSql = @"DELETE FROM ARTICLE_REPLY WHERE arti_reply_num = @arti_reply_num";
                 objParam = new
                 {
-                    arti_reply_num = arti_reply_num
+                    arti_reply_num = HttpUtility.HtmlEncode(arti_reply_num)
                 };
 
                 ExecuteCommand(strSql, objParam);

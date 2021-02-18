@@ -139,8 +139,6 @@
         var isAuthentocated = '@User.Identity.IsAuthenticated';
         var loginUser = '@(((Literary_Arts.Models.MemberUserModel)ViewBag.GetLoginUser()).MEM_ID)'; 
 
-        console.log(isAuthentocated == "True");
-        console.log(loginUser == "");
         //先創造 大項目
         for (var i = 0; i < data.length; i++) {
             //如果已經登入 不需顯示登入按鈕

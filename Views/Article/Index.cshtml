@@ -87,18 +87,30 @@
                         <!-- info -->
                         <div class="info">
                             <!-- 愛心按鈕 -->
-                            <button type="button" id="LikeUnLogIn" class="btn postInfo style="display:none" onclick="location.href='/login'">
-                                <i class="fab fa-gratipay"></i>
-                                <a> @item.LIKE_COUNT </a>
-                            </button>
+                            @{
+                                var likeList = (IList<Literary_Arts.Models.ArticleModel>)ViewBag.likeList;
+                                if (likeList.Where(x => x.ARTI_NUM == item.ARTI_NUM).Count() > 0)
+                                {
+                                    <button type="button" id="LikeUnLogIn" class="btn postInfo" style="color:red;" onclick="location.href='/login'">
+                                        <i class="fab fa-gratipay" ></i>
+                                        <a> @item.LIKE_COUNT </a>
+                                    </button>
+                                }
+                                else{
+                                    <button type="button" id="LikeUnLogIn" class="btn postInfo" onclick="location.href='/login'">
+                                        <i class="fab fa-gratipay"></i>
+                                        <a> @item.LIKE_COUNT </a>
+                                    </button>
+                                }
+                            }
                             @*<button type="button" id="addLike" + items[0][i].artiNum %> class="btn postInfo"
-                                    style="display:none" onclick=<%= "addLike(" + items[0][i].artiNum + ")" %>>
-                                    <i class="fab fa-gratipay"></i><a id=<%= "addLikeCount" + items[0][i].artiNum %>>
-                                        <%= items[0][i].likeCount %> </a> </button>
-                                <button type="button" id=<%= "delLike" + items[0][i].artiNum %> class="btn postInfo"
-                                    style="display:none" onclick=<%= "delLike(" + items[0][i].artiNum + ")" %>>
-                                    <i class="fab fa-gratipay" style="color:#c93737;"></i><a id=<%= "delLikeCount" + items[0][i].artiNum %>>
-                                        <%= items[0][i].likeCount %></a></button>*@
+            style="display:none" onclick=<%= "addLike(" + items[0][i].artiNum + ")" %>>
+            <i class="fab fa-gratipay"></i><a id=<%= "addLikeCount" + items[0][i].artiNum %>>
+                <%= items[0][i].likeCount %> </a> </button>
+        <button type="button" id=<%= "delLike" + items[0][i].artiNum %> class="btn postInfo"
+            style="display:none" onclick=<%= "delLike(" + items[0][i].artiNum + ")" %>>
+            <i class="fab fa-gratipay" style="color:#c93737;"></i><a id=<%= "delLikeCount" + items[0][i].artiNum %>>
+                <%= items[0][i].likeCount %></a></button>*@
 
                             <!-- 留言數量按鈕 -->
                             <button type="button" class="btn postInfo" onclick="location.href='#'">
@@ -111,11 +123,11 @@
                                 <i class="far fa-bookmark"></i>
                             </button>
                             @*<button type="button" id=<%=  "addColle" + items[0][i].artiNum %> class="btn postInfo"
-                                    display: inline" onclick=<%= "addColle(" + items[0][i].artiNum + ")" %>>
-                                    <i class="far fa-bookmark"></i></button>
-                                <button type="button" id=<%= "delColle" + items[0][i].artiNum %> class="btn postInfo"
-                                    style="display: inline" onclick=<%= "delColle(" + items[0][i].artiNum + ")" %>>
-                                    <i class="fas fa-bookmark"></i></button>*@
+            display: inline" onclick=<%= "addColle(" + items[0][i].artiNum + ")" %>>
+            <i class="far fa-bookmark"></i></button>
+        <button type="button" id=<%= "delColle" + items[0][i].artiNum %> class="btn postInfo"
+            style="display: inline" onclick=<%= "delColle(" + items[0][i].artiNum + ")" %>>
+            <i class="fas fa-bookmark"></i></button>*@
                             <!--  收藏按鈕控制 -->
                         </div>
                         <!-- info結束 -->

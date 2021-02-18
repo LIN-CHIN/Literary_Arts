@@ -28,7 +28,9 @@ namespace Literary_Arts.Controllers
             using (ArticleDao dao = new ArticleDao(GetLoginUser()))
             {
                 IList<ArticleModel> model = dao.GetArticleList();
+                IList<ArticleModel> likeList = dao.ByIdGetLikeList(GetLoginUser().MEM_ID);
                 ViewBag.ArticleList = model;
+                ViewBag.LikeList = likeList;
                 ViewBag.TagData = dao.TagRouter(model, "01");
                 return View();
             }
