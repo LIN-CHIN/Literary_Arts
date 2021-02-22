@@ -60,7 +60,7 @@ namespace Literary_Arts.Dao
                     mem_id = HttpUtility.HtmlEncode(id)
                 };
 
-                return ExecuteQuery<ArticleModel>(strSql,objParam);
+                return ExecuteQuery<ArticleModel>(strSql, objParam);
             }
             catch (Exception ex)
             {
@@ -139,7 +139,7 @@ namespace Literary_Arts.Dao
 
                 return ExecuteQuery<ArticleModel>(strSql, objParam);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 LogSet.LogError(ex.ToString());
                 return new List<ArticleModel>();
@@ -219,7 +219,7 @@ namespace Literary_Arts.Dao
                 };
                 return new RtnResultModel(true, SysSet.GetParamItemValue("SYS_MESSAGE", "update_true"));
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 LogSet.LogError(ex.ToString());
                 return new RtnResultModel(true, SysSet.GetParamItemValue("SYS_MESSAGE", "update_false"));
@@ -260,7 +260,7 @@ namespace Literary_Arts.Dao
         /// <returns></returns>
         public RtnResultModel DeleteArticle(string arti_num) {
             try
-            {                               
+            {
                 strSql = @"DELETE FROM ARTICLE WHERE arti_num = @arti_num";
                 objParam = new
                 {
@@ -271,7 +271,7 @@ namespace Literary_Arts.Dao
 
                 return new RtnResultModel(true, SysSet.GetParamItemValue("SYS_MESSAGE", "del_true"));
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 LogSet.LogError(ex.ToString());
                 return new RtnResultModel(false, SysSet.GetParamItemValue("SYS_MESSAGE", "del_false"));
@@ -304,5 +304,169 @@ namespace Literary_Arts.Dao
             }
         }
         #endregion
+
+        /// <summary>
+        /// 判斷有沒有按過愛心
+        /// </summary>
+        /// <param name="num">編號</param>
+        /// <param name="id">會員帳號</param>
+        /// <param name="IsReply">用來判斷是不是留言愛心</param>
+        /// <returns></returns>
+        public bool IsClickLike(string num,string id, bool IsReply) {
+            try
+            {
+                strSql = @" SELECT COUNT(1)
+                                FROM {0}
+                                WHERE {1} = @num AND MEM_ID = @mem_id";
+                //文章
+                if (!IsReply)
+                {
+                    strSql = string.Format(strSql, "ARTICLE_LIKE", "ARTI_NUM");
+                }
+                else {
+                    strSql = string.Format(strSql, "ARTICLE_REPLY_LIKE", "ARTI_REPLY_NUM");
+                }
+
+                objParam = new
+                {
+                    num = HttpUtility.HtmlEncode(num),
+                    mem_id = HttpUtility.HtmlEncode(id)
+                };
+
+                return ExecuteQuery<int>(strSql, objParam).FirstOrDefault() >= 1  ? true : false;
+            }
+            catch (Exception ex) 
+            {
+                LogSet.LogError(ex.ToString());
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// 新增愛心
+        /// </summary>
+        /// <param name="num"></param>
+        /// <param name="id"></param>
+        /// <param name="IsReply">判斷是不是留言</param>
+        /// <returns></returns>
+        public bool addLike(string num, string id, bool IsReply) {
+            try
+            {
+               
+                strSql = @"INSERT INTO {0}
+                               (MEM_ID, 
+                                {1},
+                                CRT_DATE)
+                            VALUES
+                               ( @mem_id,
+                                 @num,
+                                 GETDATE() )";
+
+                //文章
+                if (!IsReply)
+                {
+                    strSql = string.Format(strSql, "ARTICLE_LIKE", "ARTI_NUM");
+                }
+                else
+                {
+                    strSql = string.Format(strSql, "ARTICLE_REPLY_LIKE", "ARTI_REPLY_NUM");
+                }
+
+                objParam = new
+                {
+                    num = HttpUtility.HtmlEncode(num),
+                    mem_id = HttpUtility.HtmlEncode(id)
+                };
+
+
+                return ExecuteCommand(strSql, objParam);
+            }
+            catch (Exception ex)
+            {
+                LogSet.LogError(ex.ToString());
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// 刪除愛心
+        /// </summary>
+        /// <param name="num"></param>
+        /// <param name="id"></param>
+        /// <param name="IsReply"></param>
+        /// <returns></returns>
+        public bool delLike(string num, string id, bool IsReply)
+        {
+            try
+            {
+
+                strSql = @"DELETE FROM {0} WHERE MEM_ID = @mem_id AND {1} = @num";
+
+                //文章
+                if (!IsReply)
+                {
+                    strSql = string.Format(strSql, "ARTICLE_LIKE", "ARTI_NUM");
+                }
+                else
+                {
+                    strSql = string.Format(strSql, "ARTICLE_REPLY_LIKE", "ARTI_REPLY_NUM");
+                }
+
+                objParam = new
+                {
+                    num = HttpUtility.HtmlEncode(num),
+                    mem_id = HttpUtility.HtmlEncode(id)
+                };
+
+
+                return ExecuteCommand(strSql, objParam);
+            }
+            catch (Exception ex)
+            {
+                LogSet.LogError(ex.ToString());
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// 取得愛心數量
+        /// </summary>
+        /// <param name="num"></param>
+        /// <param name="IsReply"></param>
+        /// <returns></returns>
+        public int GetLikeCount(string num, bool IsReply)
+        {
+            try
+            {
+                strSql = @" SELECT COUNT({1}) AS likeCount
+                            FROM {0}
+                            WHERE ARTI_NUM = @num 
+                            ";
+                //文章
+                if (!IsReply)
+                {
+                    strSql = string.Format(strSql, "ARTICLE_LIKE", "ARTI_NUM");
+                }
+                else
+                {
+                    strSql = string.Format(strSql, "ARTICLE_REPLY_LIKE", "ARTI_REPLY_NUM");
+                }
+
+                objParam = new
+                {
+                    num = HttpUtility.HtmlEncode(num)
+                };
+
+                return ExecuteQuery<int>(strSql, objParam).FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                LogSet.LogError(ex.ToString());
+                return 0;
+            }
+
+        }
+
+
     }
 }

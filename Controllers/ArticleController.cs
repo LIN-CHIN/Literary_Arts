@@ -215,5 +215,64 @@ namespace Literary_Arts.Controllers
             }
         }
         #endregion
+
+        /// <summary>
+        /// 點愛心的動作
+        /// </summary>
+        /// <param name="num"></param>
+        /// <param name="isReply"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public JsonResult ClickLike(string num,bool isReply) 
+        {
+            //沒登入
+            if (string.IsNullOrEmpty(GetLoginUser().MEM_ID))  
+            {
+                return Json(new RtnResultModel(false, ""));
+            }
+
+            using (ArticleDao dao = new ArticleDao(GetLoginUser())) {
+                //判斷有沒有點過愛心
+                bool isClick = dao.IsClickLike(num, GetLoginUser().MEM_ID, isReply);
+                bool result = false;
+                if (!isClick)
+                {
+                    result = dao.addLike(num, GetLoginUser().MEM_ID, isReply);
+                }
+                else {
+                    result = dao.delLike(num, GetLoginUser().MEM_ID, isReply);
+                }
+                int likeCount = dao.GetLikeCount(num, isReply);
+                object obj = new
+                {
+                    isClick = isClick,
+                    likeCount = likeCount
+                };
+
+                if (!result)
+                {
+                    return Json(new RtnResultModel(false, "新增/刪除愛心失敗"));
+                }
+                else {
+                    return Json(obj);
+                }
+            } 
+        }
+
+        /// <summary>
+        /// 取得愛心數量
+        /// </summary>
+        /// <param name="num"></param>
+        /// <param name="isReply"></param>
+        /// <returns></returns>
+        public int GetLikeCount(string num, bool isReply) 
+        {
+            using (ArticleDao dao = new ArticleDao(GetLoginUser()))
+            {
+                return dao.GetLikeCount(num, isReply);
+            }
+        }
+
+
     }
 }

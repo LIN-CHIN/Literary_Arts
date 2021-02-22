@@ -23,7 +23,7 @@ namespace Literary_Arts.Controllers
         public ActionResult Login()
         {
             //如果驗證通過導致預設首頁
-            if (User.Identity.IsAuthenticated) {
+            if (User.Identity.IsAuthenticated && !string.IsNullOrEmpty(GetLoginUser().MEM_ID)) {
                 return Redirect(FormsAuthentication.DefaultUrl);
             }
             return View();

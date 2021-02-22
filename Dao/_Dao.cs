@@ -20,7 +20,6 @@ namespace Literary_Arts.Dao
 {
     public class _Dao : IDisposable
     {
-        
         protected string strConnMain;           //存放連線字串 
         protected string strSql;                //存放SQL 指令  
         protected object objParam;              //存放SQL 參數
@@ -412,8 +411,6 @@ namespace Literary_Arts.Dao
         {
             return src.GetType().GetProperty(propName).GetValue(src, null);
         }
-
-
 
     }
 }
