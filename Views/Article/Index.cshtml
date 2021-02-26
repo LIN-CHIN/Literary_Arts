@@ -23,11 +23,11 @@
                 音樂類
             </button>
             <button type="button" class="btn btn-secondary footer"
-                    onclick="location.href='@Url.Action("ContentClass" ,"Article")?arti_class=' + '@SysSet.GetParamItemValue("LITERARY_CLASS_ENG", "03")' ">
+                    onclick="location.href='@Url.Action("ContentClass", "Article")?arti_class=' + '@SysSet.GetParamItemValue("LITERARY_CLASS_ENG", "03")' ">
                 書籍類
             </button>
             <button type="button" class="btn btn-secondary footer"
-                    onclick="location.href='@Url.Action("ContentClass" ,"Article")?arti_class=' + '@SysSet.GetParamItemValue("LITERARY_CLASS_ENG", "04")' ">
+                    onclick="location.href='@Url.Action("ContentClass", "Article")?arti_class=' + '@SysSet.GetParamItemValue("LITERARY_CLASS_ENG", "04")' ">
                 展覽類
             </button>
             <button type="button" class="btn btn-secondary footer"
@@ -104,14 +104,6 @@
                                     </button>
                                 }
                             }
-                            @*<button type="button" id="addLike" + items[0][i].artiNum %> class="btn postInfo"
-                                    style="display:none" onclick=<%= "addLike(" + items[0][i].artiNum + ")" %>>
-                                    <i class="fab fa-gratipay"></i><a id=<%= "addLikeCount" + items[0][i].artiNum %>>
-                                        <%= items[0][i].likeCount %> </a> </button>
-                                <button type="button" id=<%= "delLike" + items[0][i].artiNum %> class="btn postInfo"
-                                    style="display:none" onclick=<%= "delLike(" + items[0][i].artiNum + ")" %>>
-                                    <i class="fab fa-gratipay" style="color:#c93737;"></i><a id=<%= "delLikeCount" + items[0][i].artiNum %>>
-                                        <%= items[0][i].likeCount %></a></button>*@
 
                             <!-- 留言數量按鈕 -->
                             <button type="button" class="btn postInfo" onclick="location.href='#'">
@@ -119,22 +111,29 @@
                                 <a> @item.REPLY_COUNT </a>
                             </button>
 
-                            <!-- 收藏按鈕 -->
-                            <button type="button" id="unLogIn" class="btn postInfo" onclick="location.href='#'">
-                                <i class="far fa-bookmark"></i>
-                            </button>
-                            @*<button type="button" id=<%=  "addColle" + items[0][i].artiNum %> class="btn postInfo"
-                                    display: inline" onclick=<%= "addColle(" + items[0][i].artiNum + ")" %>>
-                                    <i class="far fa-bookmark"></i></button>
-                                <button type="button" id=<%= "delColle" + items[0][i].artiNum %> class="btn postInfo"
-                                    style="display: inline" onclick=<%= "delColle(" + items[0][i].artiNum + ")" %>>
-                                    <i class="fas fa-bookmark"></i></button>*@
-                            <!--  收藏按鈕控制 -->
+                            @{
+                                var CollList = (IList<Literary_Arts.Models.ArticleModel>)ViewBag.CollList;
+                                if (CollList == null) { CollList = new List<Literary_Arts.Models.ArticleModel>(); }
+                                if (CollList.Where(x => x.ARTI_NUM == item.ARTI_NUM).Count() > 0)
+                                {
+                                    <!-- 收藏按鈕(點擊狀態) -->
+                                    <button type="button" id="userColl_@item.ARTI_NUM" class="btn postInfo" onclick="clickCollection(@item.ARTI_NUM,'01')">
+                                        <i id="i_userColl_@item.ARTI_NUM" class="fas fa-bookmark"></i>
+                                    </button>
+                                }
+                                else
+                                {
+                                    <!-- 收藏按鈕 -->
+                                    <button type="button" id="userColl_@item.ARTI_NUM" class="btn postInfo" onclick="clickCollection(@item.ARTI_NUM,'01')">
+                                        <i id="i_userColl_@item.ARTI_NUM" class="far fa-bookmark"></i>
+                                    </button>
+                                }
+                            }
                         </div>
                         <!-- info結束 -->
                     </div>
                     <div class="w-100"></div>
-                }
+                                }
                 <!-- listEnd -->
             </div>
         </div>
@@ -157,3 +156,54 @@
 <a href="#" id="gotop">
     <i class="fa fa-angle-up"></i>
 </a>
+
+<script>
+    $(function () {
+        //如果使用瀏覽器的 「上/下一頁」 且 有登入的話，要重新reload 愛心跟收藏狀態
+        //防止user點進文章 > 點愛心 > 上一頁 > 愛心狀態沒更改 的快取問題
+        if (window.performance.navigation.type == 2) {
+            if ('@(((Literary_Arts.Models.MemberUserModel)ViewBag.GetLoginUser()).MEM_ID)' != "") {
+                $.ajax({
+                    url: "/Article/GetBackForwardData",
+                    type: "POST",
+                    dataType: "JSON",
+                    success: function (res) {
+                        var likeCountList = res.likeCountList;
+                        var userLikeList = res.userLikeList;
+                        var userCollList = res.userCollList;
+
+                        //重新計算每一篇文章的愛心數量
+                        $.each(likeCountList, function (key, value) {
+                            var num = value.ARTI_NUM;
+                            var count = value.LIKE_COUNT;
+                            $("#likeCount_" + num).text(count);
+
+                            //將全部文章愛心變黑色
+                            $("#userLike_" + num).css({ "color": "" });
+
+                            //將收藏全部變成 "未收藏" 狀態
+                            $("#i_userColl_" + num).removeClass("fas").addClass("far");
+                        })
+
+                        //將點過的愛心變紅色
+                        $.each(userLikeList, function (key, value) {
+                            var num = value.ARTI_NUM;
+                            $("#userLike_" + num).css({ "color": "red" });
+                        })
+
+                        //將點過的收藏全部變成 "收藏" 狀態
+                        $.each(userCollList, function (key, value) {
+                            var num = value.ARTI_NUM;
+                            
+                            $("#i_userColl_" + num).removeClass("far").addClass("fas");
+                        })
+
+                    }, error: function (ex) {
+
+                    }
+                })
+            }
+            
+        }
+    })
+</script>

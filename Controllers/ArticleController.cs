@@ -29,8 +29,10 @@ namespace Literary_Arts.Controllers
             {
                 IList<ArticleModel> model = dao.GetArticleList();
                 IList<ArticleModel> likeList = dao.ByIdGetLikeList(GetLoginUser().MEM_ID);
+                IList<ArticleModel> collList = dao.ByIdGetCollList(GetLoginUser().MEM_ID);
                 ViewBag.ArticleList = model;
                 ViewBag.LikeList = likeList;
+                ViewBag.CollList = collList;
                 ViewBag.TagData = dao.TagRouter(model, "01");
                 return View();
             }
@@ -46,8 +48,13 @@ namespace Literary_Arts.Controllers
             using (ArticleDao dao = new ArticleDao(GetLoginUser()))
             {
                 ArticleModel model = dao.ByArtiNumGetArticle(HttpUtility.HtmlEncode(arti_num));
+                IList<ArticleModel> likeList = dao.ByIdGetLikeList(GetLoginUser().MEM_ID);
+                IList<ArticleModel> collList = dao.ByIdGetCollList(GetLoginUser().MEM_ID);
                 ViewBag.TagData = dao.ByNumGetTag<ArticleModel>("01", HttpUtility.HtmlEncode(arti_num));
                 ViewBag.ReplyData = dao.GetReplyData(HttpUtility.HtmlEncode(arti_num));
+                ViewBag.LikeList = likeList;
+                ViewBag.CollList = collList;
+
                 return View("Content", model);
             }
         }
@@ -59,14 +66,21 @@ namespace Literary_Arts.Controllers
         /// <returns></returns>
         public ActionResult ContentClass(string arti_class)
         {
+            System.Web.HttpContext.Current.Response.Cache.SetCacheability(HttpCacheability.NoCache);
+            Response.Cache.SetNoServerCaching();
+            System.Web.HttpContext.Current.Response.Cache.SetNoStore();
             //中英轉換
             arti_class = ReverseParamLanguage("LITERARY_CLASS_ENG", "LITERARY_CLASS_CHI", arti_class);
 
             using (ArticleDao dao = new ArticleDao(GetLoginUser()))
             {
                 IList<ArticleModel> model = dao.ByClassTypeGetList(HttpUtility.HtmlEncode(arti_class));
+                IList<ArticleModel> likeList = dao.ByIdGetLikeList(GetLoginUser().MEM_ID);
+                IList<ArticleModel> collList = dao.ByIdGetCollList(GetLoginUser().MEM_ID);
                 ViewBag.ArticleList = model;
                 ViewBag.TagData = dao.TagRouter(model, "01");
+                ViewBag.LikeList = likeList;
+                ViewBag.CollList = collList;
                 return View("Index");
             }
         }
@@ -273,6 +287,82 @@ namespace Literary_Arts.Controllers
             }
         }
 
+        /// <summary>
+        /// 取得所有文章的個別愛心數量
+        /// </summary>
+        /// <param name="isReply"></param>
+        /// <returns></returns>
+        public JsonResult GetLikeCount(bool isReply)
+        {
+            using (ArticleDao dao = new ArticleDao(GetLoginUser()))
+            {
+                return Json(dao.GetLikeCount());
+            }
+        }
 
+
+        /// <summary>
+        /// 點收藏的動作
+        /// </summary>
+        /// <param name="num"></param>
+        /// <param name="isReply"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public JsonResult ClickCollection(string num)
+        {
+            //沒登入
+            if (string.IsNullOrEmpty(GetLoginUser().MEM_ID))
+            {
+                return Json(new RtnResultModel(false, ""));
+            }
+
+            using (ArticleDao dao = new ArticleDao(GetLoginUser()))
+            {
+                //判斷有沒有點過收藏
+                bool isClick = dao.IsClickCollection(num, GetLoginUser().MEM_ID);
+                bool result = false;
+                if (!isClick)
+                {
+                    result = dao.addCollection(num, GetLoginUser().MEM_ID);
+                }
+                else
+                {
+                    result = dao.delCollection(num, GetLoginUser().MEM_ID);
+                }
+
+                if (!result)
+                {
+                    return Json(new RtnResultModel(false, "新增/刪除收藏失敗"));
+                }
+                else
+                {
+                    return Json(isClick);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 按瀏覽器的下/上下一頁時 愛心、收藏 按鈕需Reload
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult GetBackForwardData()
+        {
+            using (ArticleDao dao = new ArticleDao(GetLoginUser()))
+            {
+                IList<ArticleModel> userLikeList = dao.ByIdGetLikeList(GetLoginUser().MEM_ID);
+                IList<ArticleModel> userCollList = dao.ByIdGetCollList(GetLoginUser().MEM_ID);
+                IList<ArticleModel> likeCountList = dao.GetLikeCount();
+
+                var result = new
+                {
+                   userLikeList = userLikeList,
+                   userCollList = userCollList,
+                   likeCountList = likeCountList
+                };
+
+                return Json(result);
+            }
+
+        }
     }
 }

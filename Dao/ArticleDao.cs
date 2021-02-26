@@ -439,7 +439,7 @@ namespace Literary_Arts.Dao
             try
             {
                 strSql = @" SELECT COUNT({1}) AS likeCount
-                            FROM {0}
+                            FROM {0}         
                             WHERE ARTI_NUM = @num 
                             ";
                 //文章
@@ -466,6 +466,156 @@ namespace Literary_Arts.Dao
             }
 
         }
+
+        /// <summary>
+        /// 取得所有文章的個別愛心數量
+        /// </summary>
+        /// <param name="num"></param>
+        /// <param name="IsReply"></param>
+        /// <returns></returns>
+        public IList<ArticleModel> GetLikeCount()
+        {
+            try
+            {
+                strSql = @" SELECT ARTI_NUM, LIKE_COUNT
+                            FROM VW_ARTICLE_LIST
+                            ORDER BY ARTI_NUM DESC ";
+
+
+                return ExecuteQuery<ArticleModel>(strSql, objParam);
+            }
+            catch (Exception ex)
+            {
+                LogSet.LogError(ex.ToString());
+                return new List<ArticleModel>();
+            }
+
+        }
+
+        /// <summary>
+        /// 判斷有沒有按過收藏
+        /// </summary>
+        /// <param name="num">編號</param>
+        /// <param name="id">會員帳號</param>
+        /// <param name="IsReply">用來判斷是不是留言愛心</param>
+        /// <returns></returns>
+        public bool IsClickCollection(string num, string id)
+        {
+            try
+            {
+                strSql = @" SELECT COUNT(1)
+                                FROM MEMBER_COLLECTION
+                                WHERE ARTI_NUM = @num AND MEM_ID = @mem_id";
+
+                objParam = new
+                {
+                    num = HttpUtility.HtmlEncode(num),
+                    mem_id = HttpUtility.HtmlEncode(id)
+                };
+
+                return ExecuteQuery<int>(strSql, objParam).FirstOrDefault() >= 1 ? true : false;
+            }
+            catch (Exception ex)
+            {
+                LogSet.LogError(ex.ToString());
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// 新增收藏
+        /// </summary>
+        /// <param name="num"></param>
+        /// <param name="id"></param>
+        /// <param name="IsReply">判斷是不是留言</param>
+        /// <returns></returns>
+        public bool addCollection(string num, string id)
+        {
+            try
+            {
+
+                strSql = @"INSERT INTO MEMBER_COLLECTION
+                               (MEM_ID, 
+                                ARTI_NUM,
+                                CRT_DATE)
+                            VALUES
+                               ( @mem_id,
+                                 @num,
+                                 GETDATE() )";
+
+                objParam = new
+                {
+                    num = HttpUtility.HtmlEncode(num),
+                    mem_id = HttpUtility.HtmlEncode(id)
+                };
+
+
+                return ExecuteCommand(strSql, objParam);
+            }
+            catch (Exception ex)
+            {
+                LogSet.LogError(ex.ToString());
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// 刪除收藏
+        /// </summary>
+        /// <param name="num"></param>
+        /// <param name="id"></param>
+        /// <param name="IsReply"></param>
+        /// <returns></returns>
+        public bool delCollection(string num, string id)
+        {
+            try
+            {
+
+                strSql = @"DELETE FROM MEMBER_COLLECTION WHERE MEM_ID = @mem_id AND ARTI_NUM = @num";
+
+                objParam = new
+                {
+                    num = HttpUtility.HtmlEncode(num),
+                    mem_id = HttpUtility.HtmlEncode(id)
+                };
+
+
+                return ExecuteCommand(strSql, objParam);
+            }
+            catch (Exception ex)
+            {
+                LogSet.LogError(ex.ToString());
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// 取得使用者有按過的收藏
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public IList<ArticleModel> ByIdGetCollList(string id)
+        {
+            try
+            {
+                strSql = @" SELECT ARTI_NUM
+                            FROM MEMBER_COLLECTION
+                            WHERE MEM_ID = @mem_id ";
+
+                objParam = new
+                {
+                    mem_id = HttpUtility.HtmlEncode(id)
+                };
+
+                return ExecuteQuery<ArticleModel>(strSql, objParam);
+            }
+            catch (Exception ex)
+            {
+                LogSet.LogError(ex.ToString());
+                return new List<ArticleModel>();
+            }
+        }
+
 
 
     }

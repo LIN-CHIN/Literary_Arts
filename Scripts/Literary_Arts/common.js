@@ -17,7 +17,6 @@ function clickLike(num, type, isReply)
         url: url + "ClickLike",                        
         type: "post",
         dataType: "JSON",
-        async:false,
         data: {
             "num": num,
             "isReply": isReply,
@@ -47,5 +46,51 @@ function clickLike(num, type, isReply)
         },
         error: function (res) { }
         
+    });
+}
+
+
+//點擊收藏按鈕 
+//包括：文章、推薦...
+//參數 ： num : 文章編號
+//        type : "01" = 文章  , "02" = 推薦
+function clickCollection(num, type) {
+    var url = ""
+    if (type == "01") {
+        url = "/Article/"
+    } else if (type == "02") {
+        url = "/Recommend/"
+    }
+
+    $.ajax({
+        url: url + "ClickCollection",
+        type: "post",
+        dataType: "JSON",
+        data: {
+            "num": num
+        },
+        success: function (res) {
+            //沒登入重導
+            if (res.success != undefined && res.message == "") {
+                document.location.href = "/Member/Login";
+                return false;
+            }
+            //新增/刪除收藏出錯
+            else if (res.success != undefined) {
+                alert(res.message);
+                return false;
+            }
+            //如果有按過收藏
+            if (res) {
+                $("#i_userColl_" + num).removeClass("fas");
+                $("#i_userColl_" + num).addClass("far");
+            } else {
+                $("#i_userColl_" + num).removeClass('far');
+                $("#i_userColl_" + num).addClass('fas');
+            }
+
+        },
+        error: function (res) { }
+
     });
 }

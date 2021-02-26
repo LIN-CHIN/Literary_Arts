@@ -48,36 +48,48 @@
 
             <!-- info -->
             <div class="info">
-                <!-- 愛心按鈕 -->
-                <button type="button" id="LikeUnLogIn" class="btn postInfo" onclick="location.href='/login'">
-                    <i class="fab fa-gratipay"></i>
-                    <a> @Model.LIKE_COUNT </a>
-                </button>
-                @*<button type="button" id="addLike" class="btn postInfo"
-                            onclick=<%= "addLike(" + items[0][0].artiNum + ")" %>> <i class="fab fa-gratipay"></i><a
-                                id="addLikeCount"> <%= items[0][0].likeCount %> </a></button>
-                    <button type="button" id="delLike" class="btn postInfo"
-                            onclick=<%= "delLike(" + items[0][0].artiNum + ")" %>><i class="fab fa-gratipay" style="color:#c93737"></i><a
-                                id="delLikeCount"><%= items[0][0].likeCount %> </a></button>*@
-
+                @{
+                    var likeList = (IList<Literary_Arts.Models.ArticleModel>)ViewBag.likeList;
+                    if (likeList == null) { likeList = new List<Literary_Arts.Models.ArticleModel>(); }
+                    if (likeList.Where(x => x.ARTI_NUM == Model.ARTI_NUM).Count() > 0)
+                    {
+                        <!-- 愛心按鈕 -->
+                        <button type="button" id="userLike_@Model.ARTI_NUM" class="btn postInfo" style="color:red;" onclick="clickLike(@Model.ARTI_NUM,'01',false)">
+                            <i class="fab fa-gratipay"></i>
+                            <a id="likeCount_@Model.ARTI_NUM"> @Model.LIKE_COUNT </a>
+                        </button>
+                    }
+                    else
+                    {
+                        <button type="button" id="'userLike_@Model.ARTI_NUM" class="btn postInfo" onclick="clickLike(@Model.ARTI_NUM,'01',false)">
+                            <i class="fab fa-gratipay"></i>
+                            <a id="likeCount_@Model.ARTI_NUM"> @Model.LIKE_COUNT </a>
+                        </button>
+                    }
+                }
                 <!-- 留言數量按鈕 -->
                 <button type="button" class="btn postInfo" id="goBottom">
                     <i class="fas fa-comment-dots"></i>
                     <a> @Model.REPLY_COUNT </a>
                 </button>
-
-                <!-- 收藏按鈕 -->
-                <button type="button" id="unLogIn" class="btn postInfo" onclick="">
-                    <i class="far fa-bookmark"></i>
-                </button>
-
-                @*<button type="button" id="addColle" class="btn postInfo"
-                            onclick=<%= "addColle(" + items[0][0].artiNum + ")" %>>
-                            <i class="far fa-bookmark"></i></button>
-
-                    <button type="button" id="delColle" class="btn postInfo"
-                            onclick=<%= "delColle(" + items[0][0].artiNum + ")" %>>
-                            <i class="fas fa-bookmark"></i></button>*@
+                @{
+                    var CollList = (IList<Literary_Arts.Models.ArticleModel>)ViewBag.CollList;
+                    if (CollList == null) { CollList = new List<Literary_Arts.Models.ArticleModel>(); }
+                    if (CollList.Where(x => x.ARTI_NUM == Model.ARTI_NUM).Count() > 0)
+                    {
+                        <!-- 收藏按鈕(點擊狀態) -->
+                        <button type="button" id="userColl_@Model.ARTI_NUM" class="btn postInfo" onclick="clickCollection(@Model.ARTI_NUM,'01')">
+                            <i id="i_userColl_@Model.ARTI_NUM" class="fas fa-bookmark"></i>
+                        </button>
+                    }
+                    else
+                    {
+                        <!-- 收藏按鈕 -->
+                        <button type="button" id="userColl_@Model.ARTI_NUM" class="btn postInfo" onclick="clickCollection(@Model.ARTI_NUM,'01')">
+                            <i id="i_userColl_@Model.ARTI_NUM" class="far fa-bookmark"></i>
+                        </button>
+                    }
+                }
 
                 <button type="button" class="btn report postReport" id="postReport" data-toggle="modal" data-target="#artiReportPost">檢舉</button>
             </div>
