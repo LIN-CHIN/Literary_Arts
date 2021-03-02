@@ -79,7 +79,7 @@
 <script src="~/Content/js/imageCompression.js"></script>
 
 <script>
-
+    
     //將中文class 轉為代號 在將代號 找對應的英文class
     @{ string origin_class = SysSet.GetParamItemType("LITERARY_CLASS_CHI", Model.ARTI_CLASS);
         origin_class = SysSet.GetParamItemValue("LITERARY_CLASS_ENG", origin_class);
@@ -91,6 +91,8 @@
         $(this).parent('#tag').remove();
     })
 
+    $("#postInput").text($("#postInput").text().replace("<br>", /\n/g));
+    
 
     //編輯功能
     //type = "arti"   > 文章
@@ -104,25 +106,25 @@
                 dataType: "json",
                 data: {
                     ARTI_NUM : "@Model.ARTI_NUM",
-                    ARTI_CLASS: $("#inputState").val(),
+                    ARTI_CLASS:  $("#inputState").val(),
                     ARTI_HEAD: $("#artiHead").val(),
                     ARTI_CONT: $("#postInput").html(),
                     TAG_NAME: $(".deleteTag").val(),
                     MEM_ID: "@Model.MEM_ID",
                     MEM_NAME : "@Model.MEM_NAME",
-                    __RequestVerificationToken : $('input[name=__RequestVerificationToken]').val() 
+                    __RequestVerificationToken : $('input[name=__RequestVerificationToken]').val()
                 },
                 success: function (res) {
-                    alert(res);
-                    location.href = "@Url.Action("Content", "Article")?arti_num=" + "@Model.ARTI_NUM";
-                },
+                        alert(res.message);
+                        location.href = "@Url.Action("Content", "Article")?arti_num=" + "@Model.ARTI_NUM";
+                    },
                 error: function (res) {
-                    alert("@SysSet.GetParamItemValue("SYS_MESSAGE","sys_error")");
-                }
-            })
+                        alert("@SysSet.GetParamItemValue("SYS_MESSAGE","sys_error")");
+                    }
+                })
         } else {
             alert("@SysSet.GetParamItemValue("SYS_MESSAGE","cancel_update")")
         }
-        
+
     }
 </script>

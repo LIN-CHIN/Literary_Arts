@@ -211,13 +211,14 @@ namespace Literary_Arts.Dao
                 objParam = new
                 {
                     arti_head = model.ARTI_HEAD,
-                    arti_cont = model.ARTI_CONT,
+                    arti_cont = HttpUtility.HtmlDecode(model.ARTI_CONT),
                     arti_class = model.ARTI_CLASS,
                     mdf_memid = model.MEM_ID,
                     mdf_memname = model.MEM_NAME,
                     arti_num = model.ARTI_NUM
                 };
-                return new RtnResultModel(true, SysSet.GetParamItemValue("SYS_MESSAGE", "update_true"));
+                
+                return ExecuteCommand(strSql, objParam) ? new RtnResultModel(true, SysSet.GetParamItemValue("SYS_MESSAGE", "update_true")): new RtnResultModel(true, SysSet.GetParamItemValue("SYS_MESSAGE", "update_true"));
             }
             catch (Exception ex)
             {

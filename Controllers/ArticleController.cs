@@ -112,6 +112,10 @@ namespace Literary_Arts.Controllers
                 if (IsHaveAuth)
                 {
                     ArticleModel model = dao.ByArtiNumGetArticle(HttpUtility.HtmlEncode(arti_num));
+
+                    //內容解碼
+                    model.ARTI_CONT = HttpUtility.HtmlDecode(model.ARTI_CONT);
+
                     ViewBag.TagData = dao.ByNumGetTag<ArticleModel>("01", HttpUtility.HtmlEncode(arti_num));
                     return View(model);
                 }
@@ -130,8 +134,14 @@ namespace Literary_Arts.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
+        [ValidateInput(false)]
         public JsonResult UpdateArticle(ArticleModel model)
         {
+            //將英文代號轉為數字代號
+            if (!string.IsNullOrEmpty(model.ARTI_CLASS)) {
+                model.ARTI_CLASS = SysSet.GetParamItemType("LITERARY_CLASS_ENG", model.ARTI_CLASS);
+            }
+
             using (ArticleDao dao = new ArticleDao(GetLoginUser()))
             {
                 //是否有權利操作此功能
