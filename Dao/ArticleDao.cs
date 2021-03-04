@@ -211,7 +211,7 @@ namespace Literary_Arts.Dao
                 objParam = new
                 {
                     arti_head = model.ARTI_HEAD,
-                    arti_cont = HttpUtility.HtmlDecode(model.ARTI_CONT),
+                    arti_cont = model.ARTI_CONT,
                     arti_class = model.ARTI_CLASS,
                     mdf_memid = model.MEM_ID,
                     mdf_memname = model.MEM_NAME,
@@ -350,7 +350,7 @@ namespace Literary_Arts.Dao
         /// <param name="id"></param>
         /// <param name="IsReply">判斷是不是留言</param>
         /// <returns></returns>
-        public bool addLike(string num, string id, bool IsReply) {
+        public bool AddLike(string num, string id, bool IsReply) {
             try
             {
                
@@ -396,7 +396,7 @@ namespace Literary_Arts.Dao
         /// <param name="id"></param>
         /// <param name="IsReply"></param>
         /// <returns></returns>
-        public bool delLike(string num, string id, bool IsReply)
+        public bool DelLike(string num, string id, bool IsReply)
         {
             try
             {
@@ -530,7 +530,7 @@ namespace Literary_Arts.Dao
         /// <param name="id"></param>
         /// <param name="IsReply">判斷是不是留言</param>
         /// <returns></returns>
-        public bool addCollection(string num, string id)
+        public bool AddCollection(string num, string id)
         {
             try
             {
@@ -567,7 +567,7 @@ namespace Literary_Arts.Dao
         /// <param name="id"></param>
         /// <param name="IsReply"></param>
         /// <returns></returns>
-        public bool delCollection(string num, string id)
+        public bool DelCollection(string num, string id)
         {
             try
             {
@@ -614,6 +614,46 @@ namespace Literary_Arts.Dao
             {
                 LogSet.LogError(ex.ToString());
                 return new List<ArticleModel>();
+            }
+        }
+
+        public RtnResultModel PostReply(string inputContent, string num, string mem_id) 
+        {
+            RtnResultModel result = new RtnResultModel(true, "留言失敗，請重新輸入！");
+            try
+            {
+
+                strSql = @"
+                            INSERT INTO ARTICLE_REPLY
+                                       (ARTI_NUM
+                                       ,MEM_ID
+                                       ,ARTI_REPLY_CONT
+                                       ,CRT_DATE
+                                       ,MDF_DATE)
+                                 VALUES
+                                       (@arti_num,
+                                        @mem_id,
+                                        @arti_reply_cont,
+                                        GETDATE(),
+                                        GETDATE() ) ; ";
+                objParam = new
+                {
+                    arti_num = num,
+                    mem_id = mem_id,
+                    arti_reply_cont = inputContent
+                };
+
+                if (ExecuteCommand(strSql, objParam)) {
+                    result.message = "留言成功！";
+                }
+                return result;
+            }
+            catch (Exception ex)
+            {
+                LogSet.LogError(ex.ToString());
+                result.success = false;
+                result.message = "留言失敗，請洽系統管理員！";
+                return result;
             }
         }
 

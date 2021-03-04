@@ -44,7 +44,9 @@ function clickLike(num, type, isReply)
             $("#likeCount_" + num).text(res.likeCount);
     
         },
-        error: function (res) { }
+        error: function () {
+            alert("愛心新增/刪除系統異常，請洽系統管理員");
+        }
         
     });
 }
@@ -90,7 +92,24 @@ function clickCollection(num, type) {
             }
 
         },
-        error: function (res) { }
+        error: function (res) {
+            alert("收藏新增/刪除系統異常，請洽系統管理員");
+        }
 
     });
+}
+
+//取代換行符號
+function replaceBr(id)
+{
+    $("#" + id).text($("#" + id ).text().replace(new RegExp("<br>", "g"), "\n"));
+}
+
+//判斷是否有登入
+function isLogin() {
+    var result = false;
+    if (loginUser != "") {
+        result = true
+    }
+    return result;
 }

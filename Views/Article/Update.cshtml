@@ -25,9 +25,7 @@
         <input type="text" class="titleInput input-with-icon title" name="artiHead" id="artiHead"
                placeholder="請輸入您的標題" value="@Model.ARTI_HEAD">
 
-        <div id="postInput" class="postInput" contenteditable="true" role="textbox" data-text="請輸入您的發文內容">
-            @Model.ARTI_CONT
-        </div>
+        <div id="postInput" class="postInput" contenteditable="true" role="textbox" data-text="請輸入您的發文內容" style="white-space: pre-line;" >@Model.ARTI_CONT</div>
 
         <div class="tag content col-lg-12">
             @foreach (var i in ViewBag.TagData)
@@ -79,7 +77,10 @@
 <script src="~/Content/js/imageCompression.js"></script>
 
 <script>
-    
+    $(function () {
+        replaceBr("postInput");
+    })
+ 
     //將中文class 轉為代號 在將代號 找對應的英文class
     @{ string origin_class = SysSet.GetParamItemType("LITERARY_CLASS_CHI", Model.ARTI_CLASS);
         origin_class = SysSet.GetParamItemValue("LITERARY_CLASS_ENG", origin_class);
@@ -90,9 +91,6 @@
     $('.deleteTag').click(function () {
         $(this).parent('#tag').remove();
     })
-
-    $("#postInput").text($("#postInput").text().replace("<br>", /\n/g));
-    
 
     //編輯功能
     //type = "arti"   > 文章

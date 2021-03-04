@@ -34,6 +34,10 @@ namespace Literary_Arts.Controllers
                 ViewBag.LikeList = likeList;
                 ViewBag.CollList = collList;
                 ViewBag.TagData = dao.TagRouter(model, "01");
+
+                foreach(var m in model) {
+                    m.ARTI_CONT = HttpUtility.HtmlDecode(m.ARTI_CONT);
+                }
                 return View();
             }
         }
@@ -55,6 +59,7 @@ namespace Literary_Arts.Controllers
                 ViewBag.LikeList = likeList;
                 ViewBag.CollList = collList;
 
+                model.ARTI_CONT = HttpUtility.HtmlDecode(model.ARTI_CONT);
                 return View("Content", model);
             }
         }
@@ -106,7 +111,7 @@ namespace Literary_Arts.Controllers
         public ActionResult Update(string arti_num)
         {
             using (ArticleDao dao = new ArticleDao(GetLoginUser()))
-            {
+            {                                       
                 //是否有權利操作此編輯功能
                 IsHaveAuth = dao.IsHaveAuthorityOperateFn("01", false, arti_num, GetLoginUser());
                 if (IsHaveAuth)
@@ -138,7 +143,8 @@ namespace Literary_Arts.Controllers
         public JsonResult UpdateArticle(ArticleModel model)
         {
             //將英文代號轉為數字代號
-            if (!string.IsNullOrEmpty(model.ARTI_CLASS)) {
+            if (!string.IsNullOrEmpty(model.ARTI_CLASS))
+            {
                 model.ARTI_CLASS = SysSet.GetParamItemType("LITERARY_CLASS_ENG", model.ARTI_CLASS);
             }
 
@@ -150,8 +156,7 @@ namespace Literary_Arts.Controllers
                 {
                     upd_result = dao.UpdateArticle(model);
                 }
-
-                return Json(upd_result); 
+                return Json(upd_result);
             }
         } 
 
@@ -261,10 +266,10 @@ namespace Literary_Arts.Controllers
                 bool result = false;
                 if (!isClick)
                 {
-                    result = dao.addLike(num, GetLoginUser().MEM_ID, isReply);
+                    result = dao.AddLike(num, GetLoginUser().MEM_ID, isReply);
                 }
                 else {
-                    result = dao.delLike(num, GetLoginUser().MEM_ID, isReply);
+                    result = dao.DelLike(num, GetLoginUser().MEM_ID, isReply);
                 }
                 int likeCount = dao.GetLikeCount(num, isReply);
                 object obj = new
@@ -333,11 +338,11 @@ namespace Literary_Arts.Controllers
                 bool result = false;
                 if (!isClick)
                 {
-                    result = dao.addCollection(num, GetLoginUser().MEM_ID);
+                    result = dao.AddCollection(num, GetLoginUser().MEM_ID);
                 }
                 else
                 {
-                    result = dao.delCollection(num, GetLoginUser().MEM_ID);
+                    result = dao.DelCollection(num, GetLoginUser().MEM_ID);
                 }
 
                 if (!result)
@@ -372,7 +377,27 @@ namespace Literary_Arts.Controllers
 
                 return Json(result);
             }
-
         }
+
+        [Authorize]
+        [HttpPost]
+        public JsonResult PostReply(string inputContent, string arti_num) 
+        {
+            RtnResultModel result = new RtnResultModel(false,"");
+
+            if (string.IsNullOrWhiteSpace(HttpUtility.HtmlEncode(inputContent)))
+            {
+                result.message = "請先輸入留言，再進行提交！";
+            }
+            else 
+            {
+                using (ArticleDao dao = new ArticleDao(GetLoginUser())) {
+                    result = dao.PostReply(HttpUtility.HtmlEncode(inputContent), HttpUtility.HtmlEncode(arti_num), GetLoginUser().MEM_ID);
+                }
+            }
+            return Json(result);
+        }
+
+
     }
 }

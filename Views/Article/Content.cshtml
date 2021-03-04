@@ -36,9 +36,7 @@
             <h5> @Model.ARTI_HEAD </h5>
             <hr />
 
-            <p class="content">
-                @Model.ARTI_CONT
-            </p>
+            <p class="content" id="content" style="white-space: pre-line;">@Model.ARTI_CONT</p>
 
             <!-- Tag -->
             <div class="tagDiv col-lg-12 ">
@@ -226,8 +224,8 @@
                 <i class="fas fa-images" style="padding-right:5px"></i>加圖片
             </label>
 
-            <button type="submit" class="btn btn-danger float-right submitReplyButton col-lg-2 shadow-none" onclick="">
-                提交
+            <button id="replySubmit"type="submit" class="btn btn-danger float-right submitReplyButton col-lg-2 shadow-none">
+                提交                                                     
             </button>
         </div>
     </div>
@@ -273,6 +271,36 @@
 </div>
 
 <script>
+    $(function () {
+        replaceBr("content");
+
+        //點留言區塊 - 如果沒登入導登入畫面
+        $("#replyInput,#file-selector").click(function () {
+            if (!isLogin) {
+                alert("請先登入再進行留言！")
+                location.href = '@Url.Action("Login", "Member")';
+                return false;
+            }
+        })
+
+        $("#replySubmit").click(function () {
+            var inputContent = $("#replyInput").text();
+
+            //如果沒登入導登入畫面
+            if (!isLogin) {
+                alert("請先登入再進行留言！")
+                location.href = '@Url.Action("Login", "Member")';
+                return false;
+            }else if (inputContent.trim() == "") {
+                alert("請先輸入留言，再進行提交！")
+            } else {
+                replySubmit(inputContent);
+            }
+
+        })
+
+    })
+
     //刪除功能
     //type = "arti"   > 文章
     //type = "reply"  > 文章留言
@@ -316,8 +344,28 @@
         } else {
             alert("@SysSet.GetParamItemValue("SYS_MESSAGE","cancel_del")")
         }
-        
+
     }
 
+    //文章留言送出
+    function replySubmit(inputContent) {
+        $.ajax({
+            url: "@Url.Action("PostReply","Article")",
+            type: "POST",
+            dataType: "JSON",
+            data: {
+                inputContent: inputContent,
+                arti_num: '@Model.ARTI_NUM'
+            },
+            success: function (res) {
+                $("#replyInput").text("");
+                alert(res.message);
+            },
+            error: function (ex) {
+                alert("@SysSet.GetParamItemValue("SYS_MESSAGE","sys_error")");
+            }
+
+        })
+    }
 </script>
 

@@ -62,9 +62,7 @@
                                     <h3 class="card-title ">
                                         @item.ARTI_HEAD
                                     </h3>
-                                    <p class="card-text limitLine">
-                                        @item.ARTI_CONT
-                                    </p>
+                                    <p class="card-text limitLine" id="content_@item.ARTI_NUM" >@item.ARTI_CONT</p>
 
                                     <!-- tag -->
                                     <div class=" tagDiv col-lg-12 ">
@@ -158,11 +156,19 @@
 </a>
 
 <script>
+
     $(function () {
+        @foreach (Literary_Arts.Models.ArticleModel i in ViewBag.ArticleList)
+        {
+            <text>
+                replaceBr("content_" + '@i.ARTI_NUM');
+            </text>
+        }
+
         //如果使用瀏覽器的 「上/下一頁」 且 有登入的話，要重新reload 愛心跟收藏狀態
         //防止user點進文章 > 點愛心 > 上一頁 > 愛心狀態沒更改 的快取問題
         if (window.performance.navigation.type == 2) {
-            if ('@(((Literary_Arts.Models.MemberUserModel)ViewBag.GetLoginUser()).MEM_ID)' != "") {
+            if (loginUser != "") {
                 $.ajax({
                     url: "/Article/GetBackForwardData",
                     type: "POST",
@@ -194,7 +200,7 @@
                         //將點過的收藏全部變成 "收藏" 狀態
                         $.each(userCollList, function (key, value) {
                             var num = value.ARTI_NUM;
-                            
+
                             $("#i_userColl_" + num).removeClass("far").addClass("fas");
                         })
 
@@ -203,7 +209,7 @@
                     }
                 })
             }
-            
+
         }
     })
 </script>

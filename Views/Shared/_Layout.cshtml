@@ -112,6 +112,8 @@
 
     @RenderSection("scripts", required: false)
 <script>
+    //全域 取得登入使用者資訊
+    var loginUser = '@(((Literary_Arts.Models.MemberUserModel)ViewBag.GetLoginUser()).MEM_ID)';
 
     // AOS animate
     AOS.init({
@@ -119,14 +121,13 @@
     });
 
     $(function () {
-        var loginUser = '@(((Literary_Arts.Models.MemberUserModel)ViewBag.GetLoginUser()).MEM_ID)';
         $.ajax({
             url: '@Url.Action("GetFunctionData", "SetFunction")',
             type: 'POST',
             dataType: "Json",
             data: { MEM_ID: loginUser },
             success: function (res) {
-                SetFunctionUrlGroup(res);
+                setFunctionUrlGroup(res);
             },
             error: function () {
                 alert("navbar產生失敗");
@@ -135,9 +136,8 @@
     })
 
     //設定 navbar
-    function SetFunctionUrlGroup(data) {
+    function setFunctionUrlGroup(data) {
         var isAuthentocated = '@User.Identity.IsAuthenticated';
-        var loginUser = '@(((Literary_Arts.Models.MemberUserModel)ViewBag.GetLoginUser()).MEM_ID)'; 
 
         //先創造 大項目
         for (var i = 0; i < data.length; i++) {
