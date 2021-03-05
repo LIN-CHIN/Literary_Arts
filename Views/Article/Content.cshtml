@@ -276,7 +276,7 @@
 
         //點留言區塊 - 如果沒登入導登入畫面
         $("#replyInput,#file-selector").click(function () {
-            if (!isLogin) {
+            if (!isLogin()) {
                 alert("請先登入再進行留言！")
                 location.href = '@Url.Action("Login", "Member")';
                 return false;
@@ -287,7 +287,7 @@
             var inputContent = $("#replyInput").text();
 
             //如果沒登入導登入畫面
-            if (!isLogin) {
+            if (!isLogin()) {
                 alert("請先登入再進行留言！")
                 location.href = '@Url.Action("Login", "Member")';
                 return false;

@@ -154,29 +154,17 @@ namespace Literary_Arts.Dao
         public IList<ArticleModel> GetReplyData(string num) {
             try
             {
-                strSql = @" SELECT 
-                                    vw.ARTI_NUM,                                            --文章編號
-		                            ar.ARTI_REPLY_NUM										--文章留言編號
-	                               ,ar.MEM_ID + '-' + am.MEM_NAME AS MEM_DISPLAY			--留言者帳號
-	                               ,CAST(ARTI_REPLY_CONT AS varchar) AS ARTI_REPLY_CONT		--文章留言內容
-	                               ,count(ar.ARTI_REPLY_NUM) AS REPLY_LIKE_COUNT			--文章留言愛心數量
-	                               ,ar.CRT_DATE												--留言時間
-                            FROM VW_ARTICLE_LIST AS vw                                      --文章view表
-                            INNER JOIN ARTICLE_REPLY AS ar                                  --文章留言表
-	                            ON vw.ARTI_NUM = ar.ARTI_NUM
-                            INNER JOIN ARTICLE_REPLY_LIKE AS r_like                         --文章留言愛心表
-	                            ON ar.ARTI_REPLY_NUM = r_like.ARTI_REPLY_NUM
-                            INNER JOIN ART_MEMBER AS am                                     --會員資料表
-	                            ON ar.MEM_ID = am.MEM_ID
-                            WHERE VW.ARTI_NUM = @num
-                            GROUP BY 
-                                    vw.ARTI_NUM
-		                           ,ar.ARTI_REPLY_NUM
-	                               ,ar.MEM_ID
-	                               ,am.MEM_NAME
-	                               ,CAST(ARTI_REPLY_CONT AS varchar)
-	                               ,ar.CRT_DATE
-                            ORDER BY count(ar.ARTI_REPLY_NUM) DESC";
+                strSql = @" SELECT  AR.MEM_ID +  '-' + MEM_NAME AS MEM_DISPLAY          --會員id-name
+	                               ,AR.CRT_DATE									        --留言時間
+	                               ,ISNULL(VW.REPLY_LIKE_COUNT,0) AS REPLY_LIKE_COUNT	--留言愛心數量
+	                               ,AR.ARTI_REPLY_CONT							        --留言內容
+                            FROM ARTICLE_REPLY AS AR 
+                            INNER JOIN ART_MEMBER AS MEM	 				            --[會員資料表] 取得留言者的NAME
+	                            ON AR.MEM_ID = MEM.MEM_ID
+                            LEFT JOIN VW_ARTI_REPLY_LIKE_COUNT AS VW		            -- [VW_留言愛心數量]  取得留言愛心數量
+	                            ON AR.ARTI_REPLY_NUM = VW.ARTI_REPLY_NUM
+                            WHERE AR.ARTI_NUM = @num
+                            ORDER BY AR.CRT_DATE" ;
 
                 objParam = new
                 {
