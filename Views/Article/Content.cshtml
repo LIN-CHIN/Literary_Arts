@@ -4,7 +4,7 @@
     ViewBag.Title = "文章內容";
 }
 
-<link href="../../Content/css/article.css" rel="stylesheet" type="text/css" />
+<link href="~/Content/css/article.css" rel="stylesheet" type="text/css" />
 @Html.AntiForgeryToken()
 
 <!-- 文章內容 -->
@@ -199,12 +199,12 @@
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
-                            <form id="artiMessReport_Form">
+                            <form class="artiMessReport_Form">
                                 <div class="modal-body" style="padding:1em;">
-                                    <textarea class="report" name="reportReason" id="messReportReason" placeholder="輸入檢舉原因"></textarea>
+                                    <textarea class="report messReportReason" name="reportReason" placeholder="輸入檢舉原因"></textarea>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" id="artiMessReport" class="btn btn-danger" onclick="">提交</button>
+                                    <button type="button" class="btn btn-danger artiMessReport" onclick="">提交</button>
                                 </div>
                             </form>
                         </div>

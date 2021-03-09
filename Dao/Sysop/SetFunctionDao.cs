@@ -22,6 +22,8 @@ namespace Literary_Arts.Dao.Sysop
 	                                ,f.FUNCTION_ID                  --功能代號
 	                                ,FUNCTION_NAME                  --功能中文名稱
 	                                ,FUNCTION_URL                   --功能url
+                                    ,f.CONTROLLER                     --Contrller
+                                    ,f.ACTION                         --Action 
 	                                ,PARENT_ID                      --父功能代號
 	                                ,SORT_ID                        --父代號順序
                                     ,SORT_ITEM_ID                   --子代號順序(小項目)

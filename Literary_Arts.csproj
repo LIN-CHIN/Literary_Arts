@@ -537,7 +537,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Interface\" />
     <Folder Include="Views\SetParam\" />
   </ItemGroup>
   <ItemGroup>

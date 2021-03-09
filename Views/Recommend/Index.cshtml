@@ -4,7 +4,7 @@
 }
 
 
-<link href="../../Content/css/recommend.css" rel="stylesheet" type="text/css" />
+<link href="~/Content/css/recommend.css" rel="stylesheet" type="text/css" />
 
 <center>
     <h3>推薦列表</h3>
@@ -42,7 +42,7 @@
             foreach (var item in ViewBag.RecommendList)
             {
                 temp += 1;
-                <div class="wrapper col-12  col-lg-2" style="background-image: url('../../Content/images/recommend/1571237146182--cTZDVm5aMllsS09lcUtV.jpg');">
+                <div class="wrapper col-12  col-lg-2" style='background-image: url("@Url.Content("~/Content/images/recommend/test.jpg")");'>
                     <a class="portfolio-box" href='@Url.Action("Content", "Recommend")?recom_num=@item.RECOM_NUM'>
                         <div class="portfolio-box-caption">
                             <div class="project-category text-white-50">

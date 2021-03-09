@@ -41,11 +41,10 @@
 
 </head>
 <body>
-
     <div class="header">
         <nav id="nav" class="navbar navbar-expand-lg navbar-light fixed-top ">
             <a class="nav-link" href="/">
-                <img class="nav-item" href="/" src="~/Content/images/logo.png" width="30px" height="30px " style="opacity:0.8" alt="">
+                <img class="nav-item" href="/" src="~/Content/images/logo.png" width="30px" height="30px" style="opacity:0.8" alt="">
                 <a href="/" class="navTitle">文藝富心</a>
             </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -138,7 +137,6 @@
     //設定 navbar
     function setFunctionUrlGroup(data) {
         var isAuthentocated = '@User.Identity.IsAuthenticated';
-
         //先創造 大項目
         for (var i = 0; i < data.length; i++) {
             //如果已經登入 不需顯示登入按鈕
@@ -146,7 +144,6 @@
             {
                 continue;
             }
-
             //若屬於[大項目]，則SORT_ID != null
             if (data[i].SORT_ID != null) {
                 //若url = null 則此[大項目]為 下拉式選單
@@ -172,21 +169,25 @@
                                                     <div class="dropdown-menu member dropdown-menu-right" id="parent_` + data[i].FUNCTION_ID + `" aria-labelledby="navbarDropdownMenuLink" > </div>
                                             </li>` );
                     }
-
                 //若有url 代表 [大項目] 是一個單純連結的按鈕
                 } else {
+                    var url ="@Url.Action("temp_action", "temp_ctrl")";
+                    url = url.replace("temp_action", data[i].ACTION);
+                    url = url.replace("temp_ctrl", data[i].CONTROLLER);
 
                     //一般正常navbar按鈕
-                    $("#art_nav").append(` <li class="nav-item" id="fn_` + data[i].FUNCTION_ID +  `"> <a class="nav-link" href="` + data[i].FUNCTION_URL + `">` + data[i].FUNCTION_NAME + ` </a> </li > `);
+                    $("#art_nav").append(` <li class="nav-item" id="fn_` + data[i].FUNCTION_ID +  `"> <a class="nav-link" href="` + url + `">` + data[i].FUNCTION_NAME + ` </a> </li > `);
                 }
             }
         }
-
         //再創造 小項目(下拉選單的細項目)
         for (var i = 0; i < data.length; i++) {
+            var url ="@Url.Action("temp_action", "temp_ctrl")";
+            url = url.replace("temp_action", data[i].ACTION);
+            url = url.replace("temp_ctrl", data[i].CONTROLLER);
+
             //圖示
             var icon = '';
-
             //發文
             if (data[i].FUNCTION_ID == 'ArticlePost') {
                 icon = '<i class="fas fa-pen" style="color:white;"></i>&nbsp';
@@ -195,16 +196,14 @@
             if (data[i].IS_SPECIAL_FN == '1') {
                 //[會員通知]
                 if (data[i].FUNCTION_ID == 'Notify') {
-                    $("#parent_" + data[i].PARENT_ID).append(`<a class="dropdown-item" id="fn_item_` + data[i].FUNCTION_ID + `"href="` + data[i].FUNCTION_URL +
+                    $("#parent_" + data[i].PARENT_ID).append(`<a class="dropdown-item" id="fn_item_` + data[i].FUNCTION_ID + `"href="` + url +
                         `"> <i class= "fas fa-bell" style = "color:white;" ></i ></a >`);
                 }
                 //[申報]
                 else if (data[i].FUNCTION_ID == 'Report') {
                     $("#parent_" + data[i].PARENT_ID).append(`<a class="dropdown-item" id="navReport" style="cursor:pointer;" data-toggle="modal" data-target="#report">`
                                                                      + data[i].FUNCTION_NAME + `</a >`);
-
                 }
-
             } else
             {
                 //有 click() function  的連結
@@ -214,11 +213,10 @@
                 //一般的連結
                 else
                 {
-                    $("#parent_" + data[i].PARENT_ID).append(`<a class="dropdown-item" id="fn_item_` + data[i].FUNCTION_ID + `" href = "` + data[i].FUNCTION_URL + `" >` +
+                    $("#parent_" + data[i].PARENT_ID).append(`<a class="dropdown-item" id="fn_item_` + data[i].FUNCTION_ID + `" href = "` + url + `" >` +
                                                                 icon + data[i].FUNCTION_NAME + `</a>`);
                 }
             }
-
         }
     }
 </script>

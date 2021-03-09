@@ -22,6 +22,9 @@ namespace Literary_Arts.Models
         /// </summary>
         public string FUNCTION_URL { get; set; }
 
+        public string CONTROLLER { get; set; }
+        public string ACTION { get; set; }
+
         /// <summary>
         /// 父功能 代號
         /// </summary>
