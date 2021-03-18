@@ -645,6 +645,124 @@ namespace Literary_Arts.Dao
             }
         }
 
+       /// <summary>
+       /// 發文
+       /// </summary>
+       /// <param name="model"></param>
+       /// <returns></returns>
+        public RtnResultModel PostArticle(PostModel model, string mem_id)
+        {
+            RtnResultModel result = new RtnResultModel(false, "發文失敗！請重新輸入");
+            try
+            {
+
+                strSql = @"
+                            INSERT INTO ARTICLE
+                                   (MEM_ID
+                                   ,ARTI_HEAD
+                                   ,ARTI_CONT
+                                   ,ARTI_CLASS
+                                   ,CRT_DATE
+                                   ,CRT_MEMID
+                                   ,MDF_DATE
+                                   ,MDF_MEMID  )
+                             VALUES
+                                   ( @mem_id
+                                    ,@arti_head
+                                    ,@arti_cont
+                                    ,@arti_class
+                                    ,GETDATE()
+                                    ,@mem_id
+                                    ,GETDATE()
+                                    ,@mem_id )";
+                                
+                objParam = new
+                {
+                    mem_id = mem_id,
+                    arti_head = model.artiHead,
+                    arti_cont = model.artiContent,
+                    arti_class = model.artiClass
+                };
+
+                if (ExecuteCommand(strSql, objParam))
+                {
+                    result.success = true ;
+                    result.message = "留言成功！";
+                }
+                return result;
+            }
+            catch (Exception ex)
+            {
+                LogSet.LogError(ex.ToString());
+                result.success = false;
+                result.message = SysSet.GetParamItemValue("SYS_MESSAGE", "sys_error");
+                return result;
+            }
+        }
+
+        /// <summary>
+        /// 新增圖片
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="mem_id"></param>
+        /// <returns></returns>
+        public bool InsertImage(PostModel model, string mem_id, string max_num)
+        {
+            try
+            {
+
+                strSql = @"             
+                            INSERT INTO IMAGE
+                                       (MEM_ID
+                                       ,ARTI_NUM
+                                       ,RECOM_NUM
+                                       ,ARTI_MESS_NUM
+                                       ,RECOM_MESS_NUM
+                                       ,IMG_NAME
+                                       ,CRT_DATE)
+                                    VALUES
+                                       ( @mem_id
+                                        ,@arti_num
+                                        ,@img_name
+                                        ,GETDATE()) ";
+
+                objParam = new
+                {
+                    mem_id = mem_id,
+                    arti_num = max_num,
+                    img_name = "" , 
+
+                };
+
+                return ExecuteCommand(strSql, objParam);
+            }
+            catch (Exception ex)
+            {
+                LogSet.LogError(ex.ToString());
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// 取得最大文章編號
+        /// </summary>
+        /// <returns></returns>
+        public string GetMaxArtiNum()
+        {
+            try
+            {
+                strSql = @" SELECT max(ARTI_NUM) +1  
+                            FROM ARTICLE ";
+
+                return ExecuteQuery<string>(strSql).FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                LogSet.LogError(ex.ToString());
+                return null;
+            }
+        }
+
 
 
     }

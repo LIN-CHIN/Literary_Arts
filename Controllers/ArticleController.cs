@@ -5,6 +5,7 @@ using Literary_Arts.Models.System;
 using Literary_Arts.Web_Common;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Transactions;
 using System.Web;
@@ -99,6 +100,26 @@ namespace Literary_Arts.Controllers
         {
             return View();
         }
+
+        [HttpPost]
+        public JsonResult Post(PostModel model)
+        {
+            using (ArticleDao dao = new ArticleDao(GetLoginUser())) {
+                RtnResultModel isInsertArticle = new RtnResultModel(false, "");
+                RtnResultModel isInsertImg = new RtnResultModel(false, "");
+                string maxNum = getMaxArtiNum();
+                isInsertArticle =  dao.PostArticle(model, GetLoginUser().MEM_ID) ;
+                isInsertImg = dao.InsertImage(model, GetLoginUser().MEM_ID, maxNum) ;
+                return Json(model);
+            }
+        }
+        public string getMaxArtiNum() {
+            using (ArticleDao dao = new ArticleDao(GetLoginUser()))
+            {
+                return dao.GetMaxArtiNum();
+            }
+        }
+
 
         #endregion
 

@@ -1,14 +1,14 @@
 function getOriginalSize(imgData) {
-    return new Promise(function(resolve, reject) {
+    return new Promise(function (resolve, reject) {
         var template = new Image();
-        template.src = imgData
-        template.onload = function() {
-            while(this.width >= 750 ||　this.height >= 600) {
+        template.src = imgData;
+        template.onload = function () {
+            while (this.width >= 750 || this.height >= 600) {
                 if (this.width >= 750 || this.height >= 600) {
-                    this.width = this.width * 0.85
-                    this.height = this.height * 0.85
+                    this.width = this.width * 0.8
+                    this.height = this.height * 0.8
                 }
-            } 
+            }
             var size = {
                 originWidth: this.width,
                 originHeight: this.height
@@ -17,6 +17,7 @@ function getOriginalSize(imgData) {
         }
     })
 }
+
 function drawToCanvas(imgData, originWidth, originHeight) {
     return new Promise(function(resolve, reject) {
         var canvas = document.createElement("canvas"); 
