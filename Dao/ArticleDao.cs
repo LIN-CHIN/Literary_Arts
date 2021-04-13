@@ -4,6 +4,7 @@ using Literary_Arts.Web_Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Transactions;
 using System.Web;
 
 namespace Literary_Arts.Dao
@@ -74,7 +75,8 @@ namespace Literary_Arts.Dao
         /// </summary>
         /// <param name="artiNum"></param>
         /// <returns></returns>
-        public ArticleModel ByArtiNumGetArticle(string arti_Num) {
+        public ArticleModel ByArtiNumGetArticle(string arti_Num)
+        {
             try
             {
                 strSql = @"SELECT    ARTI_NUM	            --文章編號		
@@ -115,7 +117,8 @@ namespace Literary_Arts.Dao
         ///      04 = '展覽'
         /// </param>
         /// <returns></returns>
-        public IList<ArticleModel> ByClassTypeGetList(string arti_class) {
+        public IList<ArticleModel> ByClassTypeGetList(string arti_class)
+        {
             try
             {
                 strSql = @" SELECT   ARTI_NUM	            --文章編號		
@@ -151,7 +154,8 @@ namespace Literary_Arts.Dao
         /// </summary>
         /// <param name="num"></param>
         /// <returns></returns>
-        public IList<ArticleModel> GetReplyData(string num) {
+        public IList<ArticleModel> GetReplyData(string num)
+        {
             try
             {
                 strSql = @" SELECT  AR.MEM_ID +  '-' + MEM_NAME AS MEM_DISPLAY          --會員id-name
@@ -164,7 +168,7 @@ namespace Literary_Arts.Dao
                             LEFT JOIN VW_ARTI_REPLY_LIKE_COUNT AS VW		            -- [VW_留言愛心數量]  取得留言愛心數量
 	                            ON AR.ARTI_REPLY_NUM = VW.ARTI_REPLY_NUM
                             WHERE AR.ARTI_NUM = @num
-                            ORDER BY AR.CRT_DATE" ;
+                            ORDER BY AR.CRT_DATE";
 
                 objParam = new
                 {
@@ -185,7 +189,8 @@ namespace Literary_Arts.Dao
         /// </summary>
         /// <param name="arti_num"></param>
         /// <returns></returns>
-        public RtnResultModel UpdateArticle(ArticleModel model) {
+        public RtnResultModel UpdateArticle(ArticleModel model)
+        {
             try
             {
                 strSql = @"UPDATE ARTICLE 
@@ -194,7 +199,6 @@ namespace Literary_Arts.Dao
                                , ARTI_CLASS = @arti_class
                                , MDF_DATE = GETDATE() 
                                , MDF_MEMID = @mdf_memid
-                               , MDF_MEMNAME = @mdf_memname 
                            WHERE ARTI_NUM = @arti_num";
                 objParam = new
                 {
@@ -202,11 +206,10 @@ namespace Literary_Arts.Dao
                     arti_cont = model.ARTI_CONT,
                     arti_class = model.ARTI_CLASS,
                     mdf_memid = model.MEM_ID,
-                    mdf_memname = model.MEM_NAME,
                     arti_num = model.ARTI_NUM
                 };
-                
-                return ExecuteCommand(strSql, objParam) ? new RtnResultModel(true, SysSet.GetParamItemValue("SYS_MESSAGE", "update_true")): new RtnResultModel(true, SysSet.GetParamItemValue("SYS_MESSAGE", "update_true"));
+
+                return ExecuteCommand(strSql, objParam) ? new RtnResultModel(true, SysSet.GetParamItemValue("SYS_MESSAGE", "update_true")) : new RtnResultModel(true, SysSet.GetParamItemValue("SYS_MESSAGE", "update_true"));
             }
             catch (Exception ex)
             {
@@ -247,7 +250,8 @@ namespace Literary_Arts.Dao
         /// </summary>
         /// <param name="arti_num"></param>
         /// <returns></returns>
-        public RtnResultModel DeleteArticle(string arti_num) {
+        public RtnResultModel DeleteArticle(string arti_num)
+        {
             try
             {
                 strSql = @"DELETE FROM ARTICLE WHERE arti_num = @arti_num";
@@ -301,7 +305,8 @@ namespace Literary_Arts.Dao
         /// <param name="id">會員帳號</param>
         /// <param name="IsReply">用來判斷是不是留言愛心</param>
         /// <returns></returns>
-        public bool IsClickLike(string num,string id, bool IsReply) {
+        public bool IsClickLike(string num, string id, bool IsReply)
+        {
             try
             {
                 strSql = @" SELECT COUNT(1)
@@ -312,7 +317,8 @@ namespace Literary_Arts.Dao
                 {
                     strSql = string.Format(strSql, "ARTICLE_LIKE", "ARTI_NUM");
                 }
-                else {
+                else
+                {
                     strSql = string.Format(strSql, "ARTICLE_REPLY_LIKE", "ARTI_REPLY_NUM");
                 }
 
@@ -322,9 +328,9 @@ namespace Literary_Arts.Dao
                     mem_id = HttpUtility.HtmlEncode(id)
                 };
 
-                return ExecuteQuery<int>(strSql, objParam).FirstOrDefault() >= 1  ? true : false;
+                return ExecuteQuery<int>(strSql, objParam).FirstOrDefault() >= 1 ? true : false;
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 LogSet.LogError(ex.ToString());
                 return false;
@@ -338,10 +344,11 @@ namespace Literary_Arts.Dao
         /// <param name="id"></param>
         /// <param name="IsReply">判斷是不是留言</param>
         /// <returns></returns>
-        public bool AddLike(string num, string id, bool IsReply) {
+        public bool AddLike(string num, string id, bool IsReply)
+        {
             try
             {
-               
+
                 strSql = @"INSERT INTO {0}
                                (MEM_ID, 
                                 {1},
@@ -605,7 +612,7 @@ namespace Literary_Arts.Dao
             }
         }
 
-        public RtnResultModel PostReply(string inputContent, string num, string mem_id) 
+        public RtnResultModel PostReply(string inputContent, string num, string mem_id)
         {
             RtnResultModel result = new RtnResultModel(true, "留言失敗，請重新輸入！");
             try
@@ -631,7 +638,8 @@ namespace Literary_Arts.Dao
                     arti_reply_cont = inputContent
                 };
 
-                if (ExecuteCommand(strSql, objParam)) {
+                if (ExecuteCommand(strSql, objParam))
+                {
                     result.message = "留言成功！";
                 }
                 return result;
@@ -645,18 +653,19 @@ namespace Literary_Arts.Dao
             }
         }
 
-       /// <summary>
-       /// 發文
-       /// </summary>
-       /// <param name="model"></param>
-       /// <returns></returns>
+        /// <summary>
+        /// 發文
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         public RtnResultModel PostArticle(PostModel model, string mem_id)
         {
-            RtnResultModel result = new RtnResultModel(false, "發文失敗！請重新輸入");
             try
             {
-
-                strSql = @"
+                string arti_num = null;
+                using (TransactionScope scope = new TransactionScope())
+                {
+                    strSql = @"
                             INSERT INTO ARTICLE
                                    (MEM_ID
                                    ,ARTI_HEAD
@@ -674,29 +683,27 @@ namespace Literary_Arts.Dao
                                     ,GETDATE()
                                     ,@mem_id
                                     ,GETDATE()
-                                    ,@mem_id )";
-                                
-                objParam = new
-                {
-                    mem_id = mem_id,
-                    arti_head = model.artiHead,
-                    arti_cont = model.artiContent,
-                    arti_class = model.artiClass
-                };
+                                    ,@mem_id ) ;
+                        SELECT scope_identity() ; ";
 
-                if (ExecuteCommand(strSql, objParam))
-                {
-                    result.success = true ;
-                    result.message = "留言成功！";
+                    objParam = new
+                    {
+                        mem_id = mem_id,
+                        arti_head = HttpUtility.HtmlEncode(model.artiHead),
+                        arti_cont = HttpUtility.HtmlEncode(model.artiContent),
+                        arti_class = HttpUtility.HtmlEncode(model.artiClass)
+                    };
+
+                    arti_num = ExecuteQuery<string>(strSql, objParam).FirstOrDefault();
+                    if (model.imgArray != null) InsertImage(model, mem_id, arti_num);
+                    scope.Complete();
                 }
-                return result;
+                return new RtnResultModel(true, "發文成功！");
             }
             catch (Exception ex)
             {
                 LogSet.LogError(ex.ToString());
-                result.success = false;
-                result.message = SysSet.GetParamItemValue("SYS_MESSAGE", "sys_error");
-                return result;
+                return new RtnResultModel(false, "發文失敗，請洽系統管理員");
             }
         }
 
@@ -706,64 +713,71 @@ namespace Literary_Arts.Dao
         /// <param name="model"></param>
         /// <param name="mem_id"></param>
         /// <returns></returns>
-        public bool InsertImage(PostModel model, string mem_id, string max_num)
+        public void InsertImage(PostModel model, string mem_id, string max_num)
         {
             try
             {
-
-                strSql = @"             
+                strSql = @"";
+                foreach (string imgData in model.imgArray)
+                {
+                    strSql += @"             
                             INSERT INTO IMAGE
                                        (MEM_ID
                                        ,ARTI_NUM
-                                       ,RECOM_NUM
-                                       ,ARTI_MESS_NUM
-                                       ,RECOM_MESS_NUM
                                        ,IMG_NAME
                                        ,CRT_DATE)
                                     VALUES
                                        ( @mem_id
                                         ,@arti_num
-                                        ,@img_name
+                                        ,{0}
                                         ,GETDATE()) ";
+                    strSql = string.Format(strSql, "\'" + imgData + "\'");
+                }
+
 
                 objParam = new
                 {
                     mem_id = mem_id,
                     arti_num = max_num,
-                    img_name = "" , 
-
                 };
-
-                return ExecuteCommand(strSql, objParam);
+                using (TransactionScope scope = new TransactionScope())
+                {
+                    ExecuteCommand(strSql, objParam);
+                    scope.Complete();
+                }
             }
             catch (Exception ex)
             {
                 LogSet.LogError(ex.ToString());
-                return false;
             }
         }
 
         /// <summary>
-        /// 取得最大文章編號
+        /// 取得文章照片
         /// </summary>
+        /// <param name="id"></param>
         /// <returns></returns>
-        public string GetMaxArtiNum()
+        public IList<ArticleModel.ARTI_IMAGE> GetArtiImage(string arti_num)
         {
             try
             {
-                strSql = @" SELECT max(ARTI_NUM) +1  
-                            FROM ARTICLE ";
+                strSql = @" SELECT *
+                            FROM IMAGE 
+                            WHERE ARTI_NUM = @arti_num";
 
-                return ExecuteQuery<string>(strSql).FirstOrDefault();
+                objParam = new
+                {
+                    arti_num = HttpUtility.HtmlEncode(arti_num)
+                };
+
+                return ExecuteQuery<ArticleModel.ARTI_IMAGE>(strSql, objParam);
             }
             catch (Exception ex)
             {
                 LogSet.LogError(ex.ToString());
-                return null;
+                return new List<ArticleModel.ARTI_IMAGE>();
             }
         }
-
-
 
     }
 }

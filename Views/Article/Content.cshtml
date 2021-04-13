@@ -296,9 +296,22 @@
             } else {
                 replySubmit(inputContent);
             }
-
         })
 
+        //將"圖片字串"取代成 "圖片"
+        var imgArray = new Array();
+        var temp = 0;
+        @foreach (Literary_Arts.Models.ArticleModel.ARTI_IMAGE i in ViewBag.ImageList)
+        {
+            <text>
+                imgArray.push("@i.IMG_NAME");
+            </text>
+        }
+
+        while ($("#content").text().indexOf("\\:imgLocation") != -1 && imgArray[temp] != undefined) {
+            $("#content").html($("#content").html().replace("\\:imgLocation", "<div class='sentimentImg'><img src='" + imgArray[0] + "' style='width: 100%; cursor: pointer; border-radius: 12px; padding: 0.1em; ' ></div>"));
+            temp += 1;
+        }
     })
 
     //刪除功能
@@ -334,7 +347,7 @@
                 dataType: "json",
                 data: data,
                 success: function (res) {
-                    alert(res);
+                    alert(res.message);
                     location.href = reload_url;
                 },
                 error: function (res) {

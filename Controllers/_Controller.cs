@@ -45,15 +45,13 @@ namespace Literary_Arts.Controllers
         /// <param name="target_item"> 要轉換的 set_item (大項) 代號</param>
         /// <param name="set_value"> 目前的值 </param>
         /// <returns> set_value 轉換後的值 </returns>
-        public string ReverseParamLanguage(string set_item, string target_item, string set_value)
+        /// ex：　英轉中  - ReverseParam("LITERARY_CLASS_ENG", "LITERARY_CLASS_CHI", arti_class)
+        public string ReverseParam(string set_item, string target_item, string set_value)
         {
-            //因參數檔的 LITERARY_CLASS 分類 有中文和英文 且 set_type 是互相對應的 
-            //因DB內 文章 或 推薦 的View  class欄位為中文 而 從前端傳回的class為英文
-            //為了方便將 'movie' 轉為 '電影' , 'music' 轉為 '音樂' 
-            //先找到set_type (細項)代號 
+            //取得目前item的value 
             string class_type = SysSet.GetParamItemType(set_item, set_value);
 
-            //轉換為中文
+            //取得轉換後的value
             set_value = SysSet.GetParamItemValue(target_item, class_type);
 
             return set_value;

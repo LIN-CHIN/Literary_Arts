@@ -36,7 +36,8 @@ namespace Literary_Arts.Controllers
                 ViewBag.CollList = collList;
                 ViewBag.TagData = dao.TagRouter(model, "01");
 
-                foreach(var m in model) {
+                foreach (var m in model)
+                {
                     m.ARTI_CONT = HttpUtility.HtmlDecode(m.ARTI_CONT);
                 }
                 return View();
@@ -52,13 +53,21 @@ namespace Literary_Arts.Controllers
         {
             using (ArticleDao dao = new ArticleDao(GetLoginUser()))
             {
-                ArticleModel model = dao.ByArtiNumGetArticle(HttpUtility.HtmlEncode(arti_num));
+                //Encode 
+                arti_num = HttpUtility.HtmlEncode(arti_num);
+
+                ArticleModel model = dao.ByArtiNumGetArticle(arti_num);
                 IList<ArticleModel> likeList = dao.ByIdGetLikeList(GetLoginUser().MEM_ID);
                 IList<ArticleModel> collList = dao.ByIdGetCollList(GetLoginUser().MEM_ID);
-                ViewBag.TagData = dao.ByNumGetTag<ArticleModel>("01", HttpUtility.HtmlEncode(arti_num));
-                ViewBag.ReplyData = dao.GetReplyData(HttpUtility.HtmlEncode(arti_num));
+
+                #region ViewBag 
+                ViewBag.TagData = dao.ByNumGetTag<ArticleModel>("01", arti_num);
+                ViewBag.ReplyData = dao.GetReplyData(arti_num);
                 ViewBag.LikeList = likeList;
                 ViewBag.CollList = collList;
+                ViewBag.ImageList = dao.GetArtiImage(arti_num);
+                #endregion
+
 
                 model.ARTI_CONT = HttpUtility.HtmlDecode(model.ARTI_CONT);
                 return View("Content", model);
@@ -76,7 +85,7 @@ namespace Literary_Arts.Controllers
             Response.Cache.SetNoServerCaching();
             System.Web.HttpContext.Current.Response.Cache.SetNoStore();
             //中英轉換
-            arti_class = ReverseParamLanguage("LITERARY_CLASS_ENG", "LITERARY_CLASS_CHI", arti_class);
+            arti_class = ReverseParam("LITERARY_CLASS_ENG", "LITERARY_CLASS_CHI", arti_class);
 
             using (ArticleDao dao = new ArticleDao(GetLoginUser()))
             {
@@ -102,21 +111,15 @@ namespace Literary_Arts.Controllers
         }
 
         [HttpPost]
+        [AjaxValidateAntiForgeryToken]
+        [ValidateInput(false)]
         public JsonResult Post(PostModel model)
         {
-            using (ArticleDao dao = new ArticleDao(GetLoginUser())) {
-                RtnResultModel isInsertArticle = new RtnResultModel(false, "");
-                RtnResultModel isInsertImg = new RtnResultModel(false, "");
-                string maxNum = getMaxArtiNum();
-                isInsertArticle =  dao.PostArticle(model, GetLoginUser().MEM_ID) ;
-                isInsertImg = dao.InsertImage(model, GetLoginUser().MEM_ID, maxNum) ;
-                return Json(model);
-            }
-        }
-        public string getMaxArtiNum() {
+            //代號轉換
+            model.artiClass = ReverseParam("LITERARY_CLASS_ENG", "LITERARY_CLASS_NUM", model.artiClass);
             using (ArticleDao dao = new ArticleDao(GetLoginUser()))
-            {
-                return dao.GetMaxArtiNum();
+            { 
+                return Json(dao.PostArticle(model, GetLoginUser().MEM_ID));
             }
         }
 

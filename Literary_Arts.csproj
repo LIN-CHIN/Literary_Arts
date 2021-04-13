@@ -148,6 +148,7 @@
   <ItemGroup>
     <Compile Include="Controllers\Sysop\ArtRoleController.cs" />
     <Compile Include="Dao\Sysop\ArtRoleDao.cs" />
+    <Compile Include="Models\PostModel.cs" />
     <Compile Include="Models\Sysop\ArtRightModel.cs" />
     <Compile Include="Dao\MemberDao.cs" />
     <Compile Include="Dao\RecommendDao.cs" />
@@ -155,6 +156,7 @@
     <Compile Include="Models\Sysop\ArtRoleModel.cs" />
     <Compile Include="Models\System\RtnResultModel.cs" />
     <Compile Include="Models\_Model.cs" />
+    <Compile Include="Web_Common\AjaxValidateAntiForgeryTokenAttribute.cs" />
     <Compile Include="Web_Common\CustomAuthorize.cs" />
     <Compile Include="Web_Common\LogSet.cs" />
     <Compile Include="Web_Common\SysSet.cs" />
@@ -397,6 +399,7 @@
     <Content Include="NLog.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="App_Code\CommonRazorFunctions.cshtml" />
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -534,6 +537,7 @@
     <Content Include="Views\SpecialColumn\Update.cshtml" />
     <Content Include="Views\System\Login.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Shared\CommonRazorFunctions.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

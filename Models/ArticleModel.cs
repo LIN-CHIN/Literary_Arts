@@ -74,5 +74,14 @@ namespace Literary_Arts.Models
         public string SWEAR_WORDS { get; set; }
         public string ANALYZE_SCORE { get; set; }
         public string SCORE2 { get; set; }
+
+        /// <summary>
+        /// 文章圖片
+        /// </summary>
+        public class ARTI_IMAGE {
+            public string IMG_NUM { get; set; }
+            public string IMG_NAME { get; set; }
+            public string ARTI_NUM{ get; set; }
+        }
     }
 }
